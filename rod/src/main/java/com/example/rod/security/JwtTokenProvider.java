@@ -3,6 +3,7 @@ package com.example.rod.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.Value;
@@ -17,12 +18,13 @@ import java.util.Base64;
 import java.util.Date;
 
 @Setter
+@Getter
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class JwtTokenProvider {
 
-    @Value("${spring.jwt.secretKey}")
+//    @Value("${spring.jwt.secretKey}")
     private String secretKey;
 
     private long tokenValidTime = 1000L * 60 * 30; //토큰 유효시간
@@ -62,6 +64,7 @@ public class JwtTokenProvider {
 
     //토큰으로 인증객체(Authentication) 얻기
     public Authentication getAuthentication(String token){
-        UserDetails userDetails = userDetailsService.loadUserByUsername(get)
+
+        return null;
     }
 }

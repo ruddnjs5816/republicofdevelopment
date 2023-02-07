@@ -3,6 +3,7 @@ package com.example.rod.security.users;
 import com.example.rod.user.entity.RoleType;
 import com.example.rod.user.entity.User;
 import lombok.Builder;
+import org.apache.tomcat.jni.Address;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,7 +16,7 @@ public class UserDetail implements UserDetails {
     private String username;
     private String name;
     private String password;
-    private Address address;
+//    private Address address;
     private Long point;
     private String phonenumber;
     private RoleType role;
@@ -29,7 +30,7 @@ public class UserDetail implements UserDetails {
         this.username = username;
         this.name = name;
         this.password = password;
-        this.address = address;
+//        this.address = address;
         this.point = point;
         this.phonenumber = phonenumber;
         this.role = role;
