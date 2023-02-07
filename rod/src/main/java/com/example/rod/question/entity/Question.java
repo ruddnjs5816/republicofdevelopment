@@ -2,7 +2,7 @@ package com.example.rod.question.entity;
 
 import com.example.rod.question.dto.QuestionRequest;
 import com.example.rod.share.TimeStamped;
-import com.example.rod.user.entity.userEntity;
+import com.example.rod.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,7 +29,7 @@ public class Question extends TimeStamped {
 
     @ManyToOne
     @JoinColumn(name="user_id")
-    private userEntity user;
+    private User user;
 
 
 

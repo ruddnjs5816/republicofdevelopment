@@ -24,7 +24,7 @@ import java.util.Date;
 @Slf4j
 public class JwtTokenProvider {
 
-//    @Value("${spring.jwt.secretKey}")
+    @Value("${spring.jwt.secretKey}")
     private String secretKey;
 
     private long tokenValidTime = 1000L * 60 * 30; //토큰 유효시간
