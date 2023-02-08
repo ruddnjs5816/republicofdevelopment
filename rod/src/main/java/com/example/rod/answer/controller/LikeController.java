@@ -1,3 +1,4 @@
+/*
 package com.example.rod.answer.controller;
 
 import com.example.rod.answer.service.LikeService;
@@ -20,3 +21,4 @@ public class LikeController {
     }
 
 }
+*/

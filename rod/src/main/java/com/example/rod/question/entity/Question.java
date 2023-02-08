@@ -27,11 +27,13 @@ public class Question extends TimeStamped {
 
 //    private TagEnum tag; // 태그 테이블을 만들어야할까?, 만든다면, 태그 테이블 어떻게 운영?
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private User user;
 
 
+//    @OneToMany(fetch = FetchType.LAZY)
+//    private List<Answer> answers;
 
 
     public Question(QuestionRequest questionRequest){
@@ -39,8 +41,11 @@ public class Question extends TimeStamped {
         this.content = questionRequest.getContent();
     }
 
-    public void edit(String title, String content){
+    public void editTitle(String title){
         this.title = title;
+    }
+
+    public void editContent(String content){
         this.content = content;
     }
 

@@ -1,8 +1,15 @@
 package com.example.rod.question.repository;
 
 import com.example.rod.question.entity.Question;
+import com.example.rod.user.entity.User;
+import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface QuestionRepository extends JpaRepository<Question, Long>
-{
+import java.util.List;
+
+public interface QuestionRepository extends JpaRepository<Question, Long> {
+
+    List<Question> findByUser(@NonNull User user);
+
+
 }

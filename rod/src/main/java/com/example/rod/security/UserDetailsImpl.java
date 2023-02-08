@@ -1,4 +1,9 @@
+
+/*
+package com.example.rod.security.users;
+=======
 package com.example.rod.security;
+>>>>>>> b2475491e68d3998f612a71c061c94b7072113c4:rod/src/main/java/com/example/rod/security/UserDetailsImpl.java
 
 import com.example.rod.user.entity.RoleType;
 import com.example.rod.user.entity.User;
@@ -71,3 +76,4 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 }
+*/
