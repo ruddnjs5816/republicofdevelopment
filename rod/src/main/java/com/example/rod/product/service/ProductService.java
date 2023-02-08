@@ -37,7 +37,7 @@ public class ProductService {
     //상품 수정
     @Transactional
     public void updateProduct(Long productId, ProductModifyRequestDto productModifyRequestDto) {
-        Product product = productRepository.findById(productId).orElseThrow(  () -> new IllegalArgumentException("존재하지 않는 상품입니다.")
+        Product product = productRepository.findProductByProductId(productId).orElseThrow(  () -> new IllegalArgumentException("존재하지 않는 상품입니다.")
         );
         product.changeProductStatus(productModifyRequestDto);
         productRepository.save(product);
@@ -45,7 +45,7 @@ public class ProductService {
     //상품 삭제
     @Transactional
     public void deleteProduct(Long productId) {
-        Product product = productRepository.findById(productId).orElseThrow(  () -> new IllegalArgumentException("존재하지 않는 상품입니다.")
+        Product product = productRepository.findProductByProductId(productId).orElseThrow(  () -> new IllegalArgumentException("존재하지 않는 상품입니다.")
         );
         productRepository.delete(product);
     }
@@ -75,7 +75,7 @@ public class ProductService {
         return new ProductResponseDto(product);
     }
     public Product findProduct(Long productId) {
-        Optional<Product> foundProduct = productRepository.findProductById(productId);
+        Optional<Product> foundProduct = productRepository.findProductByProductId(productId);
         if (foundProduct.isEmpty()) {
             throw new IllegalArgumentException("상품을 찾을 수 없습니다");
         }
