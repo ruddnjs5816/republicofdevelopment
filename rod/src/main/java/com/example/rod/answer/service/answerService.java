@@ -1,4 +1,4 @@
-/*
+
 package com.example.rod.answer.service;
 
 import com.example.rod.answer.dto.AnswerRequestDto;
@@ -60,6 +60,7 @@ public class AnswerService {
         List<Comment> allComment = commentrepository.findAll();
 
 
+
         for (Comment commentEntity : allComment) {
             commentrepository.findById(commentEntity.getId());
         }
@@ -72,4 +73,4 @@ public class AnswerService {
 
 
 }
-*/
+

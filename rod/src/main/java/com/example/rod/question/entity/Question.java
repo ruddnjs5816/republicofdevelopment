@@ -1,7 +1,11 @@
 package com.example.rod.question.entity;
 
+//import com.example.rod.question.dto.QuestionRequest;
+//import com.example.rod.share.TimeStamped;
+//import com.example.rod.user.entity.userEntity;
 import com.example.rod.question.dto.QuestionRequest;
 import com.example.rod.share.TimeStamped;
+
 import com.example.rod.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,8 +36,8 @@ public class Question extends TimeStamped {
     private User user;
 
 
-//    @OneToMany(fetch = FetchType.LAZY)
-//    private List<Answer> answers;
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Answer> answers;
 
 
     public Question(QuestionRequest questionRequest){

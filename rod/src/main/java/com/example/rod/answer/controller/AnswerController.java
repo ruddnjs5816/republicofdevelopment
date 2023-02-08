@@ -1,6 +1,9 @@
-/*
+
 package com.example.rod.answer.controller;
 
+import com.example.rod.answer.service.AnswerService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 import com.example.rod.answer.dto.AnswerRequestDto;
 import com.example.rod.answer.dto.AnswerResponseDto;
 import com.example.rod.answer.service.AnswerService;
@@ -46,6 +49,5 @@ public class AnswerController {
     public AnswerResponseDto getAnswer(@PathVariable Long answerId) {
         return answerservice.getAnswer(answerId);
     }
-
 }
-*/
+

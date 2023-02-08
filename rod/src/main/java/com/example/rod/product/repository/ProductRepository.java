@@ -1,14 +1,17 @@
 package com.example.rod.product.repository;
 
 import com.example.rod.product.entity.Product;
+import com.example.rod.product.entity.productEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
+ public interface productRepository extends JpaRepository <productEntity, Long> {
 
-    @Override
-    Optional<Product> findById(Long id);
+    Optional<productEntity> findProductById(Long productId);
+    Page<productEntity> findAll(Pageable pageable);
 
-    Optional<Product> findByProductName(String productName);
 }
