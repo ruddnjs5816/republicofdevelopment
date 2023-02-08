@@ -1,38 +1,30 @@
-package com.example.rod.security.users;
+package com.example.rod.security;
 
 import com.example.rod.user.entity.RoleType;
 import com.example.rod.user.entity.User;
 import lombok.Builder;
 import org.apache.tomcat.jni.Address;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class UserDetail implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
 
-    private Long userId;
-    private String username;
-    private String name;
-    private String password;
-//    private Address address;
-    private Long point;
-    private String phonenumber;
+    private final Long userId;
+    private final String username;
     private RoleType role;
     private User user;
 
     List<GrantedAuthority> authorities;
 
     @Builder
-    public UserDetail(Long userId, String username, String name, String password, Address address, Long point, String phonenumber, RoleType role){
+    public UserDetailsImpl(Long userId, String username, RoleType role){
         this.userId = userId;
         this.username = username;
-        this.name = name;
-        this.password = password;
-//        this.address = address;
-        this.point = point;
-        this.phonenumber = phonenumber;
         this.role = role;
     }
 
@@ -40,12 +32,18 @@ public class UserDetail implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+       RoleType role = user.getRole();
+       String Authority = role.getAuthority();
+
+        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(Authority);
+        Collection<GrantedAuthority> authorityCollection = new ArrayList<>();
+        authorityCollection.add(simpleGrantedAuthority);
+        return authorityCollection;
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return user.getPassword();
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.example.rod.product.controller;
 
 import com.example.rod.product.dto.ProductRequestDto;
 import com.example.rod.product.service.ProductService;
+import com.example.rod.security.UserDetailsImpl;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
