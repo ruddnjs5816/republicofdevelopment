@@ -1,4 +1,4 @@
-/*
+
 package com.example.rod.comment.controller;
 
 import com.example.rod.comment.dto.CommentRequestDto;
@@ -43,4 +43,4 @@ public class CommentController {
     }
 
 }
-*/
+

@@ -1,4 +1,4 @@
-/*
+
 package com.example.rod.comment.entity;
 
 import com.example.rod.answer.entity.Answer;
@@ -29,4 +29,4 @@ public class Comment {
         this.content = content;
     }
 }
-*/
+

@@ -1,4 +1,4 @@
-/*
+
 package com.example.rod.security;
 
 import com.example.rod.user.entity.RoleType;
@@ -96,4 +96,4 @@ public class JwtUtil {
         return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getAuthorities());
     }
 }
-*/
+

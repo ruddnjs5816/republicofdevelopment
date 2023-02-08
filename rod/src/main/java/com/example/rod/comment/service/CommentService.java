@@ -4,7 +4,7 @@ import com.example.rod.answer.repository.AnswerRepository;
 import com.example.rod.comment.dto.CommentRequestDto;
 import com.example.rod.comment.dto.CommentResponseDto;
 import com.example.rod.comment.entity.Comment;
-import com.example.rod.comment.repository.CommentRepository;
+import com.example.rod.comment.repository.commentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public class CommentService {
 
     private final AnswerRepository answerRepository;
-    private final CommentRepository commentRepository;
+    private final commentRepository commentRepository;
 
     public CommentResponseDto createComment(Long answerId, CommentRequestDto commentRequestDto) {
         answerRepository.findById(answerId).orElseThrow(

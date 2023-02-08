@@ -1,14 +1,9 @@
-
-/*
-package com.example.rod.security.users;
-=======
 package com.example.rod.security;
->>>>>>> b2475491e68d3998f612a71c061c94b7072113c4:rod/src/main/java/com/example/rod/security/UserDetailsImpl.java
 
 import com.example.rod.user.entity.RoleType;
 import com.example.rod.user.entity.User;
 import lombok.Builder;
-import org.apache.tomcat.jni.Address;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,10 +12,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Getter
 public class UserDetailsImpl implements UserDetails {
 
-    private final Long userId;
-    private final String username;
+    private Long userId;
+    private String username;
     private RoleType role;
     private User user;
 
@@ -76,4 +72,3 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 }
-*/

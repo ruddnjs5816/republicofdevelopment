@@ -1,4 +1,4 @@
-/*
+
 package com.example.rod.answer.entity;
 
 import lombok.AllArgsConstructor;
@@ -29,4 +29,4 @@ public class LikeAnswer {
         this.answer = answer;
     }
 }
-*/
+
