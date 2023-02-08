@@ -4,7 +4,7 @@ import com.example.rod.answer.repository.AnswerRepository;
 import com.example.rod.comment.dto.CommentRequestDto;
 import com.example.rod.comment.dto.CommentResponseDto;
 import com.example.rod.comment.entity.Comment;
-import com.example.rod.comment.repository.commentRepository;
+import com.example.rod.comment.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +16,14 @@ import java.util.List;
 public class CommentService {
 
     private final AnswerRepository answerRepository;
-    private final commentRepository commentRepository;
+    private final CommentRepository CommentRepository;
 
     public CommentResponseDto createComment(Long answerId, CommentRequestDto commentRequestDto) {
         answerRepository.findById(answerId).orElseThrow(
                 () -> new IllegalArgumentException("해당 답변이 존재하지 않습니다.")
         );
 
-        Comment saved = commentRepository.save(new Comment(commentRequestDto.getContent()));
+        Comment saved = CommentRepository.save(new Comment(commentRequestDto.getContent()));
 
         return new CommentResponseDto(saved.getId(), saved.getContent());
     }
@@ -32,10 +32,10 @@ public class CommentService {
         answerRepository.findById(answerId).orElseThrow(
                 () -> new IllegalArgumentException("해당 답변이 존재하지 않습니다."));
 
-        Comment comment = commentRepository.findById(commentsId).orElseThrow(
+        Comment comment = CommentRepository.findById(commentsId).orElseThrow(
                 () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다"));
 
-        Comment save = commentRepository.save(comment);
+        Comment save = CommentRepository.save(comment);
         return new CommentResponseDto(save.getId(), save.getContent());
     }
 
@@ -43,15 +43,15 @@ public class CommentService {
         answerRepository.findById(answerId).orElseThrow(
                 () -> new IllegalArgumentException("해당 답변이 존재하지 않습니다."));
 
-        Comment comment = commentRepository.findById(commentsId).orElseThrow(
+        Comment comment = CommentRepository.findById(commentsId).orElseThrow(
                 () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다"));
 
-        commentRepository.deleteById(comment.getId());
+        CommentRepository.deleteById(comment.getId());
 
     }
 
     public List<CommentResponseDto> getListComment() {
-        List<Comment> commentAll = commentRepository.findAll();
+        List<Comment> commentAll = CommentRepository.findAll();
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
         for (Comment comment : commentAll) {
             commentResponseDtoList.add(new CommentResponseDto(comment.getId(), comment.getContent()));
