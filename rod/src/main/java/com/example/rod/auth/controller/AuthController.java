@@ -1,5 +1,6 @@
 package com.example.rod.auth.controller;
 
+import com.example.rod.auth.dto.SigninRequestDto;
 import com.example.rod.auth.dto.SignupRequestDto;
 import com.example.rod.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public void signUp(@RequestBody @Validated SignupRequestDto signupRequestDto){
-        authService.signUp(signRequestDto);
+        authService.signUp(signupRequestDto);
     }
 
     @PostMapping("/signin")

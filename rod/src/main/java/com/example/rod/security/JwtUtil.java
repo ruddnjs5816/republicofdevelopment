@@ -1,15 +1,17 @@
 package com.example.rod.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.example.rod.user.entity.RoleType;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jdk.dynalink.beans.StaticClass;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +29,7 @@ public class JwtUtil {
 
 
     private static final Long TOKEN_VALID_TIME = 1000L * 60 * 30; //토큰 유효시간
-    private long refreshTokenValidTime = 1000L * 60 * 60 * 24 * 7; //refresh 토큰 기한 7일
+    private static final Long REFRESHTOKEN_VALID_TIME = 1000L * 60 * 60 * 24 * 7; //refresh 토큰 기한 7일
     private static final String BEARER_PREFIX = "Bearer ";
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String AUTHORIZATION_KEY = "auth";
@@ -43,19 +45,18 @@ public class JwtUtil {
     @PostConstruct
     protected void init() {
         key = Keys.hmacShaKeyFor(Base64.getEncoder().encode(secretKey.getBytes()));
-
     }
 
     //토큰 생성
-    public String createToken(String user){
-        Claims claims = Jwts.claims().setSubject(id);
+    public String createToken(String username, RoleType role){
+        Claims claims = Jwts.claims().setSubject(username);
         Date now = new Date();
         return BEARER_PREFIX +
                 Jwts.builder()
                         .setClaims(claims)
                         .setIssuedAt(now) // 발급시간
-                        .setExpiration(new Date(now.getTime() + tokenValidTime))
-                        .signWith(SignatureAlgorithm.HS256, secretKey)
+                        .setExpiration(new Date(now.getTime() + TOKEN_VALID_TIME))
+                        .signWith(key, SignatureAlgorithm.HS256)
                         .compact();
     }
 
@@ -64,14 +65,33 @@ public class JwtUtil {
         Date now = new Date();
         return Jwts.builder()
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + refreshTokenValidTime))
-                .signWith(SignatureAlgorithm.HS256, "bdhan")
+                .setExpiration(new Date(now.getTime() + REFRESHTOKEN_VALID_TIME))
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    //토큰으로 인증객체(Authentication) 얻기
-    public Authentication getAuthentication(String token){
+    //토큰 검증
+    public boolean vaildateToken(String token) {
+        try{
+            Jwts.parserBuilder().setSigningKey(key).build()
+                    .parseClaimsJws(token).getBody();
+            return true;
+        } catch (ExpiredJwtException e){
+            log.error("토큰이 만료되었습니다.");
+        } catch (SecurityException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e){
+            log.error("Token Error!");
+        }
+        return false;
+    }
 
-        return null;
+    //토큰에서 사용자정보 가져오기
+    protected Claims getUserInfoFromToken(String token){
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+    }
+
+    //토큰으로 인증객체(Authentication) 얻기
+    public Authentication takeAuthentication(String username){
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getAuthorities());
     }
 }
