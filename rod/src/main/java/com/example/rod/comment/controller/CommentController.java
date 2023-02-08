@@ -1,8 +1,9 @@
+/*
 package com.example.rod.comment.controller;
 
-import com.example.rod.comment.dto.commentRequestDto;
-import com.example.rod.comment.dto.commentResponseDto;
-import com.example.rod.comment.service.commentService;
+import com.example.rod.comment.dto.CommentRequestDto;
+import com.example.rod.comment.dto.CommentResponseDto;
+import com.example.rod.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,21 +12,21 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/questions")
-public class commentController {
+public class CommentController {
 
-    private final commentService commentService;
+    private final CommentService commentService;
 
     // 댓글 작성
     @PostMapping("/answers/{answerId}/comments")
-    public commentResponseDto createComment
-                (@PathVariable Long answerId, @RequestBody commentRequestDto commentRequestDto) {
+    public CommentResponseDto createComment
+                (@PathVariable Long answerId, @RequestBody CommentRequestDto commentRequestDto) {
         return commentService.createComment(answerId, commentRequestDto);
     }
 
     // 댓글 수정
     @PutMapping("/answers/{answerId}/comments/{commentsId}")
-    public commentResponseDto updateComment
-              (@PathVariable Long answerId, @PathVariable Long commentsId, commentRequestDto commentRequestDto) {
+    public CommentResponseDto updateComment
+              (@PathVariable Long answerId, @PathVariable Long commentsId, CommentRequestDto commentRequestDto) {
         return commentService.updateComment(answerId, commentsId, commentRequestDto);
     }
 
@@ -37,8 +38,9 @@ public class commentController {
 
     // 내 댓글 리스트조회
     @GetMapping("/answers")
-    public List<commentResponseDto> getListComment() {
+    public List<CommentResponseDto> getListComment() {
         return commentService.getListComment();
     }
 
 }
+*/

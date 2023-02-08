@@ -1,19 +1,20 @@
+/*
 package com.example.rod.answer.service;
 
-import com.example.rod.answer.entity.AnswerEntity;
+import com.example.rod.answer.entity.Answer;
 import com.example.rod.answer.entity.LikeAnswer;
-import com.example.rod.answer.repository.answerRepository;
-import com.example.rod.answer.repository.likeAnswerRepository;
+import com.example.rod.answer.repository.AnswerRepository;
+import com.example.rod.answer.repository.LikeAnswerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class likeService {
+public class LikeService {
 
-    private final answerRepository answerrepository;
-    private final likeAnswerRepository likeAnswerRepository;
+    private final AnswerRepository answerrepository;
+    private final LikeAnswerRepository likeAnswerRepository;
 
     // 좋아요 유무 체크
     @Transactional(readOnly = true)
@@ -23,7 +24,7 @@ public class likeService {
 
     @Transactional
     public void likeAnswer(Long answerId) {
-        AnswerEntity answer = answerrepository.findById(answerId)
+        Answer answer = answerrepository.findById(answerId)
                 .orElseThrow(() -> new RuntimeException("찾는 답변이 없습니다."));
 
         // 좋아요 데이터가 없을 때
@@ -39,3 +40,4 @@ public class likeService {
         }
     }
 }
+*/

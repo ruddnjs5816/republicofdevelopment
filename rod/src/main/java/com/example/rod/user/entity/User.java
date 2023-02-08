@@ -1,11 +1,13 @@
 package com.example.rod.user.entity;
 
+import lombok.Getter;
 import org.apache.tomcat.jni.Address;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
+@Getter
 public class User {
 
     @Id

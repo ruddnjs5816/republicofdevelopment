@@ -1,4 +1,4 @@
 package com.example.rod.profile.entity;
 
-public class profileEntity {
+public class Profile {
 }

@@ -1,3 +1,4 @@
+/*
 package com.example.rod.answer.entity;
 
 import lombok.AllArgsConstructor;
@@ -18,9 +19,14 @@ public class LikeAnswer {
 
     @ManyToOne
     @JoinColumn(name = "ANSWERS_ID", nullable = false)
-    private AnswerEntity answer;
 
-    public LikeAnswer(AnswerEntity answer) {
+    private Answer answer;
+
+
+
+
+    public LikeAnswer(Answer answer) {
         this.answer = answer;
     }
 }
+*/

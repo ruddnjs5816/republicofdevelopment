@@ -1,6 +1,6 @@
 package com.example.rod.answer.dto;
 
-import com.example.rod.comment.dto.commentResponseDto;
+import com.example.rod.comment.dto.CommentResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,22 +10,22 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class answerResponseDto {
+public class AnswerResponseDto {
 
     private Long id;
     private String content;
 
     private int answerLike;
 
-    private List<commentResponseDto> commentResponseDtoList;
+    private List<CommentResponseDto> commentResponseDtoList;
 
-    public answerResponseDto(Long id, String content, int answerLike) {
+    public AnswerResponseDto(Long id, String content, int answerLike) {
         this.id = id;
         this.content = content;
         this.answerLike = answerLike;
     }
 
-    public answerResponseDto(String content) {
+    public AnswerResponseDto(String content) {
         this.content = content;
     }
 }

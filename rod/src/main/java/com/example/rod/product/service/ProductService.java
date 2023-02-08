@@ -1,3 +1,4 @@
+
 package com.example.rod.product.service;
 
 import com.example.rod.product.dto.productModifyRequestDto;
@@ -5,6 +6,7 @@ import com.example.rod.product.dto.productRequestDto;
 import com.example.rod.product.dto.productResponseDto;
 import com.example.rod.product.entity.productEntity;
 import com.example.rod.product.repository.productRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 @RequiredArgsConstructor
 public class productService {
@@ -26,10 +29,10 @@ public class productService {
     //상품 등록
     @Transactional
     public void createProduct(productRequestDto productRequestDto){
-
         productEntity product = productRepository.saveAndFlush(new productEntity(productRequestDto));
         productRepository.save(product);
     }
+
 
     //상품 수정
     @Transactional
@@ -80,3 +83,4 @@ public class productService {
         return product;
     }
 }
+
