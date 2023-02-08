@@ -1,7 +1,10 @@
 package com.example.rod.product.entity;
 
 import com.example.rod.product.dto.ProductRequestDto;
+import com.example.rod.product.dto.ProductModifyRequestDto;
 import lombok.Getter;
+
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,34 +13,31 @@ import javax.persistence.Id;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Product {
-
-    public Product(Long id, String productName, Long price, String productImage, String productDescription) {
-        this.id = id;
-        this.productName = productName;
-        this.price = price;
-        this.productImage = productImage;
-        this.productDescription = productDescription;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long productId;
     private String productName;
     private Long price;
     private String productImage;
     private String productDescription;
 
 
-    public Product(ProductRequestDto productRequestDto, Long userId) {
+    public Product(ProductRequestDto productRequestDto) {
         this.productName = productRequestDto.getProductName();
         this.price = productRequestDto.getPrice();
-        this.productDescription = productRequestDto.getProductDescription();
         this.productImage = productRequestDto.getProductImage();
+        this.productDescription = productRequestDto.getProductDescription();
 
     }
 
-    public Product() {
 
+    public void changeProductStatus(ProductModifyRequestDto productModifyRequestDto) {
+        this.productName = productModifyRequestDto.getProductName();
+        this.price = productModifyRequestDto.getPoint();
+        this.productImage = productModifyRequestDto.getProductImage();
+        this.productDescription = productModifyRequestDto.getProductDescription();
     }
 }
