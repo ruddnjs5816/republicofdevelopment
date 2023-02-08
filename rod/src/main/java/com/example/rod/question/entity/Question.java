@@ -31,6 +31,7 @@ public class Question extends TimeStamped {
     @JoinColumn(name="user_id")
     private User user;
 
+
 //    @OneToMany(fetch = FetchType.LAZY)
 //    private List<Answer> answers;
 

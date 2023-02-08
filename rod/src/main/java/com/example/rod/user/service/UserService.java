@@ -1,4 +1,4 @@
 package com.example.rod.user.service;
 
-public class userService {
+public class UserService {
 }

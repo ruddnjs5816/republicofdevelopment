@@ -1,9 +1,9 @@
 /*
 package com.example.rod.answer.controller;
 
-import com.example.rod.answer.dto.answerRequestDto;
-import com.example.rod.answer.dto.answerResponseDto;
-import com.example.rod.answer.service.answerService;
+import com.example.rod.answer.dto.AnswerRequestDto;
+import com.example.rod.answer.dto.AnswerResponseDto;
+import com.example.rod.answer.service.AnswerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,19 +12,19 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-public class answerController {
+public class AnswerController {
 
-    private final answerService answerservice;
+    private final AnswerService answerservice;
 
     // 답변 작성
     @PostMapping("/questions/answers")
-    public answerResponseDto createAnswer(@RequestBody answerRequestDto answerRequestDto) {
+    public AnswerResponseDto createAnswer(@RequestBody AnswerRequestDto answerRequestDto) {
         return answerservice.createAnswer(answerRequestDto);
     }
 
     // 답변 수정
     @PutMapping("/answers/{answerId}")
-    public answerResponseDto updateAnswer(@PathVariable Long answerId, answerRequestDto answerRequestDto) {
+    public AnswerResponseDto updateAnswer(@PathVariable Long answerId, AnswerRequestDto answerRequestDto) {
         return answerservice.updateAnswer(answerId, answerRequestDto);
     }
 
@@ -36,14 +36,14 @@ public class answerController {
 
     // 내 답변 리스트조회
     @GetMapping("/answers")
-    public List<answerResponseDto> getListAnswer() {
+    public List<AnswerResponseDto> getListAnswer() {
         return answerservice.getListAnswer();
     }
 
 
     // 내 답변 상세조회
     @GetMapping("/answers/{answerId}")
-    public answerResponseDto getAnswer(@PathVariable Long answerId) {
+    public AnswerResponseDto getAnswer(@PathVariable Long answerId) {
         return answerservice.getAnswer(answerId);
     }
 
