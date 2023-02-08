@@ -1,6 +1,6 @@
 package com.example.rod.answer.entity;
 
-import com.example.rod.comment.entity.commentEntity;
+import com.example.rod.comment.entity.Comment;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AnswerEntity {
+public class Answer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +23,10 @@ public class AnswerEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_id")
     @JsonIgnore
-    private commentEntity comment;
+    private Comment comment;
 
 
-    public AnswerEntity(String content) {
+    public Answer(String content) {
         this.content = content;
     }
 

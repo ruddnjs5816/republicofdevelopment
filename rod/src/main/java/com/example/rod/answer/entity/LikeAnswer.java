@@ -18,9 +18,9 @@ public class LikeAnswer {
 
     @ManyToOne
     @JoinColumn(name = "ANSWERS_ID", nullable = false)
-    private AnswerEntity answer;
+    private Answer answer;
 
-    public LikeAnswer(AnswerEntity answer) {
+    public LikeAnswer(Answer answer) {
         this.answer = answer;
     }
 }

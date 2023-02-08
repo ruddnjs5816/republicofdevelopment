@@ -1,5 +1,7 @@
 package com.example.rod.product.controller;
 
+import com.example.rod.product.dto.ProductRequestDto;
+import com.example.rod.product.service.ProductService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -7,10 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
-public class productController {
+public class ProductController {
 
-    private final ProductService productService;
+    private ProductService productService;
 
 
     //상품 등록

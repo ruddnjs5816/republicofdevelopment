@@ -1,6 +1,6 @@
 package com.example.rod.comment.entity;
 
-import com.example.rod.answer.entity.AnswerEntity;
+import com.example.rod.answer.entity.Answer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class commentEntity {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +21,10 @@ public class commentEntity {
 
     @ManyToOne
     @JoinColumn(name = "ANSWERS_ID")
-    private AnswerEntity answerEntity;
+    private Answer answerEntity;
 
 
-    public commentEntity(String content) {
+    public Comment(String content) {
         this.content = content;
     }
 }
