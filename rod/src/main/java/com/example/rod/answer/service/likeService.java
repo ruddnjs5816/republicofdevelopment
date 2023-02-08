@@ -1,3 +1,4 @@
+/*
 package com.example.rod.answer.service;
 
 import com.example.rod.answer.entity.AnswerEntity;
@@ -39,3 +40,4 @@ public class likeService {
         }
     }
 }
+*/

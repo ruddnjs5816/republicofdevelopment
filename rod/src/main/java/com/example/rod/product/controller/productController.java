@@ -1,3 +1,4 @@
+/*
 package com.example.rod.product.controller;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,3 +24,4 @@ public class productController {
     }
 
 }
+*/

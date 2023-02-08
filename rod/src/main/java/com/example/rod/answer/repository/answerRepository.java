@@ -1,3 +1,4 @@
+/*
 package com.example.rod.answer.repository;
 
 import com.example.rod.answer.entity.AnswerEntity;
@@ -10,3 +11,4 @@ public interface answerRepository extends JpaRepository<AnswerEntity, Long> {
     Optional<AnswerEntity> findById(Long answerId);
 
 }
+*/

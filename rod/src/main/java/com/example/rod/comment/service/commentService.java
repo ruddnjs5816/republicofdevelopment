@@ -1,3 +1,4 @@
+/*
 package com.example.rod.comment.service;
 
 import com.example.rod.answer.repository.answerRepository;
@@ -61,3 +62,4 @@ public class commentService {
 
 
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package com.example.rod.answer.repository;
 
 import com.example.rod.answer.entity.LikeAnswer;
@@ -12,3 +13,4 @@ public interface likeAnswerRepository extends JpaRepository<LikeAnswer, Long> {
     int countLikeAnswerById(Long answerId);
 
 }
+*/
