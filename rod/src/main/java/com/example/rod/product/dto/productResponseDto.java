@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class productResponseDto {
+    private Long productId;
     private String itemName;
     private Long point;
     private String itemImage;
@@ -12,6 +13,7 @@ public class productResponseDto {
 
 
     public productResponseDto(productEntity product) {
+        this.productId = product.getId();
         this.itemName = product.getItemName();
         this.point = product.getPoint();
         this.itemImage = product.getItemImage();

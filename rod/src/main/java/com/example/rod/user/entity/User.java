@@ -18,7 +18,7 @@ public class User {
 
     private String password;
 
-//    private Address address;
+    private Address address;
 
     private Long point;
 
@@ -32,7 +32,7 @@ public class User {
         this.username = username;
         this.name = name;
         this.password = password;
-//        this.address = address;
+        this.address = address;
         this.point = point;
         this.phonenumber = phonenumber;
         this.role = role;

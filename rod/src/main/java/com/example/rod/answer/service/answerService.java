@@ -60,7 +60,7 @@ public class answerService {
 
 
         for (commentEntity commentEntity : allComment) {
-            commentrepository.findById(commentEntity)
+//            commentrepository.findById(commentEntity)
         }
 
 

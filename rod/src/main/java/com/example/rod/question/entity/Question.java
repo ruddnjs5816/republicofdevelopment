@@ -1,8 +1,10 @@
 package com.example.rod.question.entity;
 
+//import com.example.rod.question.dto.QuestionRequest;
+//import com.example.rod.share.TimeStamped;
+//import com.example.rod.user.entity.userEntity;
 import com.example.rod.question.dto.QuestionRequest;
 import com.example.rod.share.TimeStamped;
-import com.example.rod.user.entity.userEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
