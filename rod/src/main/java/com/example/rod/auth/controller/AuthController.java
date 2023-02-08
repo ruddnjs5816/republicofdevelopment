@@ -1,3 +1,4 @@
+/*
 package com.example.rod.auth.controller;
 
 import com.example.rod.auth.dto.SigninRequestDto;
@@ -27,3 +28,4 @@ public class AuthController {
         authService.signIn(signinRequestDto);
     }
 }
+*/
