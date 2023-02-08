@@ -1,32 +1,42 @@
-
 package com.example.rod.comment.entity;
 
 import com.example.rod.answer.entity.Answer;
+import com.example.rod.share.TimeStamped;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Comment {
+public class Comment extends TimeStamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
     private String content;
 
     @ManyToOne
     @JoinColumn(name = "ANSWERS_ID")
-    private Answer answerEntity;
+    private Answer Answer;
 
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime modifiedAt;
 
     public Comment(String content) {
         this.content = content;
     }
-}
 
+}
