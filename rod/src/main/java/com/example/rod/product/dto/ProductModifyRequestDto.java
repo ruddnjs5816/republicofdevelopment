@@ -5,9 +5,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class productModifyRequestDto {
-    private String itemName;
+public class ProductModifyRequestDto {
+    private String productName;
     private Long point;
-    private String itemImage;
-    private String itemDescription;
+    private String productImage;
+    private String productDescription;
 }
