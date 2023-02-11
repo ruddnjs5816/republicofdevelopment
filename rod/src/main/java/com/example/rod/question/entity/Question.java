@@ -1,8 +1,6 @@
 package com.example.rod.question.entity;
 
-//import com.example.rod.question.dto.QuestionRequest;
-//import com.example.rod.share.TimeStamped;
-//import com.example.rod.user.entity.userEntity;
+import com.example.rod.answer.entity.Answer;
 import com.example.rod.question.dto.QuestionRequest;
 import com.example.rod.share.TimeStamped;
 
@@ -11,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -36,9 +35,8 @@ public class Question extends TimeStamped {
     private User user;
 
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Answer> answers;
-
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Answer> answers = new ArrayList<>();
 
     public Question(QuestionRequest questionRequest){
         this.title = questionRequest.getTitle();

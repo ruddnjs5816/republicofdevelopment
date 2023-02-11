@@ -1,7 +1,7 @@
 package com.example.rod.question.service;
 
 import com.example.rod.question.dto.*;
-import com.example.rod.user.entity.User;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -9,11 +9,11 @@ public interface QuestionService {
 
     void createQuestion(QuestionRequest questionRequest /*User user*/);
 
-    List<GetQuestionResponse> getMyQuestions(Long userId/*String userId*/); // By Security
+    GetQuestionsResponse getMyQuestions(Long userId, Pageable pageable, int page/*String userId*/); // By Security
 
-    List<GetQuestionResponse> getQuestions();
+    GetQuestionsResponse getQuestions(Pageable pageable, int page);
 
-    GetQuestionResponse getSpecificQuestion(Long questionId);
+    QuestionResponse getSpecificQuestion(Long questionId);
 
     void changeQuestionTitle(Long questionId, PatchQuestionTitleRequest patchQuestionTitleRequest);
 

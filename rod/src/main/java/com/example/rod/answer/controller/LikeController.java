@@ -1,4 +1,3 @@
-/*
 package com.example.rod.answer.controller;
 
 import com.example.rod.answer.service.LikeService;
@@ -13,12 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/likes")
 public class LikeController {
 
-    private final LikeService likeservice;
+    private final LikeService LikeService;
 
     @PostMapping("/answer/{answerId}")
     public void likeAnswer(@PathVariable Long answerId){
-       likeservice.likeAnswer(answerId);
+       LikeService.likeAnswer(answerId);
     }
-
 }
-*/

@@ -7,9 +7,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductRequestDto {
 
-    private final String productName;
-    private final Long price;
-    private final String productImage;
-    private final String productDescription;
+    public ProductRequestDto(String productName, Long price, String productImage, String productDescription) {
+        this.productName = productName;
+        this.price = price;
+        this.productImage = productImage;
+        this.productDescription = productDescription;
+    }
+
+    private String productName;
+    private Long price;
+    private String productImage;
+    private String productDescription;
+
 
 }
