@@ -2,12 +2,15 @@ package com.example.rod.answer.controller;
 
 import com.example.rod.answer.dto.AnswerRequestDto;
 import com.example.rod.answer.dto.AnswerResponseDto;
+import com.example.rod.answer.entity.Answer;
 import com.example.rod.answer.service.AnswerService;
+import com.example.rod.answer.service.AnswerServiceImpl;
 import com.example.rod.comment.dto.CommentResultDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,10 +20,11 @@ public class AnswerController {
 
     private final AnswerService answerService;
 
-    // 답변 작성
-    @PostMapping("/questions/answers")
-    public AnswerResponseDto createAnswer(@RequestPart@RequestBody AnswerRequestDto answerRequestDto) {
-        return answerService.createAnswer(answerRequestDto);
+    // 질문에 대한 답변 작성
+    @PostMapping("/questions/{questionId}/answers")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Answer createAnswer(@PathVariable Long questionId, @RequestBody AnswerRequestDto answerRequestDto) {
+        return answerService.createAnswer(questionId, answerRequestDto);
     }
 
     // 답변 수정

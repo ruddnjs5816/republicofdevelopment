@@ -1,13 +1,19 @@
 package com.example.rod.user.entity;
 
-import com.example.rod.address.Address;
+import com.example.rod.answer.entity.Answer;
+import com.example.rod.profile.entity.Profile;
+import com.example.rod.question.entity.Question;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
 @Getter
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -16,31 +22,25 @@ public class User {
 
     private String username;
 
-    private String name;
-
     private String password;
-
-
 
     private Long point;
 
-    private String phonenumber;
+    private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
-    private RoleType role;
+    private GradeType grade;
 
-    public User(Long userId, String username, String name, String password, Long point, String phonenumber, RoleType role) {
-        this.userId = userId;
-        this.username = username;
-        this.name = name;
-        this.password = password;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Question> questions = new ArrayList<>();
 
-        this.point = point;
-        this.phonenumber = phonenumber;
-        this.role = role;
-    }
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Answer> answers = new ArrayList<>();
 
-    public User() {
 
-    }
+    // 일대일 단방향 매핑 : 유저는 자기 아이디에 맞는 프로필을 소유한다.
+    @OneToOne
+    @JoinColumn(name="profile_id")
+    private Profile profile;
+
 }

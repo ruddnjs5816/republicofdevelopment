@@ -15,5 +15,4 @@ public class AnswerResultDto<T> {
 
     private T data;
 
-
 }

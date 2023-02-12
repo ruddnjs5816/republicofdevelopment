@@ -15,13 +15,12 @@ import java.util.List;
 @Builder
 public class AnswerResponseDto {
 
-    private Long id;
+//    private Long id;
     private String content;
     private int answerLike;
     private List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
-    public AnswerResponseDto(Long id, String content, int answerLike) {
-        this.id = id;
+    public AnswerResponseDto(String content, int answerLike) {
         this.content = content;
         this.answerLike = answerLike;
     }

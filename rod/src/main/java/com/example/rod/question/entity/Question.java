@@ -5,10 +5,12 @@ import com.example.rod.question.dto.QuestionRequest;
 import com.example.rod.share.TimeStamped;
 
 import com.example.rod.user.entity.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,20 +29,23 @@ public class Question extends TimeStamped {
     @Column
     private String content;
 
-//    private TagEnum tag; // 태그 테이블을 만들어야할까?, 만든다면, 태그 테이블 어떻게 운영?
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private User user;
 
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Answer> answers;
+    @JsonBackReference
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Answer> answers = new ArrayList<>();
 
+  /*  @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+    private List<QuestionTag> questionTags = new ArrayList<>();
 
+*/
     public Question(QuestionRequest questionRequest){
         this.title = questionRequest.getTitle();
         this.content = questionRequest.getContent();
+//        this.questionTags = questionRequest.getTagList();
     }
 
     public void editTitle(String title){

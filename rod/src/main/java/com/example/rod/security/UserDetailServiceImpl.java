@@ -1,3 +1,4 @@
+/*
 package com.example.rod.security;
 
 import com.example.rod.user.entity.User;
@@ -24,3 +25,4 @@ public class UserDetailServiceImpl implements UserDetailsService {
         return new UserDetailsImpl(user.getUserId(), user.getUsername(), user.getRole());
     }
 }
+*/
