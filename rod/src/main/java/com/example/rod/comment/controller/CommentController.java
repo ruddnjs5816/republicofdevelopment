@@ -3,7 +3,7 @@ package com.example.rod.comment.controller;
 import com.example.rod.comment.dto.CommentRequestDto;
 import com.example.rod.comment.dto.CommentResponseDto;
 import com.example.rod.comment.dto.CommentResultDto;
-import com.example.rod.comment.service.CommentService;
+import com.example.rod.comment.service.CommentServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,26 +12,26 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/questions")
 public class CommentController {
 
-    private final CommentService commentService;
+    private final CommentServiceImpl commentServiceImpl;
 
     // 댓글 작성
     @PostMapping("/answers/{answerId}/comments")
     public CommentResponseDto createComment
                 (@PathVariable Long answerId, @RequestBody CommentRequestDto commentRequestDto) {
-        return commentService.createComment(answerId, commentRequestDto);
+        return commentServiceImpl.createComment(answerId, commentRequestDto);
     }
 
     // 댓글 수정
     @PutMapping("/answers/{answerId}/comments/{commentsId}")
     public CommentResponseDto updateComment
               (@PathVariable Long answerId, @PathVariable Long commentsId, CommentRequestDto commentRequestDto) {
-        return commentService.updateComment(answerId, commentsId, commentRequestDto);
+        return commentServiceImpl.updateComment(answerId, commentsId, commentRequestDto);
     }
 
     // 댓글 삭제
     @DeleteMapping("/answers/{answerId}/comments/{commentsId}")
     public void deleteComment(@PathVariable Long answerId, @PathVariable Long commentsId) {
-        commentService.deleteComment(answerId, commentsId);
+        commentServiceImpl.deleteComment(answerId, commentsId);
     }
 
     // 내 댓글 리스트조회
@@ -41,7 +41,7 @@ public class CommentController {
 //    }
     @GetMapping("/answers")
     public CommentResultDto getListComment(@RequestParam int offset , @RequestParam int limit) {
-        return commentService.getListComment(offset, limit);
+        return commentServiceImpl.getListComment(offset, limit);
     }
 
 }

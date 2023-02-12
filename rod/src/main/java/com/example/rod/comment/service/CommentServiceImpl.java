@@ -1,5 +1,6 @@
 package com.example.rod.comment.service;
 
+import com.example.rod.answer.entity.Answer;
 import com.example.rod.answer.repository.AnswerRepository;
 import com.example.rod.comment.dto.CommentRequestDto;
 import com.example.rod.comment.dto.CommentResponseDto;
@@ -17,20 +18,19 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CommentService {
+public class CommentServiceImpl {
 
     private final AnswerRepository AnswerRepository;
     private final CommentRepository commentRepository;
 
     @Transactional
-    public CommentResponseDto createComment(Long answerId, CommentRequestDto commentRequestDto) {
-        AnswerRepository.findById(answerId).orElseThrow(
+    public void createComment(Long answerId, CommentRequestDto commentRequestDto) {
+        Answer answer = AnswerRepository.findById(answerId).orElseThrow(
                 () -> new IllegalArgumentException("해당 답변이 존재하지 않습니다.")
         );
-
-        Comment saved = commentRepository.save(new Comment(commentRequestDto.getContent()));
-
-        return new CommentResponseDto(saved.getId(), saved.getContent());
+        Comment comment = new Comment(commentRequestDto.getContent());
+        comment.setAnswer(answer);
+        commentRepository.save(comment);
     }
 
     @Transactional
