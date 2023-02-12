@@ -9,7 +9,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -27,7 +26,6 @@ public class QuestionController {
     }
 
     // 내 질문 리스트 조회 API
-    // 상황 : 유저가
     @GetMapping("/my-questions/{userId}")   // Security 없는 상황에서 테스트를 위해 임의로 userId를 PathVariable로 사용. -> 시큐리티 추가되면, URL & 서비스 레이어 수정 필요!
     @ResponseStatus(HttpStatus.OK)
     public GetQuestionsResponse getMyQuestions(@PathVariable Long userId,
@@ -56,7 +54,7 @@ public class QuestionController {
     @GetMapping("/questions/{questionId}")
     @ResponseStatus(HttpStatus.OK)
     public QuestionResponse getSpecificQuestion(@PathVariable Long questionId){
-        QuestionReponse questionResponse = questionService.getSpecificQuestion(questionId);
+        QuestionResponse questionResponse = questionService.getSpecificQuestion(questionId);
         return questionResponse;
     }
 

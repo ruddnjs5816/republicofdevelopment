@@ -3,6 +3,7 @@ package com.example.rod.answer.controller;
 import com.example.rod.answer.dto.AnswerRequestDto;
 import com.example.rod.answer.dto.AnswerResponseDto;
 import com.example.rod.answer.service.AnswerService;
+import com.example.rod.answer.service.AnswerServiceImpl;
 import com.example.rod.comment.dto.CommentResultDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +19,9 @@ public class AnswerController {
     private final AnswerService answerService;
 
     // 답변 작성
-    @PostMapping("/questions/answers")
-    public AnswerResponseDto createAnswer(@RequestPart@RequestBody AnswerRequestDto answerRequestDto) {
-        return answerService.createAnswer(answerRequestDto);
+    @PostMapping("/questions/{questionId}/answers")
+    public AnswerResponseDto createAnswer(@PathVariable Long questionId, @RequestBody AnswerRequestDto answerRequestDto) {
+        return answerService.createAnswer(questionId, answerRequestDto);
     }
 
     // 답변 수정
@@ -32,7 +33,7 @@ public class AnswerController {
     // 답변 삭제
     @DeleteMapping("/answers/{answerId}")
     public void deleteAnswer(@PathVariable Long answerId) {
-        answerService.deleteAnswer(answerId);
+        answerServiceImpl.deleteAnswer(answerId);
     }
 
     @GetMapping("/answers")

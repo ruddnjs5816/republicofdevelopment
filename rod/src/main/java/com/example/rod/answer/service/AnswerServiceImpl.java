@@ -19,7 +19,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class AnswerService {
+public class AnswerServiceImpl implements AnswerService {
 
     private final AnswerRepository AnswerRepository;
     private final CommentRepository commentRepository;
@@ -29,18 +29,14 @@ public class AnswerService {
         Answer Answer1 = new Answer(answerRequestDto.getContent());
         Answer saved = AnswerRepository.save(Answer1);
         return new AnswerResponseDto(saved.getId(), saved.getContent(), Answer1.getLikes());
-    }
 
-//    @Transactional
-//    public AnswerResponseDto createAnswer(AnswerRequestDto answerRequestDto) {
-//        String originalFileName = file.getOriginalFilename();
-//        File upload = new File(upladFolder, datePath);
-//        upload.mkdirs()
-//
-//        Answer Answer1 = new Answer(answerRequestDto.getContent());
-//        Answer saved = AnswerRepository.save(Answer1);
-//        return new AnswerResponseDto(saved.getId(), saved.getContent(), Answer1.getLikes());
-//    }
+        /*
+            Question과 연관되게 API를 수정해야함.
+
+        */
+
+
+    }
 
 
     @Transactional
@@ -68,30 +64,7 @@ public class AnswerService {
         return new AnswerResponseDto(Answer.getId(), Answer.getContent(), Answer.getLikes());
     }
 
-    // 내 답변 리스트 조회
-//    public List<AnswerResponseDto> getListAnswer() {
-//        List<Answer> allAnswer = AnswerRepository.findAll();
-//        List<AnswerResponseDto> answerResponseDtoList = new ArrayList<>();
-//
-//        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
-//        List<Comment> allComment = commentRepository.findAll();
-//
-//        for (Comment Comment : allComment) {
-//            commentResponseDtoList.add(new CommentResponseDto(Comment.getId(), Comment.getContent()));
-//        }
-//
-//        for (Answer Answer : allAnswer) {
-//            AnswerResponseDto responseDto = AnswerResponseDto.builder()
-//                    .id(Answer.getAnswerId())
-//                    .content(Answer.getContent())
-//                    .answerLike(Answer.getLikes())
-//                    .commentResponseDtoList(commentResponseDtoList)
-//                    .build();
-//            answerResponseDtoList.add(responseDto);
-//        }
-//        return answerResponseDtoList;
-//
-//    }
+
     @Transactional(readOnly = true)
     public CommentResultDto getListAnswer(Pageable pageable, int page) {
         List<AnswerResponseDto> resultList = new ArrayList<>();
