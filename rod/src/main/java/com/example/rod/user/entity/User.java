@@ -1,13 +1,18 @@
 package com.example.rod.user.entity;
 
-import com.example.rod.address.Address;
+import com.example.rod.answer.entity.Answer;
+import com.example.rod.question.entity.Question;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
 @Getter
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -16,31 +21,19 @@ public class User {
 
     private String username;
 
-    private String name;
-
     private String password;
-
-
 
     private Long point;
 
-    private String phonenumber;
+    private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
-    private RoleType role;
+    private GradeType role;
 
-    public User(Long userId, String username, String name, String password, Long point, String phonenumber, RoleType role) {
-        this.userId = userId;
-        this.username = username;
-        this.name = name;
-        this.password = password;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Question> questions = new ArrayList<>();
 
-        this.point = point;
-        this.phonenumber = phonenumber;
-        this.role = role;
-    }
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Answer> answers = new ArrayList<>();
 
-    public User() {
-
-    }
 }

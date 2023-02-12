@@ -30,8 +30,8 @@ public class Answer extends TimeStamped {
     @Column
     private int likes;
 
-    private String originalFileName;
-    private String savedFileName;
+//    private String originalFileName;
+//    private String savedFileName;
 
     @OneToMany(mappedBy = "Answer", cascade = CascadeType.ALL)
     @OrderBy("createdAt DESC")
