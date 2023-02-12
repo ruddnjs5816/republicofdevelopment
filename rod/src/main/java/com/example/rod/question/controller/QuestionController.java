@@ -25,6 +25,7 @@ public class QuestionController {
         questionService.createQuestion(questionRequest /* , userDetails.getUser() */);
     }
 
+
     // 내 질문 리스트 조회 API
     @GetMapping("/my-questions/{userId}")   // Security 없는 상황에서 테스트를 위해 임의로 userId를 PathVariable로 사용. -> 시큐리티 추가되면, URL & 서비스 레이어 수정 필요!
     @ResponseStatus(HttpStatus.OK)
@@ -39,7 +40,7 @@ public class QuestionController {
         return myQuestionList;
     }
 
-    // 모든 질문 리스트 조회 API
+    // 모든 질문 리스트 조회 API : 질문 제목 / 내용만 가져오는 API.
     @GetMapping("/questions")
     @ResponseStatus(HttpStatus.OK)
     public GetQuestionsResponse getQuestions(
@@ -50,11 +51,13 @@ public class QuestionController {
         return questionResponseList;
     }
 
+
+
     // 세부 질문 조회 API
     @GetMapping("/questions/{questionId}")
     @ResponseStatus(HttpStatus.OK)
-    public QuestionResponse getSpecificQuestion(@PathVariable Long questionId){
-        QuestionResponse questionResponse = questionService.getSpecificQuestion(questionId);
+    public QuestionWithAnswersResponse getSpecificQuestion(@PathVariable Long questionId){
+        QuestionWithAnswersResponse questionResponse = questionService.getSpecificQuestion(questionId);
         return questionResponse;
     }
 

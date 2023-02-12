@@ -13,7 +13,7 @@ public interface QuestionService {
 
     GetQuestionsResponse getQuestions(Pageable pageable, int page);
 
-    QuestionResponse getSpecificQuestion(Long questionId);
+    QuestionWithAnswersResponse  getSpecificQuestion(Long questionId);
 
     void changeQuestionTitle(Long questionId, PatchQuestionTitleRequest patchQuestionTitleRequest);
 

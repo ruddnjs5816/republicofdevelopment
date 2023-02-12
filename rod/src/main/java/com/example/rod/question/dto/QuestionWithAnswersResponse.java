@@ -4,17 +4,19 @@ import com.example.rod.answer.entity.Answer;
 import com.example.rod.question.entity.Question;
 import lombok.Getter;
 
+import java.util.List;
 
 @Getter
-public class QuestionResponse {
+public class QuestionWithAnswersResponse {
 
     private String title;
     private String content;
+    private List<Answer> answers;
 
-
-    public QuestionResponse(Question question) {
+    public QuestionWithAnswersResponse(Question question) {
         this.title = question.getTitle();
         this.content = question.getContent();
+        this.answers = question.getAnswers();
     }
 
 }

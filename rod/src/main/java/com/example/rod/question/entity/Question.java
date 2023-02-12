@@ -5,6 +5,7 @@ import com.example.rod.question.dto.QuestionRequest;
 import com.example.rod.share.TimeStamped;
 
 import com.example.rod.user.entity.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,17 +34,18 @@ public class Question extends TimeStamped {
     private User user;
 
 
+    @JsonBackReference
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Answer> answers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+  /*  @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
     private List<QuestionTag> questionTags = new ArrayList<>();
 
-
+*/
     public Question(QuestionRequest questionRequest){
         this.title = questionRequest.getTitle();
         this.content = questionRequest.getContent();
-        this.questionTags = questionRequest.getTagList();
+//        this.questionTags = questionRequest.getTagList();
     }
 
     public void editTitle(String title){

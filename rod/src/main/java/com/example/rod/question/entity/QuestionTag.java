@@ -1,3 +1,4 @@
+/*
 package com.example.rod.question.entity;
 
 import javax.persistence.*;
@@ -19,3 +20,4 @@ public class QuestionTag {
 
 
 }
+*/

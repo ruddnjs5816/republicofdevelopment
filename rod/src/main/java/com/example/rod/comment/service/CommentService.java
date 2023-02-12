@@ -57,14 +57,6 @@ public class CommentService {
 
     }
 
-//    public List<CommentResponseDto> getListComment() {
-//        List<Comment> commentAll = commentRepository.findAll();
-//        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
-//        for (Comment comment : commentAll) {
-//            commentResponseDtoList.add(new CommentResponseDto(comment.getId(), comment.getContent()));
-//        }
-//        return commentResponseDtoList;
-//    }
 
     @Transactional(readOnly = true)
     public CommentResultDto getListComment(int offset, int limit) {

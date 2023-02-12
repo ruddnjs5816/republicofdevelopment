@@ -14,9 +14,9 @@ public class Tag {
     private String tagName;
 
 
-    @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   /* @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "questionTag_Id")
-    private List<QuestionTag> questionTags;
+    private List<QuestionTag> questionTags;*/
 
 
 }

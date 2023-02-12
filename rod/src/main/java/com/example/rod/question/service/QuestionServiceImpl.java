@@ -49,7 +49,6 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public GetQuestionsResponse getQuestions(Pageable pageable, int page){
-//        List<Question> questionList = questionRepository.findAll();
 
         Page<Question> questionList = questionRepository.findAll(pageable.withPage(page-1));
 
@@ -66,10 +65,10 @@ public class QuestionServiceImpl implements QuestionService {
 
 
     @Override
-    public QuestionResponse getSpecificQuestion(Long questionId) {
+    public QuestionWithAnswersResponse getSpecificQuestion(Long questionId) {
         Question question = questionRepository.findById(questionId).orElseThrow
                 (() -> new IllegalArgumentException("해당 아이디의 질문이 없습니다."));
-        return new QuestionResponse(question);
+        return new QuestionWithAnswersResponse(question);
     }
 
     @Override
