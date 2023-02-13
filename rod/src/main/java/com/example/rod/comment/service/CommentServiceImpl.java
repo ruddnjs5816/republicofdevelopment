@@ -24,13 +24,14 @@ public class CommentServiceImpl {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public void createComment(Long answerId, CommentRequestDto commentRequestDto) {
+    public CommentResponseDto createComment(Long answerId, CommentRequestDto commentRequestDto) {
         Answer answer = AnswerRepository.findById(answerId).orElseThrow(
                 () -> new IllegalArgumentException("해당 답변이 존재하지 않습니다.")
         );
         Comment comment = new Comment(commentRequestDto.getContent());
         comment.setAnswer(answer);
         commentRepository.save(comment);
+        return null;
     }
 
     @Transactional

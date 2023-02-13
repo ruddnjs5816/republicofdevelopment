@@ -1,4 +1,4 @@
-/*
+
 package com.example.rod.security;
 
 import com.example.rod.user.entity.User;
@@ -22,7 +22,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
-        return new UserDetailsImpl(user.getUserId(), user.getUsername(), user.getRole());
+        return new UserDetailsImpl(user.getUserId(), user.getUsername(), user.getGrade());
     }
+
+
 }
-*/

@@ -11,4 +11,7 @@ public class SignupRequestDto {
 
     @Pattern(regexp = "[a-zA-Z0-9]{8,15}", message = "비밀번호는 알파벳 대소문자, 숫자로 구성한 8~15자 사이로 입력해주세요.")
     private String password;
+
+    private String name;
+    private String phonenumber;
 }

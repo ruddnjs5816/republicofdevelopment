@@ -1,21 +1,19 @@
-/*
+
 
 package com.example.rod.security;
 
-import com.example.rod.user.entity.RoleType;
+import com.example.rod.user.entity.GradeType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import jdk.dynalink.beans.StaticClass;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -23,6 +21,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
@@ -49,16 +48,19 @@ public class JwtUtil {
 
     @PostConstruct
     protected void init() {
-        key = Keys.hmacShaKeyFor(Base64.getEncoder().encode(secretKey.getBytes()));
+//        key = Keys.hmacShaKeyFor(Base64.getEncoder().encode(secretKey.getBytes()));
+        byte[] bytes = Base64.getDecoder().decode(secretKey);
+        key = Keys.hmacShaKeyFor(bytes);
     }
 
     //토큰 생성
-    public String createToken(String username, RoleType role){
-        Claims claims = Jwts.claims().setSubject(username);
+    public String createToken(String username, GradeType role){
+//        Claims claims = Jwts.claims().setSubject(username);
         Date now = new Date();
         return BEARER_PREFIX +
                 Jwts.builder()
-                        .setClaims(claims)
+                        .setSubject(username)
+                        .claim(AUTHORIZATION_KEY, role)
                         .setIssuedAt(now) // 발급시간
                         .setExpiration(new Date(now.getTime() + TOKEN_VALID_TIME))
                         .signWith(key, SignatureAlgorithm.HS256)
@@ -108,6 +110,17 @@ public class JwtUtil {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getAuthorities());
     }
+
+
+    public void jwtExceptionHandler(HttpServletResponse response, String msg, int statusCode) {
+        response.setStatus(statusCode);
+        response.setContentType("application/json");
+        try {
+            String json = new ObjectMapper().writeValueAsString(new SecurityExceptionResponse(statusCode, msg));
+            response.getWriter().write(json);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+    }
 }
 
-*/

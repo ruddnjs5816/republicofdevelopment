@@ -1,5 +1,6 @@
 package com.example.rod.answer.entity;
 
+//import com.example.rod.comment.entity.Comment;
 import com.example.rod.comment.entity.Comment;
 import com.example.rod.question.entity.Question;
 import com.example.rod.share.TimeStamped;
@@ -33,7 +34,8 @@ public class Answer extends TimeStamped {
 //    private String originalFileName;
 //    private String savedFileName;
 
-    @OneToMany(mappedBy = "Answer", cascade = CascadeType.ALL)
+//    @OneToMany(mappedBy = "Answer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "answer", cascade = CascadeType.ALL)
     @OrderBy("createdAt DESC")
     private List<Comment> comments = new ArrayList<>();
 

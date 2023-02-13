@@ -1,4 +1,4 @@
-/*
+
 package com.example.rod.security;
 
 import lombok.RequiredArgsConstructor;
@@ -12,6 +12,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.writers.frameoptions.WhiteListedAllowFromStrategy;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
+
+import java.util.Arrays;
 
 @EnableWebSecurity
 @Configuration
@@ -31,9 +35,10 @@ public class SecurityConfig {
         http.headers().frameOptions().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeHttpRequests()
+                .antMatchers("/").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated()
+                .antMatchers("/auth/**").permitAll()
                 .and()
                 .addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
@@ -41,4 +46,4 @@ public class SecurityConfig {
     }
 
 }
-*/
+

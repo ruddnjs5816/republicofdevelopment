@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+//@Builder
 public class AnswerResponseDto {
 
 //    private Long id;
