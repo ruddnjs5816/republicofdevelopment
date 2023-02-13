@@ -1,8 +1,10 @@
 package com.example.rod.answer.entity;
 
 import com.example.rod.comment.entity.Comment;
+import com.example.rod.question.entity.Question;
 import com.example.rod.share.TimeStamped;
 import com.example.rod.user.entity.User;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,8 +30,8 @@ public class Answer extends TimeStamped {
     @Column
     private int likes;
 
-    private String originalFileName;
-    private String savedFileName;
+//    private String originalFileName;
+//    private String savedFileName;
 
     @OneToMany(mappedBy = "Answer", cascade = CascadeType.ALL)
     @OrderBy("createdAt DESC")
@@ -39,16 +41,21 @@ public class Answer extends TimeStamped {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
 
-    @LastModifiedDate
-    private LocalDateTime modifiedAt;
+    @JsonManagedReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_id")
+    private Question question;
+
 
     public Answer(String content) {
         this.content = content;
     }
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
+
 
     public void update(String content){
         this.content= content;

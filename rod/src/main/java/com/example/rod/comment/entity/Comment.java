@@ -25,18 +25,17 @@ public class Comment extends TimeStamped {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "ANSWERS_ID")
-    private Answer Answer;
+    @JoinColumn(name = "answer_id")
+    private Answer answer;
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime modifiedAt;
 
     public Comment(String content) {
         this.content = content;
     }
+
+    public void setAnswer(Answer answer){
+        this.answer = answer;
+    }
+
 
 }

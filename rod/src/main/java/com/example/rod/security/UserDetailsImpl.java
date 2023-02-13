@@ -1,3 +1,4 @@
+/*
 package com.example.rod.security;
 
 import com.example.rod.user.entity.RoleType;
@@ -75,3 +76,4 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 }
+*/

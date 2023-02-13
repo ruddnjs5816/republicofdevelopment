@@ -1,10 +1,7 @@
 package com.example.rod.product.repository;
 
-<<<<<<< HEAD
-import com.example.rod.product.entity.productEntity;
-=======
+
 import com.example.rod.product.entity.Product;
->>>>>>> 1c95e1207484f7ea4693a8507f3b9111920e712f
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

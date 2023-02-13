@@ -6,11 +6,13 @@ import com.example.rod.question.repository.QuestionRepository;
 import com.example.rod.user.entity.User;
 import com.example.rod.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -28,38 +30,44 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<GetQuestionResponse> getMyQuestions(Long userId) {
+    public GetQuestionsResponse getMyQuestions(Long userId, Pageable pageable, int page) {
 
         User user = userRepository.findById(userId).orElseThrow
                 (()-> new IllegalArgumentException("해당 아이디의 유저가 없습니다."));
 
-        List<Question> questionList = questionRepository.findByUser(user);
+        Page<Question> questionList = questionRepository.findAllByUser(user, pageable.withPage(page-1));
 
-        // Question 객체 리스트를 DTO 리스트로 변환
-        List<GetQuestionResponse> getMyQuestionResponseList = questionList.stream()
-                .map(GetQuestionResponse::new)
-                .collect(Collectors.toList());
+        List<QuestionResponse> questionResponseList = new ArrayList<>();
 
-        return getMyQuestionResponseList;
+        for (Question question : questionList) {
+            questionResponseList.add(new QuestionResponse(question));
+        }
+
+        return new GetQuestionsResponse(page, questionResponseList);
     }
 
     @Override
-    public List<GetQuestionResponse> getQuestions(){
-        List<Question> questionList = questionRepository.findAll();
+    public GetQuestionsResponse getQuestions(Pageable pageable, int page){
 
-        List<GetQuestionResponse> getQuestionResponseList = questionList.stream()
-                .map(GetQuestionResponse::new)
-                .collect(Collectors.toList());
+        Page<Question> questionList = questionRepository.findAll(pageable.withPage(page-1));
 
-        return getQuestionResponseList;
+
+        List<QuestionResponse> questionResponseList = new ArrayList<>();
+
+
+        for (Question question : questionList) {
+            questionResponseList.add(new QuestionResponse(question));
+        }
+
+        return new GetQuestionsResponse(page, questionResponseList);
     }
 
 
     @Override
-    public GetQuestionResponse getSpecificQuestion(Long questionId) {
+    public QuestionWithAnswersResponse getSpecificQuestion(Long questionId) {
         Question question = questionRepository.findById(questionId).orElseThrow
                 (() -> new IllegalArgumentException("해당 아이디의 질문이 없습니다."));
-        return new GetQuestionResponse(question);
+        return new QuestionWithAnswersResponse(question);
     }
 
     @Override

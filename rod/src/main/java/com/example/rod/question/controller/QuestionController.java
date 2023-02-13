@@ -3,10 +3,12 @@ package com.example.rod.question.controller;
 import com.example.rod.question.dto.*;
 import com.example.rod.question.service.QuestionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -23,27 +25,40 @@ public class QuestionController {
         questionService.createQuestion(questionRequest /* , userDetails.getUser() */);
     }
 
+
     // 내 질문 리스트 조회 API
     @GetMapping("/my-questions/{userId}")   // Security 없는 상황에서 테스트를 위해 임의로 userId를 PathVariable로 사용. -> 시큐리티 추가되면, URL & 서비스 레이어 수정 필요!
     @ResponseStatus(HttpStatus.OK)
-    public List<GetQuestionResponse> getMyQuestions(@PathVariable Long userId /* @AuthenticationPrincipal userDetailsImpl userDetails */) {
-        List<GetQuestionResponse> myQuestionList = questionService.getMyQuestions(userId);/* String userId );*/ // Security 가 해줄거야..
+    public GetQuestionsResponse getMyQuestions(@PathVariable Long userId,
+                                                 @RequestParam(defaultValue = "1") int page,
+                                                 @PageableDefault(size = 10,
+                                                 sort = "questionId",
+                                                 direction = Sort.Direction.ASC) Pageable pageable
+                                                /* @AuthenticationPrincipal userDetailsImpl userDetails */) {
+        GetQuestionsResponse myQuestionList = questionService.getMyQuestions(userId, pageable, page);
+
         return myQuestionList;
     }
 
-    // 모든 질문 리스트 조회 API
+    // 모든 질문 리스트 조회 API : 질문 제목 / 내용만 가져오는 API.
     @GetMapping("/questions")
     @ResponseStatus(HttpStatus.OK)
-    public List<GetQuestionResponse> getQuestions(/* @AuthenticationPrincipal userDetailsImpl userDetails */){
-        List<GetQuestionResponse> questionResponseList = questionService.getQuestions();    //  추후 페이징 처리 해줘야 함.
+    public GetQuestionsResponse getQuestions(
+            @RequestParam(defaultValue = "1") int page,
+            @PageableDefault(size = 10, sort = "questionId", direction = Sort.Direction.ASC) Pageable pageable/* @AuthenticationPrincipal userDetailsImpl userDetails */) {
+
+        GetQuestionsResponse questionResponseList = questionService.getQuestions(pageable, page);    //  추후 페이징 처리 해줘야 함.
         return questionResponseList;
     }
 
+
+
+    // 세부 질문 조회 API
     @GetMapping("/questions/{questionId}")
     @ResponseStatus(HttpStatus.OK)
-    public GetQuestionResponse getSpecificQuestion(@PathVariable Long questionId){
-        GetQuestionResponse getQuestionResponse = questionService.getSpecificQuestion(questionId);
-        return getQuestionResponse;
+    public QuestionWithAnswersResponse getSpecificQuestion(@PathVariable Long questionId){
+        QuestionWithAnswersResponse questionResponse = questionService.getSpecificQuestion(questionId);
+        return questionResponse;
     }
 
 
@@ -70,11 +85,4 @@ public class QuestionController {
     public void deleteQuestion(@PathVariable Long questionId/* @AuthenticationPrincipal userDetailsImpl userDetails */){
         questionService.deleteQuestion(questionId);
     }
-
-
-
-
-
-
-
 }

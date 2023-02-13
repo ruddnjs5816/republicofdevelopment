@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductModifyRequestDto {
     private String productName;
-    private Long point;
+    private Long price;
     private String productImage;
     private String productDescription;
 }
