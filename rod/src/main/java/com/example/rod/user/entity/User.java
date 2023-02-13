@@ -1,8 +1,8 @@
 package com.example.rod.user.entity;
 
 import com.example.rod.answer.entity.Answer;
-import com.example.rod.profile.entity.Profile;
 import com.example.rod.question.entity.Question;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,11 +22,22 @@ public class User {
 
     private String username;
 
+    private String name;
+
     private String password;
 
     private Long point;
 
-    private String phoneNumber;
+    public User(String username, String name, String password, String phonenumber) {
+        this.username = username;
+        this.name = name;
+        this.password = password;
+        this.phonenumber = phonenumber;
+    }
+
+    private String phonenumber;
+
+    private Long rating;
 
     @Enumerated(EnumType.STRING)
     private GradeType grade;
@@ -37,10 +48,11 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Answer> answers = new ArrayList<>();
 
+    public void changeRole(String role){
+        this.grade = GradeType.valueOf(role);
+    }
 
-    // 일대일 단방향 매핑 : 유저는 자기 아이디에 맞는 프로필을 소유한다.
-    @OneToOne
-    @JoinColumn(name="profile_id")
-    private Profile profile;
+    public User(String name, String password, String phonenumber){
 
+    }
 }
