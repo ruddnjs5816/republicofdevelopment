@@ -2,6 +2,7 @@ package com.example.rod.answer.service;
 
 import com.example.rod.answer.dto.AnswerRequestDto;
 import com.example.rod.answer.dto.AnswerResponseDto;
+import com.example.rod.answer.dto.AnswerResultDto;
 import com.example.rod.answer.entity.Answer;
 import com.example.rod.answer.repository.AnswerRepository;
 import com.example.rod.comment.dto.CommentResponseDto;
@@ -67,25 +68,25 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
 
-    @Transactional(readOnly = true)
-    public CommentResultDto getListAnswer(Pageable pageable, int page) {
-        List<AnswerResponseDto> resultList = new ArrayList<>();
-        Page<Answer> answers = answerRepository.findAll(pageable.withPage(page - 1));
-        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
-        List<Comment> allComment = commentRepository.findAll();
-        for (Comment Comment : allComment) {
-            commentResponseDtoList.add(new CommentResponseDto(Comment.getId(), Comment.getContent()));
-        }
-
-        for (Answer answer1 : answers) {
-            AnswerResponseDto answerResponseDto =
-                    new AnswerResponseDto(answer1.getContent(), answer1.getLikes(), commentResponseDtoList);
-            resultList.add(answerResponseDto);
-        }
-
-        CommentResultDto resultDto = new CommentResultDto(page, resultList);
-        return resultDto;
-
-    }
+//    @Transactional(readOnly = true)
+//    public AnswerResultDto getListAnswer(Pageable pageable, int page) {
+//        List<AnswerResponseDto> resultList = new ArrayList<>();
+//        Page<Answer> answers = answerRepository.findAll(pageable.withPage(page - 1));
+//        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+//        List<Comment> allComment = commentRepository.findAll();
+//        for (Comment Comment : allComment) {
+//            commentResponseDtoList.add(new CommentResponseDto(Comment.getId(), Comment.getContent()));
+//        }
+//
+//        for (Answer answer1 : answers) {
+//            AnswerResponseDto answerResponseDto =
+//                    new AnswerResponseDto(answer1.getContent(), answer1.getLikes(), commentResponseDtoList);
+//            resultList.add(answerResponseDto);
+//        }
+//
+//        AnswerResultDto resultDto = new AnswerResultDto(page, resultList);
+//        return resultDto;
+//
+//    }
 }
 

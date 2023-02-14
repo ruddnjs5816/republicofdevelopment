@@ -17,7 +17,12 @@ public class RatingService {
     public void changeGrade(Long id, RatingDto ratingDto) {
         User user =  userRepository.findById(id)
                 .orElseThrow(() -> new  IllegalArgumentException("찾는 유저가 없습니다."));
-//        user.changeRole(ratingDto.getRole());
+//        user.changeGrade(ratingDto.getRole());
         userRepository.save(user);
+    }
+
+    public void getGrade(Integer rating) {
+        //rating에 해당하는 등급 여기서 리턴 받고
+        //받은 등급으로 changeGrade 실행
     }
 }

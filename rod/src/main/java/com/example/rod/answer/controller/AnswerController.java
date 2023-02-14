@@ -39,12 +39,12 @@ public class AnswerController {
         answerService.deleteAnswer(answerId);
     }
 
-    @GetMapping("/answers")
-    public CommentResultDto getListAnswer
-    (@RequestParam(defaultValue = "1") int page,
-      @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-        return answerService.getListAnswer(pageable, page);
-    }
+//    @GetMapping("/answers")
+//    public CommentResultDto getListAnswer
+//    (@RequestParam(defaultValue = "1") int page,
+//      @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+//        return answerService.getListAnswer(pageable, page);
+//    }
 
 
     // 내 답변 상세조회

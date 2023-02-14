@@ -8,6 +8,7 @@ import com.example.rod.user.entity.User;
 import com.example.rod.user.entity.UserGrade;
 import com.example.rod.user.entity.UserRole;
 import com.example.rod.user.repository.UserRepository;
+import jdk.jshell.spi.ExecutionControl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,18 +27,18 @@ public class AuthServiceImpl implements AuthService{
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+
     @Override
     @Transactional
     public void signUp(SignupRequestDto signupRequestDto) {
         String username = signupRequestDto.getUsername();
         String password = signupRequestDto.getPassword();
         String name = signupRequestDto.getName();
-        String phonenumber = signupRequestDto.getPhoneNumber();
+        String phoneNumber = signupRequestDto.getPhoneNumber();
         String encodedPassword = passwordEncoder.encode(password);
         Integer point = 0;
         Integer rating = 0;
         UserGrade userGrade = UserGrade.BRONZE;
-        UserRole userRole = UserRole.USER;
 
         // 회원 중복 확인
         Optional<User> found = userRepository.findByUsername(username);
@@ -46,16 +47,29 @@ public class AuthServiceImpl implements AuthService{
         }
 
         // 사용자 ROLE(권한) 확인
-        UserRole role = UserRole.USER;
+        UserRole userRole = UserRole.USER;
 
         if (signupRequestDto.isAdmin()) {
             if (!signupRequestDto.getAdminToken().equals(("${jwt.secret.key}"))) {
                 throw new CustomException(INVALID_TOKEN);
             }
-            role = UserRole.ADMIN;
+            userRole = UserRole.ADMIN;
         }
 
-        User user = signupRequestDto.toEntity(passwordEncoder.encode(signupRequestDto.getPassword()), role);
+//        User user = signupRequestDto.toEntity(passwordEncoder.encode(signupRequestDto.getPassword()), role);
+//        User user = new User(username, name, encodedPassword, point, phoneNumber, rating, userGrade, userRole);
+
+
+        User user = User.builder()
+                .username(username)
+                .name(name)
+                .role(userRole)
+                .phoneNumber(phoneNumber)
+                .grade(userGrade)
+                .point(point)
+                .rating(rating)
+                .password(encodedPassword)
+                .build();
         userRepository.save(user);
     }
 
@@ -78,6 +92,12 @@ public class AuthServiceImpl implements AuthService{
     private void validatePassword(String password, String encodedPassword){
         if(!passwordEncoder.matches(password, encodedPassword)){
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+    }
+
+    private void validateUsername(String username) {
+        if(userRepository.existsByUsername(username)) {
+            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
         }
     }
 }

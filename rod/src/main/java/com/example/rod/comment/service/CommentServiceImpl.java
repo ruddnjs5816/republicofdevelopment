@@ -1,5 +1,6 @@
 package com.example.rod.comment.service;
 
+import com.example.rod.answer.dto.AnswerResponseDto;
 import com.example.rod.answer.entity.Answer;
 import com.example.rod.answer.repository.AnswerRepository;
 import com.example.rod.comment.dto.CommentRequestDto;
@@ -59,16 +60,16 @@ public class CommentServiceImpl {
     }
 
 
-    @Transactional(readOnly = true)
-    public CommentResultDto getListComment(int offset, int limit) {
-        PageRequest pageRequest = PageRequest.of(offset, limit, Sort.by(Sort.Direction.ASC, "id"));
-        Page<Comment> page = commentRepository.findAll(pageRequest);
-        Page<CommentResponseDto> map = page.map(Comment -> new CommentResponseDto(Comment.getId(), Comment.getContent()));
-        List<CommentResponseDto> commentAll = map.getContent();
-        long totalCount = map.getTotalElements();
-
-        CommentResultDto resultDto = new CommentResultDto<>(offset,  commentAll);
-
-        return resultDto;
-    }
+//    @Transactional(readOnly = true)
+//    public CommentResultDto getListComment(int offset, int limit) {
+//        PageRequest pageRequest = PageRequest.of(offset, limit, Sort.by(Sort.Direction.ASC, "id"));
+//        Page<Comment> page = commentRepository.findAll(pageRequest);
+//        Page<CommentResponseDto> map = page.map(Comment -> new CommentResponseDto(Comment.getId(), Comment.getContent()));
+//        List<CommentResponseDto> commentAll = map.getContent();
+//        long totalCount = map.getTotalElements();
+//
+//        CommentResultDto resultDto = new CommentResultDto(offset,  commentAll);
+//
+//        return resultDto;
+//    }
 }

@@ -3,8 +3,10 @@ package com.example.rod.user.entity;
 
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -28,6 +30,8 @@ public class User {
 
     private String phoneNumber;
 
+    @Column(nullable = false)
+    @ColumnDefault("0")
     private Integer rating;
 
     @Enumerated(value = EnumType.STRING)
@@ -35,6 +39,7 @@ public class User {
 
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
+
 
     @Builder
     public User(String username, String name, String password, Integer point, String phoneNumber, Integer rating, UserGrade grade, UserRole role) {
@@ -55,9 +60,9 @@ public class User {
 //    private List<Answer> answers = new ArrayList<>();
 
 
-    public void changeRole(String role){
-        this.grade = UserGrade.valueOf(role);
-    }
+//    public void changeGrade(UserGrade){
+//        this.grade = UserGrade.valueOf(role);
+//    }
 
     public void update(String username, String name, String password, String phoneNumber) {
         this.username = username;
@@ -65,4 +70,11 @@ public class User {
         this.password = password;
         this.phoneNumber = phoneNumber;
     }
+
+    // 질문 등록, 답변 등록, 답변 채택 -> 실행
+
+    public void changeGrade(UserGrade newGrade){
+        this.grade = newGrade;
+    }
+
 }
