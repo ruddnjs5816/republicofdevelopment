@@ -1,10 +1,15 @@
-/*
-package com.example.rod.security;
 
+package com.example.rod.security.jwt;
+
+import com.example.rod.security.SecurityExceptionResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -29,7 +34,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED.value());
                 return;
             }
+            Claims info = jwtUtil.getUserInfoFromToken(token);
+            setAuthentication(info.getSubject());
         }
+        filterChain.doFilter(request, response);
     }
 
     public void jwtExceptionHandler(HttpServletResponse response, String msg, int statuscode){
@@ -42,5 +50,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             log.error(e.getMessage());
         }
     }
+
+    // 인증 객체 생성 및 등록
+    public void setAuthentication(String username) {
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        Authentication authentication = jwtUtil.takeAuthentication(username);
+        context.setAuthentication(authentication);
+
+        SecurityContextHolder.setContext(context);
+    }
+
+
 }
-*/
+

@@ -26,6 +26,7 @@ public class Comment extends TimeStamped {
 
     @ManyToOne
     @JoinColumn(name = "answer_id")
+
     private Answer answer;
 
 

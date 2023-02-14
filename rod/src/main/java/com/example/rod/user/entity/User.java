@@ -1,20 +1,16 @@
 package com.example.rod.user.entity;
 
-import com.example.rod.answer.entity.Answer;
-import com.example.rod.order.entity.Order;
-import com.example.rod.profile.entity.Profile;
-import com.example.rod.question.entity.Question;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
 @Getter
 @NoArgsConstructor
+@Setter
 public class User {
 
     @Id
@@ -23,29 +19,56 @@ public class User {
 
     private String username;
 
+    private String name;
     private String password;
 
-    private Long point;
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private Integer point;
 
     private String phoneNumber;
 
-    @Enumerated(EnumType.STRING)
-    private GradeType grade;
+    private Integer rating;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Question> questions = new ArrayList<>();
+    @Enumerated(value = EnumType.STRING)
+    private UserGrade grade;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Answer> answers = new ArrayList<>();
+    @Enumerated(value = EnumType.STRING)
+    private UserRole role;
 
+    @Builder
+    public User(String username, String name, String password, Integer point, String phoneNumber, Integer rating, UserGrade grade, UserRole role) {
+        this.username = username;
+        this.name = name;
+        this.password = password;
+        this.point = point;
+        this.phoneNumber = phoneNumber;
+        this.rating = rating;
+        this.grade = grade;
+        this.role = role;
+    }
 
-    // 일대일 단방향 매핑 : 유저는 자기 아이디에 맞는 프로필을 소유한다.
-    @OneToOne
-    @JoinColumn(name="profile_id")
-    private Profile profile;
+//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private List<Question> questions = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private List<Answer> answers = new ArrayList<>();
 
+<<<<<<< HEAD
 
     //order
     @OneToMany(mappedBy = "user")
     private List<Order> orders = new ArrayList<>();
+=======
+    public void changeRole(String role){
+        this.grade = UserGrade.valueOf(role);
+    }
+
+    public void update(String username, String name, String password, String phoneNumber) {
+        this.username = username;
+        this.name= name;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+    }
+>>>>>>> a6857d91e0b469f9e4a99219d92f95bbd5ef5f92
 }

@@ -1,8 +1,6 @@
 package com.example.rod.rating.service;
 
 import com.example.rod.rating.dto.RatingDto;
-import com.example.rod.rating.repository.RatingRepository;
-import com.example.rod.user.entity.RoleType;
 import com.example.rod.user.entity.User;
 import com.example.rod.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

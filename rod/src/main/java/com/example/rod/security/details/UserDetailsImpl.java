@@ -1,7 +1,8 @@
-/*
-package com.example.rod.security;
 
-import com.example.rod.user.entity.RoleType;
+package com.example.rod.security.details;
+
+import com.example.rod.user.entity.UserGrade;
+import com.example.rod.user.entity.UserGrade;
 import com.example.rod.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,13 +22,13 @@ public class UserDetailsImpl implements UserDetails {
 
     private Long userId;
     private String username;
-    private RoleType role;
+    private UserGrade role;
     private User user;
 
-    List<GrantedAuthority> authorities;
+    GrantedAuthority authority;
 
     @Builder
-    public UserDetailsImpl(Long userId, String username, RoleType role){
+    public UserDetailsImpl(Long userId, String username, UserGrade role){
         this.userId = userId;
         this.username = username;
         this.role = role;
@@ -37,10 +38,10 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-       RoleType role = user.getRole();
-       String Authority = role.getAuthority();
+        String role = user.getGrade().toString();
+//        String authority = getAuthority();
 
-        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(Authority);
+        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(role);
         Collection<GrantedAuthority> authorityCollection = new ArrayList<>();
         authorityCollection.add(simpleGrantedAuthority);
         return authorityCollection;
@@ -76,4 +77,3 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 }
-*/

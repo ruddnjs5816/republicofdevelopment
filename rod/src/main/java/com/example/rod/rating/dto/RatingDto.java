@@ -1,6 +1,6 @@
 package com.example.rod.rating.dto;
 
-import com.example.rod.user.entity.RoleType;
+import com.example.rod.user.entity.UserGrade;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RatingDto {
-    private RoleType role;
+    private UserGrade role;
 }
