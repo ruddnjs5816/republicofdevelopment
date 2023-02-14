@@ -2,9 +2,10 @@ package com.example.rod.user.entity;
 
 import com.example.rod.answer.entity.Answer;
 import com.example.rod.question.entity.Question;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 @Table(name = "users")
 @Getter
 @NoArgsConstructor
+@Setter
 public class User {
 
     @Id
@@ -50,9 +52,5 @@ public class User {
 
     public void changeRole(String role){
         this.grade = GradeType.valueOf(role);
-    }
-
-    public User(String name, String password, String phonenumber){
-
     }
 }

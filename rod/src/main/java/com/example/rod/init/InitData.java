@@ -25,8 +25,18 @@ public class InitData implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-//        User byeongdoo = new User("byeongdoo", "한병두", passwordEncoder.encode("pass"), 0L, "01045078143", GradeType.BRONZE);
-//
-//        userRepository.save(byeongdoo);
+        User byeongdoo = new User(
+//                "byeongdoo", "한병두", passwordEncoder.encode("pass"), 0L, "01045078143", GradeType.BRONZE
+        );
+        byeongdoo.setUserId(1L);
+        byeongdoo.setUsername("bdhan");
+        byeongdoo.setName("한병두");
+        byeongdoo.setPassword(passwordEncoder.encode("pass"));
+        byeongdoo.setRating(0L);
+        byeongdoo.setPoint(0L);
+        byeongdoo.setPhonenumber("010");
+        byeongdoo.setGrade(GradeType.BRONZE);
+
+        userRepository.save(byeongdoo);
     }
 }

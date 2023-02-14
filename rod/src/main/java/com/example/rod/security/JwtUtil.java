@@ -3,6 +3,7 @@
 package com.example.rod.security;
 
 import com.example.rod.user.entity.GradeType;
+import com.example.rod.user.entity.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -35,8 +36,8 @@ public class JwtUtil {
     private static final Long TOKEN_VALID_TIME = 1000L * 60 * 30; //토큰 유효시간
     private static final Long REFRESHTOKEN_VALID_TIME = 1000L * 60 * 60 * 24 * 7; //refresh 토큰 기한 7일
     private static final String BEARER_PREFIX = "Bearer ";
-    private static final String AUTHORIZATION_HEADER = "Authorization";
-    private static final String AUTHORIZATION_KEY = "auth";
+    public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String AUTHORIZATION_KEY = "auth";
 
     private final UserDetailsService userDetailsService;
 
@@ -54,13 +55,13 @@ public class JwtUtil {
     }
 
     //토큰 생성
-    public String createToken(String username, GradeType role){
+    public String createToken(String username, User user){
 //        Claims claims = Jwts.claims().setSubject(username);
         Date now = new Date();
         return BEARER_PREFIX +
                 Jwts.builder()
                         .setSubject(username)
-                        .claim(AUTHORIZATION_KEY, role)
+                        .claim(AUTHORIZATION_KEY, user)
                         .setIssuedAt(now) // 발급시간
                         .setExpiration(new Date(now.getTime() + TOKEN_VALID_TIME))
                         .signWith(key, SignatureAlgorithm.HS256)
