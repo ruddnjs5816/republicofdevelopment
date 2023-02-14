@@ -54,12 +54,7 @@ public class User {
 //    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //    private List<Answer> answers = new ArrayList<>();
 
-<<<<<<< HEAD
 
-    //order
-    @OneToMany(mappedBy = "user")
-    private List<Order> orders = new ArrayList<>();
-=======
     public void changeRole(String role){
         this.grade = UserGrade.valueOf(role);
     }
@@ -70,5 +65,4 @@ public class User {
         this.password = password;
         this.phoneNumber = phoneNumber;
     }
->>>>>>> a6857d91e0b469f9e4a99219d92f95bbd5ef5f92
 }

@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 //import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.ui.Model;
+
 
 
 import java.util.List;
@@ -24,21 +26,29 @@ public class ProductController {
     //상품 등록
     @PostMapping("/admin/shop")
     public void createProduct(
-            @RequestBody ProductRequestDto productRequestDto
+            @RequestBody ProductRequestDto productRequestDto,List<MultipartFile> productImgFileList, Model model
 //            @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
 
-        productService.createProduct(productRequestDto);
+        try {
+            productService.createProduct(productRequestDto, productImgFileList);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "상품 등록 중 에러가 발생하였습니다.");
+        }
     }
 
     //상품 수정
     @PutMapping("/admin/shop/{productId}")
     public void updateProduct(
             @PathVariable Long productId,
-            @RequestBody ProductModifyRequestDto productModifyRequestDto
+            @RequestBody ProductModifyRequestDto productModifyRequestDto,List<MultipartFile> productImgFileList, Model model
 //            @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        productService.updateProduct(productId,productModifyRequestDto);
+        try {
+            productService.updateProduct(productId,productModifyRequestDto, productImgFileList);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "상품 수정 중 에러가 발생하였습니다.");
+        }
     }
     //상품 삭제
     @DeleteMapping("/admin/shop/{productId}")
