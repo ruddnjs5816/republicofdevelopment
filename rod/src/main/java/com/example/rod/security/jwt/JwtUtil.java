@@ -41,6 +41,7 @@ public class JwtUtil {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String AUTHORIZATION_KEY = "auth";
 
+
     private final UserDetailsService userDetailsService;
 
 
