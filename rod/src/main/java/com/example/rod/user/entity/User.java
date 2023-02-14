@@ -29,6 +29,8 @@ public class User {
 
     private String phoneNumber;
 
+    @Column(nullable = false)
+    @ColumnDefault("0")
     private Integer rating;
 
     @Enumerated(value = EnumType.STRING)
@@ -36,6 +38,7 @@ public class User {
 
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
+
 
     @Builder
     public User(String username, String name, String password, Integer point, String phoneNumber, Integer rating, UserGrade grade, UserRole role) {

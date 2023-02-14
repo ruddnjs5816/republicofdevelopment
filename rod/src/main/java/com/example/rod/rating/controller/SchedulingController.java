@@ -19,7 +19,7 @@ public class SchedulingController {
 
     @Scheduled(cron = "0 0 1 * * *")  // 새벽 1시마다 반복
     public void autoUpdateGrade(){
-        schedulingService.updateAllMember();
+//        schedulingService.updateAllMember();
     }
 
 }

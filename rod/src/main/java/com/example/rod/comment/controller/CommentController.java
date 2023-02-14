@@ -39,9 +39,9 @@ public class CommentController {
 //    public List<CommentResponseDto> getListComment(@RequestParam int offset , @RequestParam int limit) {
 //        return commentService.getListComment(offset, limit);
 //    }
-    @GetMapping("/answers")
-    public CommentResultDto getListComment(@RequestParam int offset , @RequestParam int limit) {
-        return commentServiceImpl.getListComment(offset, limit);
-    }
+//    @GetMapping("/answers")
+//    public CommentResultDto getListComment(@RequestParam int offset , @RequestParam int limit) {
+//        return commentServiceImpl.getListComment(offset, limit);
+//    }
 
 }

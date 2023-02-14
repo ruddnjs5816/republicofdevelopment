@@ -16,6 +16,6 @@ public interface AnswerService {
 
     AnswerResponseDto getAnswer(Long answerId);
 
-    CommentResultDto getListAnswer(Pageable pageable, int page);
+//    CommentResultDto getListAnswer(Pageable pageable, int page);
 
 }
