@@ -4,6 +4,8 @@ import com.example.rod.auth.dto.SigninRequestDto;
 import com.example.rod.auth.dto.SignupRequestDto;
 import com.example.rod.security.JwtUtil;
 import com.example.rod.user.entity.User;
+import com.example.rod.user.entity.UserGrade;
+import com.example.rod.user.entity.UserRole;
 import com.example.rod.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,7 +30,11 @@ public class AuthServiceImpl implements AuthService{
         String name = signupRequestDto.getName();
         String phonenumber = signupRequestDto.getPhonenumber();
         String encodedPassword = passwordEncoder.encode(password);
-        User user = new User(username, encodedPassword, name, phonenumber);
+        Integer point = 0;
+        Integer rating = 0;
+        UserGrade userGrade = UserGrade.BRONZE;
+        UserRole userRole = UserRole.USER;
+        User user = new User(username, name, encodedPassword,  point, phonenumber, rating, userGrade, userRole);
         userRepository.save(user);
     }
 

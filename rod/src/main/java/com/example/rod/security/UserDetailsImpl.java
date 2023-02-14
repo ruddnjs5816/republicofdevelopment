@@ -1,8 +1,8 @@
 
 package com.example.rod.security;
 
-import com.example.rod.user.entity.GradeType;
-import com.example.rod.user.entity.GradeType;
+import com.example.rod.user.entity.UserGrade;
+import com.example.rod.user.entity.UserGrade;
 import com.example.rod.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,13 +22,13 @@ public class UserDetailsImpl implements UserDetails {
 
     private Long userId;
     private String username;
-    private GradeType role;
+    private UserGrade role;
     private User user;
 
     GrantedAuthority authority;
 
     @Builder
-    public UserDetailsImpl(Long userId, String username, GradeType role){
+    public UserDetailsImpl(Long userId, String username, UserGrade role){
         this.userId = userId;
         this.username = username;
         this.role = role;

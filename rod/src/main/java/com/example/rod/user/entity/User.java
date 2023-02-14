@@ -1,15 +1,9 @@
 package com.example.rod.user.entity;
 
-import com.example.rod.answer.entity.Answer;
-import com.example.rod.question.entity.Question;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -25,32 +19,48 @@ public class User {
     private String username;
 
     private String name;
-
     private String password;
 
-    private Long point;
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private Integer point;
 
-    public User(String username, String name, String password, String phonenumber) {
+    private String phoneNumber;
+
+    private Integer rating;
+
+    @Enumerated(value = EnumType.STRING)
+    private UserGrade grade;
+
+    @Enumerated(value = EnumType.STRING)
+    private UserRole role;
+
+    @Builder
+    public User(String username, String name, String password, Integer point, String phoneNumber, Integer rating, UserGrade grade, UserRole role) {
         this.username = username;
         this.name = name;
         this.password = password;
-        this.phonenumber = phonenumber;
+        this.point = point;
+        this.phoneNumber = phoneNumber;
+        this.rating = rating;
+        this.grade = grade;
+        this.role = role;
     }
 
-    private String phonenumber;
-
-    private Long rating;
-
-    @Enumerated(EnumType.STRING)
-    private GradeType grade;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Question> questions = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Answer> answers = new ArrayList<>();
+//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private List<Question> questions = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private List<Answer> answers = new ArrayList<>();
 
     public void changeRole(String role){
-        this.grade = GradeType.valueOf(role);
+        this.grade = UserGrade.valueOf(role);
+    }
+
+    public void update(String username, String name, String password, String phoneNumber) {
+        this.username = username;
+        this.name= name;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
     }
 }

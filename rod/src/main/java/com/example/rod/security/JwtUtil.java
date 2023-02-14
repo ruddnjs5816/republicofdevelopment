@@ -2,7 +2,7 @@
 
 package com.example.rod.security;
 
-import com.example.rod.user.entity.GradeType;
+import com.example.rod.user.entity.UserGrade;
 import com.example.rod.user.entity.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;

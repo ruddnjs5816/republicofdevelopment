@@ -2,7 +2,7 @@ package com.example.rod.rating.service;
 
 import com.example.rod.rating.dto.PointRequestDto;
 import com.example.rod.rating.dto.PointResultDto;
-import com.example.rod.user.entity.GradeType;
+import com.example.rod.user.entity.UserGrade;
 import com.example.rod.user.entity.User;
 import com.example.rod.user.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
@@ -25,7 +25,7 @@ class PointServiceTest {
 
 
         User user2 =
-                new User(1L,"김상순","나무","1111",2000L,"010", GradeType.BRONZE);
+                new User(1L,"김상순","나무","1111",2000L,"010", UserGrade.BRONZE);
         userRepository.save(user);
 
         //when- 어떤 동작을 할 때
