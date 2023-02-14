@@ -1,6 +1,6 @@
 package com.example.rod.user.entity;
 
-public enum GradeType {
+public enum UserGrade {
 
     BRONZE(Grade.BRONZE),
     SILVER(Grade.SILVER),
@@ -12,7 +12,7 @@ public enum GradeType {
 
     private final String grade;
 
-    GradeType(String grade) {
+    UserGrade(String grade) {
         this.grade = grade;
     }
 
