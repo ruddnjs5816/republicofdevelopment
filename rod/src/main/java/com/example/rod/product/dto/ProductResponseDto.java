@@ -9,13 +9,13 @@ import lombok.RequiredArgsConstructor;
 public class ProductResponseDto {
     private Long productId;
     private String productName;
-    private Long price;
+    private int price;
     private String productImage;
     private String productDescription;
 
 
     public ProductResponseDto(Product product) {
-        this.productId = product.getProductId();
+        this.productId = product.getId();
         this.productName = product.getProductName();
         this.price = product.getPrice();
         this.productImage = product.getProductImage();

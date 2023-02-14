@@ -1,6 +1,7 @@
 package com.example.rod.user.entity;
 
 import com.example.rod.answer.entity.Answer;
+import com.example.rod.order.entity.Order;
 import com.example.rod.profile.entity.Profile;
 import com.example.rod.question.entity.Question;
 import lombok.Getter;
@@ -43,4 +44,8 @@ public class User {
     @JoinColumn(name="profile_id")
     private Profile profile;
 
+
+    //order
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders = new ArrayList<>();
 }

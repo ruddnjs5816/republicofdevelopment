@@ -5,6 +5,7 @@ import com.example.rod.product.dto.ProductRequestDto;
 import com.example.rod.product.dto.ProductModifyRequestDto;
 import com.example.rod.product.dto.ProductResponseDto;
 import com.example.rod.product.entity.Product;
+import com.example.rod.product.entity.ProductImg;
 import com.example.rod.product.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,28 +27,46 @@ import java.util.Optional;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductImgService productImgService;
 
     //상품 등록
     @Transactional
-    public void createProduct(ProductRequestDto productRequestDto){
+    public void createProduct(ProductRequestDto productRequestDto, List<MultipartFile> productImgFileList) throws Exception {
         Product product = productRepository.saveAndFlush(new Product(productRequestDto));
         productRepository.save(product);
+
+        //이미지 등록
+        for (int i = 0, max = productImgFileList.size(); i < max; i++) {
+            //파일이 있을 때만 저장
+            if (productImgFileList.get(i).getSize() != 0) {
+                ProductImg productImg = ProductImg.builder()
+                        .product(product)
+                        .repImgYn(i == 0 ? "Y" : "N") //첫 번째 이미지일 경우 대표 상품 이미지 여부 값 “Y”
+                        .build();
+
+                productImgService.saveProductImg(productImg, productImgFileList.get(i));
+            }
+        }
     }
 
 
     //상품 수정
     @Transactional
-    public void updateProduct(Long productId, ProductModifyRequestDto productModifyRequestDto) {
-        Product product = productRepository.findProductByProductId(productId).orElseThrow(  () -> new IllegalArgumentException("존재하지 않는 상품입니다.")
-        );
+    public void updateProduct(Long productId, ProductModifyRequestDto productModifyRequestDto, List<MultipartFile> productImgFileList) throws Exception  {
+        Product product = findProduct(productId);
         product.changeProductStatus(productModifyRequestDto);
         productRepository.save(product);
+
+        List<Long> productImgIds = productModifyRequestDto.getProductImgIds();
+        //이미지 등록
+        for (int i = 0, max = productImgFileList.size(); i < max; i++) {
+            productImgService.updateProductImg(productImgIds.get(i), productImgFileList.get(i));
+        }
     }
     //상품 삭제
     @Transactional
     public void deleteProduct(Long productId) {
-        Product product = productRepository.findProductByProductId(productId).orElseThrow(  () -> new IllegalArgumentException("존재하지 않는 상품입니다.")
-        );
+        Product product = findProduct(productId);
         productRepository.delete(product);
     }
 

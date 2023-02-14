@@ -8,6 +8,8 @@ import com.example.rod.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 //import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 
 import java.util.List;
 
@@ -63,11 +65,6 @@ public class ProductController {
 
         return productResponseDto;
     }
-
-    //상품 주문
-//    @PostMapping("/shop/{productId}")
-    //상품 주문 내역 조회
-
 
 }
 
