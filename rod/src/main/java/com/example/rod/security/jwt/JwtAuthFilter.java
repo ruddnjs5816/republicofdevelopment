@@ -1,6 +1,7 @@
+
 package com.example.rod.security.jwt;
 
-import com.example.rod.user.dto.SecurityExceptionDto;
+import com.example.rod.security.SecurityExceptionResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -23,42 +24,42 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
 
-    @Override
-    protected void doFilterInternal
-            (HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
 
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtUtil.resolveToken(request);
 
-        if (token != null) {
-            if (!jwtUtil.validateToken(token)) {
+        if(token != null){
+            if(!jwtUtil.vaildateToken(token)){
                 jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED.value());
                 return;
             }
-
             Claims info = jwtUtil.getUserInfoFromToken(token);
             setAuthentication(info.getSubject());
         }
         filterChain.doFilter(request, response);
     }
 
-    // 인증 객체 생성 및 등록
-    public void setAuthentication(String username) {
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        Authentication authentication = jwtUtil.createAuthentication(username);
-        context.setAuthentication(authentication);
-        SecurityContextHolder.setContext(context);
-    }
-
-    public void jwtExceptionHandler(HttpServletResponse response, String msg, int statusCode) {
-        response.setStatus(statusCode);
+    public void jwtExceptionHandler(HttpServletResponse response, String msg, int statuscode){
+        response.setStatus(statuscode);
         response.setContentType("application/json");
-        try {
-            String json = new ObjectMapper().writeValueAsString(new SecurityExceptionDto(statusCode, msg));
+        try{
+            String json = new ObjectMapper().writeValueAsString(new SecurityExceptionResponse(statuscode, msg));
             response.getWriter().write(json);
-        } catch (Exception e) {
+        } catch (Exception e){
             log.error(e.getMessage());
         }
     }
 
+    // 인증 객체 생성 및 등록
+    public void setAuthentication(String username) {
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        Authentication authentication = jwtUtil.takeAuthentication(username);
+        context.setAuthentication(authentication);
+
+        SecurityContextHolder.setContext(context);
+    }
+
+
 }
+

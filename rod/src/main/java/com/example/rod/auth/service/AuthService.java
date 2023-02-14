@@ -12,4 +12,5 @@ public interface AuthService {
 
     @Transactional(readOnly = true)
     void signIn(SigninRequestDto signinRequestDto, HttpServletResponse response);
+
 }
