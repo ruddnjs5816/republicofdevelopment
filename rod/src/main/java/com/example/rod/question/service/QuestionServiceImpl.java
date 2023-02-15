@@ -23,6 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,10 +49,14 @@ public class QuestionServiceImpl implements QuestionService {
     @Transactional
     public void createQuestion(QuestionRequest questionRequest, UserDetailsImpl userDetails){
 //        String token = request.getParameter("Authentication");
-        Long userId = userDetails.getUserId();
-        String username = userDetails.getUsername();
+//        User user = userDetails.getUser();
         User user = userDetails.getUser();
-        UserDetails newUserDetails= userDetailsService.loadUserByUsername(username);
+//        User user = userRepository.findById(userDetails).orElseThrow(
+//                () -> new UsernameNotFoundException("사용자를 찾을 수 없습니다.")
+//        );
+
+//        UserDetails newUserDetails= userDe
+//        tailsService.loadUserByUsername(username);
 //        User user = userRepository.findById(userId).orElseThrow(
 //                () -> new IllegalArgumentException("찾는 유저가 없습니다.")
 //        );

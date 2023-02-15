@@ -52,7 +52,7 @@ public class Question extends TimeStamped {
 //        this.questionTags = questionRequest.getTagList();
     }
 
-    public void setFK(User user){ this.user = user; }
+//    public void setFK(User user){ this.user = user; }
 
     public void editTitle(String title){
         this.title = title;

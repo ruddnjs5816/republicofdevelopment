@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface QuestionService {
 
+//    void createQuestion(QuestionRequest questionRequest, UserDetailsImpl userDetails);
     void createQuestion(QuestionRequest questionRequest, UserDetailsImpl userDetails);
 
     GetQuestionsResponse getMyQuestions(Long userId, Pageable pageable, int page/*String userId*/); // By Security
