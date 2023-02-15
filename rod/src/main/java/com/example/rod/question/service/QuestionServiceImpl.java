@@ -36,8 +36,12 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     @Transactional
-    public void createQuestion(QuestionRequest questionRequest /*User user*/){
+    public void createQuestion(QuestionRequest questionRequest, Long userId){
         Question question = new Question(questionRequest);
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new IllegalArgumentException("찾는 유저가 없습니다.")
+        );
+        question.setFK(user);
         questionRepository.save(question);
     }
 

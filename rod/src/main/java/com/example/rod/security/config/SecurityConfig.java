@@ -19,7 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-//@EnableWebSecurity
+@EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
 //@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
@@ -41,10 +41,11 @@ public class SecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeHttpRequests()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/**").permitAll()
-                .anyRequest().authenticated();
-//                .and()
-//                .addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .antMatchers("/auth/**").permitAll()
+//                .antMatchers("/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         http.exceptionHandling().accessDeniedPage("/user/forbidden");
         return http.build();
