@@ -5,6 +5,7 @@ package com.example.rod.security.jwt;
 import com.example.rod.security.SecurityExceptionResponse;
 import com.example.rod.user.entity.UserGrade;
 import com.example.rod.user.entity.User;
+import com.example.rod.user.entity.UserRole;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -35,7 +36,7 @@ import java.util.Date;
 @Slf4j
 public class JwtUtil {
 
-    private static final Long TOKEN_VALID_TIME = 1000L * 60 * 30; //토큰 유효시간
+    private static final Long TOKEN_VALID_TIME = 1000L * 60 * 60; //토큰 유효시간
     private static final Long REFRESHTOKEN_VALID_TIME = 1000L * 60 * 60 * 24 * 7; //refresh 토큰 기한 7일
     private static final String BEARER_PREFIX = "Bearer ";
     public static final String AUTHORIZATION_HEADER = "Authorization";
@@ -43,6 +44,7 @@ public class JwtUtil {
 
 
     private final UserDetailsService userDetailsService;
+    private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256; // 이 알고리즘을 사용해서 키 객체를 암호화할 것이다.
 
 
     @Value("${jwt.secret.key}")
@@ -58,16 +60,16 @@ public class JwtUtil {
     }
 
     //토큰 생성
-    public String createToken(User user){
+    public String createToken(String username, UserRole userRole){
 //        Claims claims = Jwts.claims().setSubject(username);
         Date now = new Date();
         return BEARER_PREFIX +
                 Jwts.builder()
-                        .setSubject(user.getUsername())
-                        .claim(AUTHORIZATION_KEY, user.getRole())
+                        .setSubject(username)
+                        .claim(AUTHORIZATION_KEY, userRole)
                         .setIssuedAt(now) // 발급시간
                         .setExpiration(new Date(now.getTime() + TOKEN_VALID_TIME))
-                        .signWith(key, SignatureAlgorithm.HS256)
+                        .signWith(signatureAlgorithm, key)
                         .compact();
     }
 
@@ -77,7 +79,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + REFRESHTOKEN_VALID_TIME))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .signWith(signatureAlgorithm,key)
                 .compact();
     }
 
@@ -94,7 +96,7 @@ public class JwtUtil {
     public boolean vaildateToken(String token) {
         try{
             Jwts.parserBuilder().setSigningKey(key).build()
-                    .parseClaimsJws(token).getBody();
+                    .parseClaimsJws(token);
             return true;
         } catch (SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
@@ -116,7 +118,7 @@ public class JwtUtil {
     //토큰으로 인증객체(Authentication) 얻기
     public Authentication takeAuthentication(String username){
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
 

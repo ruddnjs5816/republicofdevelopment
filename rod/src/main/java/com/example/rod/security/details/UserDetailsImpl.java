@@ -4,6 +4,7 @@ package com.example.rod.security.details;
 import com.example.rod.user.entity.UserGrade;
 import com.example.rod.user.entity.UserGrade;
 import com.example.rod.user.entity.User;
+import com.example.rod.user.entity.UserRole;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -38,10 +39,10 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String role = user.getGrade().toString();
-//        String authority = getAuthority();
+        UserRole role = user.getRole();
+        String authority = role.getAuthority();
 
-        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(role);
+        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
         Collection<GrantedAuthority> authorityCollection = new ArrayList<>();
         authorityCollection.add(simpleGrantedAuthority);
         return authorityCollection;

@@ -1,7 +1,9 @@
 
 package com.example.rod.security.config;
 
+import com.example.rod.security.jwt.JwtAccessDeniedHandler;
 import com.example.rod.security.jwt.JwtAuthFilter;
+import com.example.rod.security.jwt.JwtAuthenticationEntryPoint;
 import com.example.rod.security.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -24,12 +26,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtUtil jwtUtil;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();//.ignoringAntMatchers("/h2-console/**").
         http.headers().frameOptions().disable();
