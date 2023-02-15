@@ -15,14 +15,14 @@ import java.util.List;
 //@Builder
 public class AnswerResponseDto {
 
-//    private Long id;
+    private Long answerId;
     private String content;
-    private int answerLike;
+    private int likes;
     private List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
-    public AnswerResponseDto(String content, int answerLike) {
+    public AnswerResponseDto(String content, int likes) {
         this.content = content;
-        this.answerLike = answerLike;
+        this.likes = likes;
     }
 
     public AnswerResponseDto(String content) {

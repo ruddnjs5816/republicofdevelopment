@@ -32,7 +32,7 @@ public class AuthServiceImpl implements AuthService{
         String username = signupRequestDto.getUsername();
         String password = signupRequestDto.getPassword();
         String name = signupRequestDto.getName();
-        String phonenumber = signupRequestDto.getPhoneNumber();
+        String phoneNumber = signupRequestDto.getPhoneNumber();
         String encodedPassword = passwordEncoder.encode(password);
         Integer point = 0;
         Integer rating = 0;

@@ -24,9 +24,8 @@ public class Comment extends TimeStamped {
     @Column
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "answer_id")
-
     private Answer answer;
 
 
@@ -34,9 +33,11 @@ public class Comment extends TimeStamped {
         this.content = content;
     }
 
-    public void setAnswer(Answer answer){
+    public void setFK(Answer answer){
         this.answer = answer;
     }
+
+    public void updateContent(String content) { this.content = content; }
 
 
 }

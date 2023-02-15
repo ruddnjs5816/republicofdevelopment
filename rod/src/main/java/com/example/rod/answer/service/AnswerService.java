@@ -8,11 +8,11 @@ import org.springframework.data.domain.Pageable;
 
 public interface AnswerService {
 
-    Answer createAnswer(Long questionId, AnswerRequestDto answerRequestDto);
+    void createAnswer(Long questionId, AnswerRequestDto answerRequestDto);
 
-    AnswerResponseDto updateAnswer(Long answerId, AnswerRequestDto answerRequestDto);
+    void updateAnswer(Long answerId, AnswerRequestDto answerRequestDto);
 
-    String deleteAnswer(Long answerId);
+    void deleteAnswer(Long answerId);
 
     AnswerResponseDto getAnswer(Long answerId);
 

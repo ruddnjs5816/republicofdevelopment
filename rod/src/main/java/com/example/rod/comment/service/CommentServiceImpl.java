@@ -20,35 +20,31 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentServiceImpl {
 
-    private final AnswerRepository AnswerRepository;
+    private final AnswerRepository answerRepository;
     private final CommentRepository commentRepository;
 
     @Transactional
-    public CommentResponseDto createComment(Long answerId, CommentRequestDto commentRequestDto) {
-        Answer answer = AnswerRepository.findById(answerId).orElseThrow(
+    public void createComment(Long answerId, CommentRequestDto commentRequestDto) {
+        Answer answer = answerRepository.findById(answerId).orElseThrow(
                 () -> new IllegalArgumentException("해당 답변이 존재하지 않습니다.")
         );
         Comment comment = new Comment(commentRequestDto.getContent());
-        comment.setAnswer(answer);
+        comment.setFK(answer);
         commentRepository.save(comment);
-        return null;
     }
 
     @Transactional
-    public CommentResponseDto updateComment(Long answerId, Long commentsId, CommentRequestDto commentRequestDto) {
-        AnswerRepository.findById(answerId).orElseThrow(
-                () -> new IllegalArgumentException("해당 답변이 존재하지 않습니다."));
+    public void updateComment(Long answerId, Long commentsId, CommentRequestDto commentRequestDto) {
 
         Comment comment = commentRepository.findById(commentsId).orElseThrow(
                 () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다"));
 
-        Comment save = commentRepository.save(comment);
-        return new CommentResponseDto(save.getId(), save.getContent());
+        comment.updateContent(commentRequestDto.getContent());
     }
 
     @Transactional
     public void deleteComment(Long answerId, Long commentsId) {
-        AnswerRepository.findById(answerId).orElseThrow(
+        answerRepository.findById(answerId).orElseThrow(
                 () -> new IllegalArgumentException("해당 답변이 존재하지 않습니다."));
 
         Comment comment = commentRepository.findById(commentsId).orElseThrow(

@@ -35,7 +35,6 @@ public class LikeService {
         } else {
             answerLikeRepository.deleteById(answerId);
             answer.setLikes(answerLikeRepository.countLikeAnswerById(answer.getId()));
-
         }
     }
 }

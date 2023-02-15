@@ -29,32 +29,25 @@ public class AnswerServiceImpl implements AnswerService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public Answer createAnswer(Long questionId, AnswerRequestDto answerRequestDto) {
-
+    public void createAnswer(Long questionId, AnswerRequestDto answerRequestDto) {
         Answer answer = new Answer(answerRequestDto.getContent());
         Question question = questionRepository.findById(questionId).orElseThrow(
                 () -> new IllegalArgumentException("해당하는 질문이 존재하지 않습니다.")
         );
-        answer.setQuestion(question);
+        answer.setFK(question);
         answerRepository.save(answer);
-        return answer;
     }
 
 
     @Transactional
-    public AnswerResponseDto updateAnswer(Long answerId, AnswerRequestDto answerRequestDto) {
-        Answer AnswerSaved = answerRepository.findById(answerId).orElseThrow(() -> new IllegalArgumentException("댓글이 존재하지 않습니다."));
-        AnswerSaved.update(answerRequestDto.getContent());
-        answerRepository.save(AnswerSaved);
-        return new AnswerResponseDto(AnswerSaved.getContent());
+    public void updateAnswer(Long answerId, AnswerRequestDto answerRequestDto) {
+        Answer answer = answerRepository.findById(answerId).orElseThrow(() -> new IllegalArgumentException("댓글이 존재하지 않습니다."));
+        answer.updateContent(answerRequestDto.getContent());
     }
 
     @Transactional
-    public String deleteAnswer(Long answerId) {
-        answerRepository.findById(answerId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 답변입니다."));
+    public void deleteAnswer(Long answerId) {
         answerRepository.deleteById(answerId);
-        return "삭제 완료";
     }
 
 
@@ -79,7 +72,7 @@ public class AnswerServiceImpl implements AnswerService {
 
         for (Answer answer1 : answers) {
             AnswerResponseDto answerResponseDto =
-                    new AnswerResponseDto(answer1.getContent(), answer1.getLikes(), commentResponseDtoList);
+                    new AnswerResponseDto(answer1.getId(), answer1.getContent(), answer1.getLikes(), commentResponseDtoList);
             resultList.add(answerResponseDto);
         }
 
