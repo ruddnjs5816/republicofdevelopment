@@ -31,17 +31,18 @@ public class OrderService {
     //주문하기
     @Transactional
     public Long order(OrderDto orderDto, String username) {
+
         //주문할 상품 조회
         Product product = productRepository.findById(orderDto.getProductId()).orElseThrow(EntityNotFoundException::new);
         //회원의 username을 이용해서 회원정보 조회
-        User user = userRepository.findByUsername(username);
+        Optional<User> user = userRepository.findByUsername(username);
 
         List<OrderProduct> orderProductList = new ArrayList<>();
         //주문할 상품 엔티티와 주문 수량을 이용 -> 주문 상품 엔티티 생성
         OrderProduct orderProduct = OrderProduct.createOrderProduct(product, orderDto.getCount());
         orderProductList.add(orderProduct);
 
-        Order order = Order.createOrder(user, orderProductList);
+        Order order = Order.createOrder(user.get(), orderProductList);
         orderRepository.save(order);
 
         return order.getId();
@@ -55,12 +56,12 @@ public class OrderService {
     @Transactional(readOnly = true)
     public boolean validateOrder(Long orderId, String username) {
 
-        User curUser = userRepository.findByUsername(username);
+        Optional<User> curUser = userRepository.findByUsername(username);
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(EntityNotFoundException::new);
         User savedUser = order.getUser();
 
-        if (!curUser.getUsername().equals(savedUser.getUsername())) {
+        if (!curUser.get().getUsername().equals(savedUser.getUsername())) {
             return false;
         }
 
