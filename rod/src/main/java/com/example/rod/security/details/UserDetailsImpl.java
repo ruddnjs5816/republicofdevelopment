@@ -1,6 +1,7 @@
 
 package com.example.rod.security.details;
 
+import com.example.rod.rating.entity.Rating;
 import com.example.rod.user.entity.UserGrade;
 import com.example.rod.user.entity.UserGrade;
 import com.example.rod.user.entity.User;
@@ -21,20 +22,27 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserDetailsImpl implements UserDetails {
 
+
+
     private Long userId;
     private String username;
-    private UserGrade role;
+    private String password;
+    private UserGrade grade;
     private User user;
+    private UserRole role;
 
     GrantedAuthority authority;
 
     @Builder
-    public UserDetailsImpl(Long userId, String username, UserGrade role){
+    public UserDetailsImpl(Long userId, String username, String password, UserGrade grade, User user, UserRole role, GrantedAuthority authority) {
         this.userId = userId;
         this.username = username;
+        this.password = password;
+        this.grade = grade;
+        this.user = user;
         this.role = role;
+        this.authority = authority;
     }
-
 
 
     @Override
@@ -57,6 +65,9 @@ public class UserDetailsImpl implements UserDetails {
     public String getUsername() {
         return username;
     }
+
+
+    public User getUser() {return user;}
 
     @Override
     public boolean isAccountNonExpired() {

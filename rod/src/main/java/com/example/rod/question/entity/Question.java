@@ -6,6 +6,7 @@ import com.example.rod.share.TimeStamped;
 
 import com.example.rod.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -42,9 +43,12 @@ public class Question extends TimeStamped {
     private List<QuestionTag> questionTags = new ArrayList<>();
 
 */
-    public Question(QuestionRequest questionRequest){
-        this.title = questionRequest.getTitle();
-        this.content = questionRequest.getContent();
+    @Builder
+    public Question(String title, String content, User user, List<Answer> answers){
+        this.title = title;
+        this.content = content;
+        this.user = user;
+        this.answers = answers;
 //        this.questionTags = questionRequest.getTagList();
     }
 

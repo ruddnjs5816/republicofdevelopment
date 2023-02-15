@@ -24,7 +24,7 @@ public class QuestionController {
     @PostMapping("/questions")
     @ResponseStatus(HttpStatus.CREATED)
     public void createQuestion(@RequestBody QuestionRequest questionRequest, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        questionService.createQuestion(questionRequest,userDetails.getUser().getUserId());
+        questionService.createQuestion(questionRequest,userDetails);
     }
 
 

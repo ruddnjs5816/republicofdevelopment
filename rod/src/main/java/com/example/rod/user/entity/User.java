@@ -1,6 +1,8 @@
 package com.example.rod.user.entity;
 
 
+import com.example.rod.question.entity.Question;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +41,10 @@ public class User {
 
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Question> question;
 
 
     @Builder
