@@ -30,63 +30,61 @@ public class AnswerServiceImpl implements AnswerService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public Answer createAnswer(Long questionId, AnswerRequestDto answerRequestDto) {
-
+    public void createAnswer(Long questionId, AnswerRequestDto answerRequestDto) {
         Answer answer = new Answer(answerRequestDto.getContent());
         Question question = questionRepository.findById(questionId).orElseThrow(
                 () -> new IllegalArgumentException("해당하는 질문이 존재하지 않습니다.")
         );
-        answer.setQuestion(question);
+        answer.setFK(question);
         answerRepository.save(answer);
-        return answer;
     }
 
 
     @Transactional
-    public AnswerResponseDto updateAnswer(Long answerId, AnswerRequestDto answerRequestDto) {
-        Answer AnswerSaved = answerRepository.findById(answerId).orElseThrow(() -> new IllegalArgumentException("댓글이 존재하지 않습니다."));
-        AnswerSaved.update(answerRequestDto.getContent());
-        answerRepository.save(AnswerSaved);
-        return new AnswerResponseDto(AnswerSaved.getContent());
+    public void updateAnswer(Long answerId, AnswerRequestDto answerRequestDto) {
+        Answer answer = answerRepository.findById(answerId).orElseThrow(() -> new IllegalArgumentException("댓글이 존재하지 않습니다."));
+        answer.updateContent(answerRequestDto.getContent());
     }
 
     @Transactional
-    public String deleteAnswer(Long answerId) {
-        answerRepository.findById(answerId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 답변입니다."));
+    public void deleteAnswer(Long answerId) {
         answerRepository.deleteById(answerId);
-        return "삭제 완료";
     }
 
 
     // 내 답변 상세 조회
     @Transactional(readOnly = true)
     public AnswerResponseDto getAnswer(Long answerId) {
-        Answer Answer = answerRepository.findById(answerId)
+        Answer answer = answerRepository.findById(answerId)
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 답변입니다."));
-        return new AnswerResponseDto(Answer.getContent(), Answer.getLikes());
+
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+        for(Comment comment : answer.getComments()){
+            CommentResponseDto commentResponseDto = new CommentResponseDto(comment.getId(), comment.getContent());
+            commentResponseDtoList.add(commentResponseDto);
+        }
+        return new AnswerResponseDto(answer.getId(), answer.getContent(), answer.getLikes(), commentResponseDtoList);
     }
 
 
-//    @Transactional(readOnly = true)
-//    public AnswerResultDto getListAnswer(Pageable pageable, int page) {
-//        List<AnswerResponseDto> resultList = new ArrayList<>();
-//        Page<Answer> answers = answerRepository.findAll(pageable.withPage(page - 1));
-//        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
-//        List<Comment> allComment = commentRepository.findAll();
-//        for (Comment Comment : allComment) {
-//            commentResponseDtoList.add(new CommentResponseDto(Comment.getId(), Comment.getContent()));
-//        }
-//
-//        for (Answer answer1 : answers) {
-//            AnswerResponseDto answerResponseDto =
-//                    new AnswerResponseDto(answer1.getContent(), answer1.getLikes(), commentResponseDtoList);
-//            resultList.add(answerResponseDto);
-//        }
-//
-//        AnswerResultDto resultDto = new AnswerResultDto(page, resultList);
-//        return resultDto;
-//
-//    }
+    @Transactional(readOnly = true)
+    public CommentResultDto getListAnswer(Pageable pageable, int page) {
+        List<AnswerResponseDto> resultList = new ArrayList<>();
+        Page<Answer> answers = answerRepository.findAll(pageable.withPage(page - 1));
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+        List<Comment> allComment = commentRepository.findAll();
+        for (Comment Comment : allComment) {
+            commentResponseDtoList.add(new CommentResponseDto(Comment.getId(), Comment.getContent()));
+        }
+
+        for (Answer answer1 : answers) {
+            AnswerResponseDto answerResponseDto =
+                    new AnswerResponseDto(answer1.getId(), answer1.getContent(), answer1.getLikes(), commentResponseDtoList);
+            resultList.add(answerResponseDto);
+        }
+
+        CommentResultDto resultDto = new CommentResultDto(page, resultList);
+        return resultDto;
+    }
 }
 

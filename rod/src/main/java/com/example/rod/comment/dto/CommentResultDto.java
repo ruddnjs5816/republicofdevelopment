@@ -8,12 +8,12 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class CommentResultDto {
+public class CommentResultDto<T> {
 
-//    private int currentPage;
-//
-////    private List data;
-//    private data;
+    private int currentPage;
+
+//    private List data;
+    private T data;
 
 
 }

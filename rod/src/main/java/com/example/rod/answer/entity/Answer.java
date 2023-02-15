@@ -39,13 +39,13 @@ public class Answer extends TimeStamped {
     @OrderBy("createdAt DESC")
     private List<Comment> comments = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
 
     @JsonManagedReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "question_id")
     private Question question;
 
@@ -54,12 +54,12 @@ public class Answer extends TimeStamped {
         this.content = content;
     }
 
-    public void setQuestion(Question question) {
+    public void setFK(Question question) {
         this.question = question;
     }
 
 
-    public void update(String content){
+    public void updateContent(String content){
         this.content= content;
     }
 

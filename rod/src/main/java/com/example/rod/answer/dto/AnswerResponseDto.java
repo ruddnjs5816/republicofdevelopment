@@ -1,5 +1,6 @@
 package com.example.rod.answer.dto;
 
+import com.example.rod.answer.entity.Answer;
 import com.example.rod.comment.dto.CommentResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,17 +16,9 @@ import java.util.List;
 //@Builder
 public class AnswerResponseDto {
 
-//    private Long id;
+    private Long answerId;
     private String content;
-    private int answerLike;
+    private int likes;
     private List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
-    public AnswerResponseDto(String content, int answerLike) {
-        this.content = content;
-        this.answerLike = answerLike;
-    }
-
-    public AnswerResponseDto(String content) {
-        this.content = content;
-    }
 }

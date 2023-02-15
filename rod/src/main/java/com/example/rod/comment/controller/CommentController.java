@@ -16,16 +16,16 @@ public class CommentController {
 
     // 댓글 작성
     @PostMapping("/answers/{answerId}/comments")
-    public CommentResponseDto createComment
+    public void createComment
                 (@PathVariable Long answerId, @RequestBody CommentRequestDto commentRequestDto) {
-        return commentServiceImpl.createComment(answerId, commentRequestDto);
+        commentServiceImpl.createComment(answerId, commentRequestDto);
     }
 
     // 댓글 수정
     @PutMapping("/answers/{answerId}/comments/{commentsId}")
-    public CommentResponseDto updateComment
+    public void updateComment
               (@PathVariable Long answerId, @PathVariable Long commentsId, CommentRequestDto commentRequestDto) {
-        return commentServiceImpl.updateComment(answerId, commentsId, commentRequestDto);
+        commentServiceImpl.updateComment(answerId, commentsId, commentRequestDto);
     }
 
     // 댓글 삭제

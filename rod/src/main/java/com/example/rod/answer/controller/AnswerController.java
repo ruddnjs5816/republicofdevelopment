@@ -23,14 +23,14 @@ public class AnswerController {
     // 질문에 대한 답변 작성
     @PostMapping("/questions/{questionId}/answers")
     @ResponseStatus(HttpStatus.CREATED)
-    public Answer createAnswer(@PathVariable Long questionId, @RequestBody AnswerRequestDto answerRequestDto) {
-        return answerService.createAnswer(questionId, answerRequestDto);
+    public void createAnswer(@PathVariable Long questionId, @RequestBody AnswerRequestDto answerRequestDto) {
+        answerService.createAnswer(questionId, answerRequestDto);
     }
 
     // 답변 수정
     @PutMapping("/answers/{answerId}")
-    public AnswerResponseDto updateAnswer(@PathVariable Long answerId, AnswerRequestDto answerRequestDto) {
-        return answerService.updateAnswer(answerId, answerRequestDto);
+    public void updateAnswer(@PathVariable Long answerId, AnswerRequestDto answerRequestDto) {
+        answerService.updateAnswer(answerId, answerRequestDto);
     }
 
     // 답변 삭제
@@ -39,12 +39,12 @@ public class AnswerController {
         answerService.deleteAnswer(answerId);
     }
 
-//    @GetMapping("/answers")
-//    public CommentResultDto getListAnswer
-//    (@RequestParam(defaultValue = "1") int page,
-//      @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-//        return answerService.getListAnswer(pageable, page);
-//    }
+    @GetMapping("/answers")
+    public CommentResultDto getListAnswer
+    (@RequestParam(defaultValue = "1") int page,
+      @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        return answerService.getListAnswer(pageable, page);
+    }
 
 
     // 내 답변 상세조회

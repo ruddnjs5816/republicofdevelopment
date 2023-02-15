@@ -2,11 +2,13 @@ package com.example.rod.question.controller;
 
 import com.example.rod.question.dto.*;
 import com.example.rod.question.service.QuestionService;
+import com.example.rod.security.details.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -21,8 +23,8 @@ public class QuestionController {
     // 질문 작성 API
     @PostMapping("/questions")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createQuestion(@RequestBody QuestionRequest questionRequest/* @AuthenticationPrincipal UserDetailsImpl userDetails)*/){
-        questionService.createQuestion(questionRequest /* , userDetails.getUser() */);
+    public void createQuestion(@RequestBody QuestionRequest questionRequest, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        questionService.createQuestion(questionRequest,userDetails.getUser().getUserId());
     }
 
 
