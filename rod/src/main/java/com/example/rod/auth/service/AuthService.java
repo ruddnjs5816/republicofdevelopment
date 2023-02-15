@@ -8,9 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 
 
 public interface AuthService {
+
+
     void signUp(SignupRequestDto signupRequestDto);
 
-    @Transactional(readOnly = true)
     void signIn(SigninRequestDto signinRequestDto, HttpServletResponse response);
 
 }

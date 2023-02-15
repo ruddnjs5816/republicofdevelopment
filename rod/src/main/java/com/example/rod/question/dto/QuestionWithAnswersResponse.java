@@ -19,4 +19,5 @@ public class QuestionWithAnswersResponse {
         this.content = content;
         this.answerWithComments = answerWithComments;
     }
+
 }

@@ -2,6 +2,7 @@ package com.example.rod.answer.service;
 
 import com.example.rod.answer.dto.AnswerRequestDto;
 import com.example.rod.answer.dto.AnswerResponseDto;
+import com.example.rod.answer.dto.AnswerResultDto;
 import com.example.rod.answer.entity.Answer;
 import com.example.rod.answer.repository.AnswerRepository;
 import com.example.rod.comment.dto.CommentResponseDto;
@@ -54,9 +55,15 @@ public class AnswerServiceImpl implements AnswerService {
     // 내 답변 상세 조회
     @Transactional(readOnly = true)
     public AnswerResponseDto getAnswer(Long answerId) {
-        Answer Answer = answerRepository.findById(answerId)
+        Answer answer = answerRepository.findById(answerId)
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 답변입니다."));
-        return new AnswerResponseDto(Answer.getContent(), Answer.getLikes());
+
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+        for(Comment comment : answer.getComments()){
+            CommentResponseDto commentResponseDto = new CommentResponseDto(comment.getId(), comment.getContent());
+            commentResponseDtoList.add(commentResponseDto);
+        }
+        return new AnswerResponseDto(answer.getId(), answer.getContent(), answer.getLikes(), commentResponseDtoList);
     }
 
 
@@ -78,7 +85,6 @@ public class AnswerServiceImpl implements AnswerService {
 
         CommentResultDto resultDto = new CommentResultDto(page, resultList);
         return resultDto;
-
     }
 }
 

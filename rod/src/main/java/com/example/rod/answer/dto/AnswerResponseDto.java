@@ -1,5 +1,6 @@
 package com.example.rod.answer.dto;
 
+import com.example.rod.answer.entity.Answer;
 import com.example.rod.comment.dto.CommentResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,12 +21,4 @@ public class AnswerResponseDto {
     private int likes;
     private List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
-    public AnswerResponseDto(String content, int likes) {
-        this.content = content;
-        this.likes = likes;
-    }
-
-    public AnswerResponseDto(String content) {
-        this.content = content;
-    }
 }

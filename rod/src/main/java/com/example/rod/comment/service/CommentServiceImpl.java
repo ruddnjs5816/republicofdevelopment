@@ -1,5 +1,6 @@
 package com.example.rod.comment.service;
 
+import com.example.rod.answer.dto.AnswerResponseDto;
 import com.example.rod.answer.entity.Answer;
 import com.example.rod.answer.repository.AnswerRepository;
 import com.example.rod.comment.dto.CommentRequestDto;
@@ -63,7 +64,7 @@ public class CommentServiceImpl {
         List<CommentResponseDto> commentAll = map.getContent();
         long totalCount = map.getTotalElements();
 
-        CommentResultDto resultDto = new CommentResultDto<>(offset,  commentAll);
+        CommentResultDto resultDto = new CommentResultDto(offset,  commentAll);
 
         return resultDto;
     }
