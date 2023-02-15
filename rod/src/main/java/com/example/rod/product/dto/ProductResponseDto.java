@@ -15,7 +15,7 @@ public class ProductResponseDto {
 
 
     public ProductResponseDto(Product product) {
-        this.productId = product.getId();
+        this.productId = product.getProductId();
         this.productName = product.getProductName();
         this.price = product.getPrice();
 //        this.productImage = product.getProductImage();
