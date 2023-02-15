@@ -1,7 +1,9 @@
 
 package com.example.rod.security.config;
 
+import com.example.rod.security.jwt.JwtAccessDeniedHandler;
 import com.example.rod.security.jwt.JwtAuthFilter;
+import com.example.rod.security.jwt.JwtAuthenticationEntryPoint;
 import com.example.rod.security.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -19,13 +21,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 //@EnableWebSecurity
 @Configuration
-//configuration 의 역할 -> 한번만 돈다? 그래서 밑에 bean을 붙여준다? , configuration이랑 component의 차이점을 알자 ...
-//SecurityFilterChain 객체 역할
 @RequiredArgsConstructor
 //@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig {
 
     private final JwtUtil jwtUtil;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -40,9 +42,9 @@ public class SecurityConfig {
         http.authorizeHttpRequests()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .anyRequest().authenticated();
+//                .and()
+//                .addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         http.exceptionHandling().accessDeniedPage("/user/forbidden");
         return http.build();

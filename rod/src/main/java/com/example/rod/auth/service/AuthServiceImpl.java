@@ -41,10 +41,11 @@ public class AuthServiceImpl implements AuthService{
         UserGrade userGrade = UserGrade.BRONZE;
 
         // 회원 중복 확인
-        Optional<User> found = userRepository.findByUsername(username);
-        if (found.isPresent()) {
-            throw new CustomException(DUPLICATED_USERNAME);
-        }
+//        Optional<User> found = userRepository.findByUsername(username);
+//        if (found.isPresent()) {
+//            throw new CustomException(DUPLICATED_USERNAME);
+//        }
+        validateUsername(username);
 
         // 사용자 ROLE(권한) 확인
         UserRole userRole = UserRole.USER;
@@ -86,16 +87,19 @@ public class AuthServiceImpl implements AuthService{
         validatePassword(password, user.getPassword());
 
         //AUTHORIZATION_HEADER: KEY 값
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user));
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getRole()));
     }
 
-    private void validatePassword(String password, String encodedPassword){
+    @Transactional
+    public void validatePassword(String password, String encodedPassword){
         if(!passwordEncoder.matches(password, encodedPassword)){
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
     }
 
-    private void validateUsername(String username) {
+
+    @Transactional
+    public void validateUsername(String username) {
         if(userRepository.existsByUsername(username)) {
             throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
         }

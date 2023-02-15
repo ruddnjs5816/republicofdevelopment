@@ -14,4 +14,7 @@ public interface AuthService {
 
     void signIn(SigninRequestDto signinRequestDto, HttpServletResponse response);
 
+    void validatePassword(String password, String encodedPassword);
+
+    void validateUsername(String username);
 }

@@ -1,5 +1,6 @@
 package com.example.rod.user.entity;
 
+
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +58,7 @@ public class User {
 //
 //    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //    private List<Answer> answers = new ArrayList<>();
+
 
 //    public void changeGrade(UserGrade){
 //        this.grade = UserGrade.valueOf(role);

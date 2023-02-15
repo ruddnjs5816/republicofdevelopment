@@ -1,5 +1,6 @@
 package com.example.rod.product.repository;
 
+
 import com.example.rod.product.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

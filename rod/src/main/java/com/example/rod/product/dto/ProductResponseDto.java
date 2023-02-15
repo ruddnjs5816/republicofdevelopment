@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 public class ProductResponseDto {
     private Long productId;
     private String productName;
-    private Long price;
+    private int price;
     private String productImage;
     private String productDescription;
 
@@ -18,7 +18,7 @@ public class ProductResponseDto {
         this.productId = product.getProductId();
         this.productName = product.getProductName();
         this.price = product.getPrice();
-        this.productImage = product.getProductImage();
+//        this.productImage = product.getProductImage();
         this.productDescription = product.getProductDescription();
     }
 }
