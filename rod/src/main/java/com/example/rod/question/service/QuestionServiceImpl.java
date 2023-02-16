@@ -11,6 +11,7 @@ import com.example.rod.question.entity.Question;
 import com.example.rod.question.repository.QuestionRepository;
 import com.example.rod.security.details.UserDetailsImpl;
 import com.example.rod.user.entity.User;
+import com.example.rod.user.entity.UserGrade;
 import com.example.rod.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -125,6 +126,10 @@ public class QuestionServiceImpl implements QuestionService {
         Question question = questionRepository.findById(questionId).orElseThrow
                 (() -> new IllegalArgumentException("해당 아이디의 질문이 없습니다."));
 
+        if(question.isClosed()){
+            throw new IllegalArgumentException("이미 채택완료된 질문입니다.");
+        }
+
         if(question.isOwnedBy(questioner)){
 
             Answer answer = answerRepository.findById(answerId).orElseThrow(
@@ -136,8 +141,8 @@ public class QuestionServiceImpl implements QuestionService {
                 answer.select();
 
                 User answerer = answer.getUser();
-
-                increaseUserRating(answerer);
+                increaseAnswererRating(answerer);
+                promoteUserGradeIfAnswererCan(answerer);
                 rewardPointToAnswererSelected(answerer);
             } else {
                 throw new IllegalArgumentException("질문에 포함되지 않은 답변은 채택할 수 없습니다.");
@@ -201,9 +206,31 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
 
-    public void increaseUserRating(User user){
+    public void increaseAnswererRating(User user){
         // 레이팅 상승 로직 ( default : 채택 시 10점 상승 )
         user.increaseRating(10);
+    }
+
+    public void promoteUserGradeIfAnswererCan(User user){
+
+        System.out.println(UserGrade.valueOf("BRONZE"));
+
+        // 등급 상승 비즈니스 로직
+        if(user.getRating()<=50){
+                user.changeGrade(UserGrade.valueOf("BRONZE"));
+            } else if (50<user.getRating()&&user.getRating()<=150) {
+                user.changeGrade(UserGrade.valueOf("SILVER"));
+            } else if (151<user.getRating()&&user.getRating()<=300) {
+                user.changeGrade(UserGrade.valueOf("GOLD"));
+            } else if (301<user.getRating()&&user.getRating()<=500) {
+                user.changeGrade(UserGrade.valueOf("PLATINUM"));
+            } else if (501<user.getRating()&&user.getRating()<=750) {
+                user.changeGrade(UserGrade.valueOf("DIAMOND"));
+            } else if (751<user.getRating()&&user.getRating()<=1050) {
+                user.changeGrade(UserGrade.valueOf("MASTER"));
+            } else {
+                user.changeGrade(UserGrade.valueOf("GRANDMASTER"));
+            }
     }
 
     public void rewardPointToAnswererSelected(User user){
