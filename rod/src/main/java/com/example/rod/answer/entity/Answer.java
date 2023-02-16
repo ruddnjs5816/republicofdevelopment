@@ -32,6 +32,9 @@ public class Answer extends TimeStamped {
     @Column
     private int likes;
 
+    @Column
+    private boolean isSelected;
+
 //    private String originalFileName;
 //    private String savedFileName;
 
@@ -67,6 +70,11 @@ public class Answer extends TimeStamped {
         return (this.user.equals(user)) ;
     }
 
+    @Override
+    public boolean equals(Object obj){
+        return this.id == ((Answer)obj).getId();
+    }
+
 
     public void updateContent(String content){
         this.content= content;
@@ -75,5 +83,8 @@ public class Answer extends TimeStamped {
     public void setLikes(int likes){
         this.likes = likes;
     }
+
+    public void select() { this.isSelected = true; }
+
 
 }

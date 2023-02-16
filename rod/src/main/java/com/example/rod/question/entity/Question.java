@@ -30,6 +30,10 @@ public class Question extends TimeStamped {
     @Column
     private String content;
 
+    @Column
+    private boolean isClosed = false;
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private User user;
@@ -63,6 +67,10 @@ public class Question extends TimeStamped {
     }
 
     public boolean isOwnedBy (User user) { return (this.user.equals(user)); }
+
+    public boolean contains (Answer answer) { return answers.contains(answer); }
+
+    public void close(){ this.isClosed = true; }
 
 
 

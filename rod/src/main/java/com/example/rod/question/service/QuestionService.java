@@ -17,6 +17,8 @@ public interface QuestionService {
 
     QuestionWithAnswersResponse  getSpecificQuestion(Long questionId);
 
+    void selectAnswerForQuestion(Long questionId, Long answerId, UserDetailsImpl userDetails);
+
     void changeQuestionTitle(Long questionId, PatchQuestionTitleRequest patchQuestionTitleRequest, UserDetailsImpl userDetails);
 
     void changeQuestionContent(Long questionId, PatchQuestionContentRequest patchQuestionContentRequest, UserDetailsImpl userDetails);

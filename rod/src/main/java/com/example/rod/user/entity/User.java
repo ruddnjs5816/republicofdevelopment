@@ -30,13 +30,13 @@ public class User {
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private Integer point;
+    private int point;
 
     private String phoneNumber;
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private Integer rating;
+    private int rating;
 
     @Enumerated(value = EnumType.STRING)
     private UserGrade grade;
@@ -73,6 +73,14 @@ public class User {
     @Override
     public boolean equals(Object obj){
         return this.userId == ((User) obj).getUserId();
+    }
+
+    public void increaseRating(int amount){
+        this.rating += amount;
+    }
+
+    public void increasePoint(int amount){
+        this.point += amount;
     }
 
 

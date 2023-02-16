@@ -61,6 +61,15 @@ public class QuestionController {
     }
 
 
+    // 질문의 답변 채택 API
+    @PatchMapping("/questions/{questionId}/{answerId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void selectAnswerForQuestion(@PathVariable Long questionId, @PathVariable Long answerId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        questionService.selectAnswerForQuestion(questionId, answerId, userDetails);
+    }
+
+
+
     // 질문의 제목을 바꾸는 경우 API
     @PatchMapping("/questions/{questionId}/title")
     @ResponseStatus(HttpStatus.OK)
