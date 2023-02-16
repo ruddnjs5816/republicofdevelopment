@@ -80,8 +80,12 @@ public class Answer extends TimeStamped {
         this.content= content;
     }
 
-    public void setLikes(int likes){
-        this.likes = likes;
+    public void increaseLikes(){
+        this.likes += 1;
+    }
+
+    public void decreaseLikes(){
+        this.likes -= 1;
     }
 
     public void select() { this.isSelected = true; }
