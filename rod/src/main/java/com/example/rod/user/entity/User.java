@@ -1,6 +1,8 @@
 package com.example.rod.user.entity;
 
 
+import com.example.rod.answer.entity.Answer;
+import com.example.rod.comment.entity.Comment;
 import com.example.rod.question.entity.Question;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
@@ -43,8 +45,17 @@ public class User {
     private UserRole role;
 
     @JsonBackReference
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Question> question;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Question> questionList;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)    /* orphanRemoval 쓸 것인지 생각 */
+    private List<Answer> answerList;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Comment> commentList;
+
 
 
     @Builder
@@ -58,6 +69,12 @@ public class User {
         this.grade = grade;
         this.role = role;
     }
+
+    @Override
+    public boolean equals(Object obj){
+        return this.userId == ((User) obj).getUserId();
+    }
+
 
 //    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //    private List<Question> questions = new ArrayList<>();

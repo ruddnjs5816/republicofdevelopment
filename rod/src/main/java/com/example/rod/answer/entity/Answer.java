@@ -7,6 +7,7 @@ import com.example.rod.share.TimeStamped;
 import com.example.rod.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -35,17 +36,17 @@ public class Answer extends TimeStamped {
 //    private String savedFileName;
 
 //    @OneToMany(mappedBy = "Answer", cascade = CascadeType.ALL)
-    @OneToMany(mappedBy = "answer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "answer", cascade = CascadeType.DETACH)
     @OrderBy("createdAt DESC")
     private List<Comment> comments = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id")
     private User user;
 
 
     @JsonManagedReference
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "question_id")
     private Question question;
 
@@ -54,8 +55,16 @@ public class Answer extends TimeStamped {
         this.content = content;
     }
 
-    public void setFK(Question question) {
+    @Builder
+    public Answer(String content, int likes, Question question, User user){
+        this.content = content;
+        this.likes = likes;
         this.question = question;
+        this.user = user;
+    }
+
+    public boolean isOwnedBy(User user){
+        return (this.user.equals(user)) ;
     }
 
 

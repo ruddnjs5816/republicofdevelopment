@@ -9,8 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AnswerRequestDto {
-
     private String content;
-
-
 }

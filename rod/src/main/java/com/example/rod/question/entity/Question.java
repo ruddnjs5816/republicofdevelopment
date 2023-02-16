@@ -36,7 +36,7 @@ public class Question extends TimeStamped {
 
 
     @JsonBackReference
-    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     private List<Answer> answers = new ArrayList<>();
 
   /*  @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
@@ -61,6 +61,8 @@ public class Question extends TimeStamped {
     public void editContent(String content){
         this.content = content;
     }
+
+    public boolean isOwnedBy (User user) { return (this.user.equals(user)); }
 
 
 

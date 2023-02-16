@@ -8,13 +8,16 @@ import lombok.Getter;
 @Getter
 public class QuestionResponse {
 
+    private Long questionId;
+
     private String title;
     private String content;
 
 
-    public QuestionResponse(Question question) {
-        this.title = question.getTitle();
-        this.content = question.getContent();
+    public QuestionResponse(Long questionId, String title, String content) {
+        this.questionId = questionId;
+        this.title = title;
+        this.content = content;
     }
 
 }
