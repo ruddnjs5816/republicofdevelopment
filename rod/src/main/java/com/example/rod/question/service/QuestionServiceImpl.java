@@ -15,6 +15,7 @@ import com.example.rod.security.jwt.JwtUtil;
 import com.example.rod.user.entity.User;
 import com.example.rod.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,9 +26,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -136,6 +145,7 @@ public class QuestionServiceImpl implements QuestionService {
         return questionWithAnswersResponse;
     }
 
+    // 질문 제목 변경
     @Override
     @Transactional
     public void changeQuestionTitle(Long questionId, PatchQuestionTitleRequest patchQuestionTitleRequest) {
@@ -144,7 +154,7 @@ public class QuestionServiceImpl implements QuestionService {
         question.editTitle(patchQuestionTitleRequest.getTitle());
     }
 
-
+    // 질문 내용 변경
     @Override
     @Transactional
     public void changeQuestionContent(Long questionId, PatchQuestionContentRequest patchQuestionContentRequest){
@@ -154,11 +164,27 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
 
+    //질문 삭제
     @Override
     @Transactional
     public void deleteQuestion(Long questionId) {
         questionRepository.deleteById(questionId);
     }
 
+    // 질문에 이미지 업로드
+    @Value("${app.upload.dir:${user.home}}")
+    private String uploadDir;
+    public void uploadImage(MultipartFile image){
+        Path copyOfLocation = Paths.get(uploadDir + File.separator +  StringUtils.cleanPath(image.getOriginalFilename()));
+        try {
+            // inputStream을 가져와서
+            // copyOfLocation (저장위치)로 파일을 쓴다.
+            // copy의 옵션은 기존에 존재하면 REPLACE(대체한다), 오버라이딩 한다
+            Files.copy(image.getInputStream(), copyOfLocation, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new FileStorageException("Could not store file : " + image.getOriginalFilename());
+        }
 
+    }
 }
