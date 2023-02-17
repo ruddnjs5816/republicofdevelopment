@@ -14,14 +14,25 @@ import com.example.rod.user.entity.User;
 import com.example.rod.user.entity.UserGrade;
 import com.example.rod.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+
+import lombok.Value;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -135,6 +146,7 @@ public class QuestionServiceImpl implements QuestionService {
         question.processSelectionResult(questioner, question, answer);
     }
 
+
     @Override
     @Transactional
     public void changeQuestionTitle(Long questionId, PatchQuestionTitleRequest patchQuestionTitleRequest, UserDetailsImpl userDetails) {
@@ -144,7 +156,7 @@ public class QuestionServiceImpl implements QuestionService {
         question.editTitle(user, patchQuestionTitleRequest.getTitle());
     }
 
-
+    // 질문 내용 변경
     @Override
     @Transactional
     public void changeQuestionContent(Long questionId, PatchQuestionContentRequest patchQuestionContentRequest, UserDetailsImpl userDetails){
@@ -155,9 +167,11 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
 
+    //질문 삭제
     @Override
     @Transactional
     public void deleteQuestion(Long questionId, UserDetailsImpl userDetails) {
+
 
         Question question = questionRepository.findById(questionId).orElseThrow(
                 () -> new IllegalArgumentException("해당 아이디의 질문이 없습니다.")
@@ -170,5 +184,20 @@ public class QuestionServiceImpl implements QuestionService {
             throw new IllegalArgumentException("삭제 권한이 없는 유저입니다.");
         }
 
+
+    // 질문에 이미지 업로드
+    @Value("${app.upload.dir:${user.home}}")
+    private String uploadDir;
+    public void uploadImage(MultipartFile image){
+        Path copyOfLocation = Paths.get(uploadDir + File.separator +  StringUtils.cleanPath(image.getOriginalFilename()));
+        try {
+            // inputStream을 가져와서
+            // copyOfLocation (저장위치)로 파일을 쓴다.
+            // copy의 옵션은 기존에 존재하면 REPLACE(대체한다), 오버라이딩 한다
+            Files.copy(image.getInputStream(), copyOfLocation, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new FileStorageException("Could not store file : " + image.getOriginalFilename());
+        }
     }
 }

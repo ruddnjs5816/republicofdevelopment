@@ -10,7 +10,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @RequiredArgsConstructor
@@ -92,4 +93,16 @@ public class QuestionController {
     public void deleteQuestion(@PathVariable Long questionId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         questionService.deleteQuestion(questionId, userDetails);
     }
+
+
+    // 질문에 이미지 업로드 API
+    @PostMapping("/questions/upload")
+    @ResponseStatus(HttpStatus.OK)
+    public String uploadImage(@RequestParam("image")MultipartFile image, RedirectAttributes redirectAttributes){
+        questionService.uploadImage(image);
+        redirectAttributes.addFlashAttribute("message",
+                "You successfully upload " + image.getOriginalFilename() + "!");
+        return "redirect:/";
+    }
 }
+
