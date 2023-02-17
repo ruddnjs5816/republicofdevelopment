@@ -47,6 +47,8 @@ public class QuestionServiceImpl implements QuestionService {
                 .title(questionRequest.getTitle())
                 .content(questionRequest.getContent())
                 .user(user)
+                .isClosed(false)
+                .difficulty(0f) //  기본 난이도 0으로 고정.
                 .build();
         questionRepository.save(question);
     }
@@ -126,32 +128,11 @@ public class QuestionServiceImpl implements QuestionService {
         Question question = questionRepository.findById(questionId).orElseThrow
                 (() -> new IllegalArgumentException("해당 아이디의 질문이 없습니다."));
 
-        if(question.isClosed()){
-            throw new IllegalArgumentException("이미 채택완료된 질문입니다.");
-        }
+        Answer answer = answerRepository.findById(answerId).orElseThrow(
+                () -> new IllegalArgumentException("해당하는 아이디의 답변이 없습니다.")
+        );
 
-        if(question.isOwnedBy(questioner)){
-
-            Answer answer = answerRepository.findById(answerId).orElseThrow(
-                    () -> new IllegalArgumentException("해당하는 아이디의 답변이 없습니다.")
-            );
-
-            if(question.contains(answer)) {
-                question.close();
-                answer.select();
-
-                User answerer = answer.getUser();
-                increaseAnswererRating(answerer);
-                promoteUserGradeIfAnswererCan(answerer);
-                rewardPointToAnswererSelected(answerer);
-            } else {
-                throw new IllegalArgumentException("질문에 포함되지 않은 답변은 채택할 수 없습니다.");
-            }
-
-
-        } else {
-            throw new IllegalArgumentException("채택은 질문자만 할 수 있습니다.");
-        }
+        question.processSelectionResult(questioner, question, answer);
     }
 
     @Override
@@ -159,14 +140,8 @@ public class QuestionServiceImpl implements QuestionService {
     public void changeQuestionTitle(Long questionId, PatchQuestionTitleRequest patchQuestionTitleRequest, UserDetailsImpl userDetails) {
         Question question = questionRepository.findById(questionId).orElseThrow
                 (()-> new IllegalArgumentException("해당 아이디의 질문이 없습니다."));
-
         User user = userDetails.getUser();
-
-        if(question.isOwnedBy(user)){
-            question.editTitle(patchQuestionTitleRequest.getTitle());
-        } else {
-            throw new IllegalArgumentException("수정 권한이 없는 유저입니다.");
-        }
+        question.editTitle(user, patchQuestionTitleRequest.getTitle());
     }
 
 
@@ -175,16 +150,8 @@ public class QuestionServiceImpl implements QuestionService {
     public void changeQuestionContent(Long questionId, PatchQuestionContentRequest patchQuestionContentRequest, UserDetailsImpl userDetails){
         Question question = questionRepository.findById(questionId).orElseThrow
                 (()-> new IllegalArgumentException("해당 아이디의 질문이 없습니다."));
-
         User user = userDetails.getUser();
-
-        if(question.isOwnedBy(user)){
-            question.editContent(patchQuestionContentRequest.getContent());
-        } else {
-            throw new IllegalArgumentException("수정 권한이 없는 유저입니다.");
-        }
-
-
+        question.editContent(user, patchQuestionContentRequest.getContent());
     }
 
 
@@ -195,7 +162,6 @@ public class QuestionServiceImpl implements QuestionService {
         Question question = questionRepository.findById(questionId).orElseThrow(
                 () -> new IllegalArgumentException("해당 아이디의 질문이 없습니다.")
         );
-
         User user = userDetails.getUser();
 
         if(question.isOwnedBy(user)){
@@ -203,40 +169,6 @@ public class QuestionServiceImpl implements QuestionService {
         } else {
             throw new IllegalArgumentException("삭제 권한이 없는 유저입니다.");
         }
+
     }
-
-
-    public void increaseAnswererRating(User user){
-        // 레이팅 상승 로직 ( default : 채택 시 10점 상승 )
-        user.increaseRating(10);
-    }
-
-    public void promoteUserGradeIfAnswererCan(User user){
-
-        System.out.println(UserGrade.valueOf("BRONZE"));
-
-        // 등급 상승 비즈니스 로직
-        if(user.getRating()<=50){
-                user.changeGrade(UserGrade.valueOf("BRONZE"));
-            } else if (50<user.getRating()&&user.getRating()<=150) {
-                user.changeGrade(UserGrade.valueOf("SILVER"));
-            } else if (151<user.getRating()&&user.getRating()<=300) {
-                user.changeGrade(UserGrade.valueOf("GOLD"));
-            } else if (301<user.getRating()&&user.getRating()<=500) {
-                user.changeGrade(UserGrade.valueOf("PLATINUM"));
-            } else if (501<user.getRating()&&user.getRating()<=750) {
-                user.changeGrade(UserGrade.valueOf("DIAMOND"));
-            } else if (751<user.getRating()&&user.getRating()<=1050) {
-                user.changeGrade(UserGrade.valueOf("MASTER"));
-            } else {
-                user.changeGrade(UserGrade.valueOf("GRANDMASTER"));
-            }
-    }
-
-    public void rewardPointToAnswererSelected(User user){
-        // 포인트 지급 로직 ( 답변 채택 시 )
-        user.increasePoint(100);
-    }
-
-
 }

@@ -41,15 +41,12 @@ public class AnswerLikeServiceImpl implements AnswerLikeService {
 
             for(Long id : likedUsersId) {
                 if(id.equals(userId)){  // 이미 좋아요를 누른 상태라면
-                    System.out.println("11111번들어왔따!@#!@#!@#!@#@!#!@#!@#@!#@!@#");
                     likedIdAlreadyExists = true;
                     answerLikeRepository.deleteByUserAndAnswer(user, answer);    // 좋아요 삭제
                     answer.decreaseLikes();
                     break;
                 }
             }
-
-
             if(!likedIdAlreadyExists){
                 AnswerLike answerLike = AnswerLike.builder().
                         user(user).

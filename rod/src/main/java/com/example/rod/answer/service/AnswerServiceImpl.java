@@ -44,6 +44,8 @@ public class AnswerServiceImpl implements AnswerService {
             throw new IllegalArgumentException("자신의 질문에는 답변할 수 없습니다.");
         }
 
+        question.calculateDifficulty(answerRequestDto.getDifficulty());
+
         Answer answer = Answer.builder()
                         .content(answerRequestDto.getContent())
                         .likes(0)

@@ -35,6 +35,7 @@ public class Answer extends TimeStamped {
     @Column
     private boolean isSelected;
 
+
 //    private String originalFileName;
 //    private String savedFileName;
 
@@ -88,7 +89,7 @@ public class Answer extends TimeStamped {
         this.likes -= 1;
     }
 
-    public void select() { this.isSelected = true; }
+    public void selected() { this.isSelected = true; }
 
 
 }

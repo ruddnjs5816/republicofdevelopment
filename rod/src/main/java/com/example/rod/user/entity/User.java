@@ -65,7 +65,7 @@ public class User {
         this.password = password;
         this.point = point;
         this.phoneNumber = phoneNumber;
-        this.rating = rating;
+        rating = rating;
         this.grade = grade;
         this.role = role;
     }
@@ -76,7 +76,7 @@ public class User {
     }
 
     public void increaseRating(int amount){
-        this.rating += amount;
+        rating += amount;
     }
 
     public void increasePoint(int amount){
@@ -104,8 +104,24 @@ public class User {
 
     // 질문 등록, 답변 등록, 답변 채택 -> 실행
 
-    public void changeGrade(UserGrade newGrade){
-        this.grade = newGrade;
+    public void changeUserGrade(int rating){
+        // 등급 상승 비즈니스 로직
+        if(rating<=50){
+            grade = UserGrade.valueOf("BRONZE");
+        } else if (50 < rating && rating<=150) {
+            grade = UserGrade.valueOf("SILVER");
+        } else if (151<rating && rating<=300) {
+            grade = UserGrade.valueOf("GOLD");
+        } else if (301<rating && rating<=500) {
+            grade = UserGrade.valueOf("PLATINUM");
+        } else if (501<rating && rating<=750) {
+            grade = UserGrade.valueOf("DIAMOND");
+        } else if (751<rating && rating<=1050) {
+            grade = UserGrade.valueOf("MASTER");
+        } else {
+            grade = UserGrade.valueOf("GRANDMASTER");
+        }
+        
     }
 
 }

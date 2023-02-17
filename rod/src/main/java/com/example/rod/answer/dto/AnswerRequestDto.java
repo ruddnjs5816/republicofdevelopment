@@ -10,4 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AnswerRequestDto {
     private String content;
+
+    private float difficulty;
+
 }
