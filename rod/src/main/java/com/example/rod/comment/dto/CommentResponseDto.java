@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommentResponseDto {
 
-    private Long id;
+    private Long commentId;
     private String content;
 
-    public CommentResponseDto(Long id, String content) {
-        this.id = id;
+    public CommentResponseDto(Long commentId, String content) {
+        this.commentId = commentId;
         this.content = content;
     }
 }

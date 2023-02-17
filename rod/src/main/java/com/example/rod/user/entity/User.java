@@ -1,6 +1,8 @@
 package com.example.rod.user.entity;
 
 
+import com.example.rod.answer.entity.Answer;
+import com.example.rod.comment.entity.Comment;
 import com.example.rod.question.entity.Question;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
@@ -28,13 +30,13 @@ public class User {
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private Integer point;
+    private int point;
 
     private String phoneNumber;
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private Integer rating;
+    private int rating;
 
     @Enumerated(value = EnumType.STRING)
     private UserGrade grade;
@@ -43,8 +45,17 @@ public class User {
     private UserRole role;
 
     @JsonBackReference
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Question> question;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Question> questionList;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)    /* orphanRemoval 쓸 것인지 생각 */
+    private List<Answer> answerList;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Comment> commentList;
+
 
 
     @Builder
@@ -54,10 +65,24 @@ public class User {
         this.password = password;
         this.point = point;
         this.phoneNumber = phoneNumber;
-        this.rating = rating;
+        rating = rating;
         this.grade = grade;
         this.role = role;
     }
+
+    @Override
+    public boolean equals(Object obj){
+        return this.userId == ((User) obj).getUserId();
+    }
+
+    public void increaseRating(int amount){
+        rating += amount;
+    }
+
+    public void increasePoint(int amount){
+        this.point += amount;
+    }
+
 
 //    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //    private List<Question> questions = new ArrayList<>();
@@ -79,8 +104,24 @@ public class User {
 
     // 질문 등록, 답변 등록, 답변 채택 -> 실행
 
-    public void changeGrade(UserGrade newGrade){
-        this.grade = newGrade;
+    public void changeUserGrade(int rating){
+        // 등급 상승 비즈니스 로직
+        if(rating<=50){
+            grade = UserGrade.valueOf("BRONZE");
+        } else if (50 < rating && rating<=150) {
+            grade = UserGrade.valueOf("SILVER");
+        } else if (151<rating && rating<=300) {
+            grade = UserGrade.valueOf("GOLD");
+        } else if (301<rating && rating<=500) {
+            grade = UserGrade.valueOf("PLATINUM");
+        } else if (501<rating && rating<=750) {
+            grade = UserGrade.valueOf("DIAMOND");
+        } else if (751<rating && rating<=1050) {
+            grade = UserGrade.valueOf("MASTER");
+        } else {
+            grade = UserGrade.valueOf("GRANDMASTER");
+        }
+        
     }
 
 }

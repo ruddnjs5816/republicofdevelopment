@@ -12,17 +12,19 @@ public interface QuestionService {
 //    void createQuestion(QuestionRequest questionRequest, UserDetailsImpl userDetails);
     void createQuestion(QuestionRequest questionRequest, UserDetailsImpl userDetails);
 
-    GetQuestionsResponse getMyQuestions(Long userId, Pageable pageable, int page/*String userId*/); // By Security
+    GetQuestionsResponse getMyQuestions(UserDetailsImpl userDetails, Pageable pageable, int page);
 
     GetQuestionsResponse getQuestions(Pageable pageable, int page);
 
     QuestionWithAnswersResponse  getSpecificQuestion(Long questionId);
 
-    void changeQuestionTitle(Long questionId, PatchQuestionTitleRequest patchQuestionTitleRequest);
+    void selectAnswerForQuestion(Long questionId, Long answerId, UserDetailsImpl userDetails);
 
-    void changeQuestionContent(Long questionId, PatchQuestionContentRequest patchQuestionContentRequest);
+    void changeQuestionTitle(Long questionId, PatchQuestionTitleRequest patchQuestionTitleRequest, UserDetailsImpl userDetails);
 
-    void deleteQuestion(Long questionId);
+    void changeQuestionContent(Long questionId, PatchQuestionContentRequest patchQuestionContentRequest, UserDetailsImpl userDetails);
+
+    void deleteQuestion(Long questionId, UserDetailsImpl userDetails);
 
 
     void uploadImage(MultipartFile image);

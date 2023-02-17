@@ -1,7 +1,7 @@
 
 package com.example.rod.security.details;
 
-import com.example.rod.rating.entity.Rating;
+
 import com.example.rod.user.entity.UserGrade;
 import com.example.rod.user.entity.UserGrade;
 import com.example.rod.user.entity.User;

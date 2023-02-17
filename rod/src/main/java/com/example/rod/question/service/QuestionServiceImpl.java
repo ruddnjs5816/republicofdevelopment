@@ -1,6 +1,6 @@
 package com.example.rod.question.service;
 
-import com.example.rod.answer.dto.AnswerResponseDto;
+import com.example.rod.answer.dto.AnswerWithCommentsDto;
 import com.example.rod.answer.entity.Answer;
 import com.example.rod.answer.repository.AnswerRepository;
 import com.example.rod.comment.dto.CommentResponseDto;
@@ -9,27 +9,23 @@ import com.example.rod.comment.repository.CommentRepository;
 import com.example.rod.question.dto.*;
 import com.example.rod.question.entity.Question;
 import com.example.rod.question.repository.QuestionRepository;
-import com.example.rod.security.details.UserDetailServiceImpl;
 import com.example.rod.security.details.UserDetailsImpl;
-import com.example.rod.security.jwt.JwtUtil;
 import com.example.rod.user.entity.User;
+import com.example.rod.user.entity.UserGrade;
 import com.example.rod.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+
 import lombok.Value;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
@@ -57,42 +53,30 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional
     public void createQuestion(QuestionRequest questionRequest, UserDetailsImpl userDetails){
-//        String token = request.getParameter("Authentication");
-//        User user = userDetails.getUser();
         User user = userDetails.getUser();
-//        User user = userRepository.findById(userDetails).orElseThrow(
-//                () -> new UsernameNotFoundException("사용자를 찾을 수 없습니다.")
-//        );
-
-//        UserDetails newUserDetails= userDe
-//        tailsService.loadUserByUsername(username);
-//        User user = userRepository.findById(userId).orElseThrow(
-//                () -> new IllegalArgumentException("찾는 유저가 없습니다.")
-//        );
         Question question = Question.builder()
                 .title(questionRequest.getTitle())
                 .content(questionRequest.getContent())
-//                .user(newUserDetails.u)
                 .user(user)
+                .isClosed(false)
+                .difficulty(0f) //  기본 난이도 0으로 고정.
                 .build();
         questionRepository.save(question);
     }
 
     @Override
     @Transactional
-    public GetQuestionsResponse getMyQuestions(Long userId, Pageable pageable, int page) {
+    public GetQuestionsResponse getMyQuestions(UserDetailsImpl userDetails,Pageable pageable, int page) {
 
-        User user = userRepository.findById(userId).orElseThrow
-                (()-> new IllegalArgumentException("해당 아이디의 유저가 없습니다."));
+        User user = userDetails.getUser();
 
         Page<Question> questionList = questionRepository.findAllByUser(user, pageable.withPage(page-1));
 
         List<QuestionResponse> questionResponseList = new ArrayList<>();
 
         for (Question question : questionList) {
-            questionResponseList.add(new QuestionResponse(question));
+            questionResponseList.add(new QuestionResponse(question.getQuestionId(), question.getTitle(), question.getContent()));
         }
-
         return new GetQuestionsResponse(page, questionResponseList);
     }
 
@@ -107,7 +91,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 
         for (Question question : questionList) {
-            questionResponseList.add(new QuestionResponse(question));
+            questionResponseList.add(new QuestionResponse(question.getQuestionId(), question.getTitle(), question.getContent()));
         }
 
         return new GetQuestionsResponse(page, questionResponseList);
@@ -120,7 +104,7 @@ public class QuestionServiceImpl implements QuestionService {
         Question question = questionRepository.findById(questionId).orElseThrow
                 (() -> new IllegalArgumentException("해당 아이디의 질문이 없습니다."));
 
-        List<AnswerResponseDto> answerWithComments = new ArrayList<>();
+        List<AnswerWithCommentsDto> answerWithComments = new ArrayList<>();
 
 
         // 1. AnswerList 페이징 처리해서 뽑아온다.
@@ -136,8 +120,8 @@ public class QuestionServiceImpl implements QuestionService {
                 CommentResponseDto commentResponseDto = new CommentResponseDto(comment.getId(), comment.getContent());
                 comments.add(commentResponseDto);
             }
-            AnswerResponseDto answerResponseDto = new AnswerResponseDto(answer.getId(), answer.getContent(), answer.getLikes(), comments);
-            answerWithComments.add(answerResponseDto);
+            AnswerWithCommentsDto answerWithCommentsDto = new AnswerWithCommentsDto(answer.getId(), answer.getContent(), answer.getLikes(), comments);
+            answerWithComments.add(answerWithCommentsDto);
         }
 
         QuestionWithAnswersResponse questionWithAnswersResponse = new QuestionWithAnswersResponse(question.getTitle(), question.getContent(), answerWithComments);
@@ -145,31 +129,61 @@ public class QuestionServiceImpl implements QuestionService {
         return questionWithAnswersResponse;
     }
 
-    // 질문 제목 변경
+
     @Override
     @Transactional
-    public void changeQuestionTitle(Long questionId, PatchQuestionTitleRequest patchQuestionTitleRequest) {
+    public void selectAnswerForQuestion(Long questionId, Long answerId, UserDetailsImpl userDetails) {
+
+        User questioner = userDetails.getUser();
+
+        Question question = questionRepository.findById(questionId).orElseThrow
+                (() -> new IllegalArgumentException("해당 아이디의 질문이 없습니다."));
+
+        Answer answer = answerRepository.findById(answerId).orElseThrow(
+                () -> new IllegalArgumentException("해당하는 아이디의 답변이 없습니다.")
+        );
+
+        question.processSelectionResult(questioner, question, answer);
+    }
+
+
+    @Override
+    @Transactional
+    public void changeQuestionTitle(Long questionId, PatchQuestionTitleRequest patchQuestionTitleRequest, UserDetailsImpl userDetails) {
         Question question = questionRepository.findById(questionId).orElseThrow
                 (()-> new IllegalArgumentException("해당 아이디의 질문이 없습니다."));
-        question.editTitle(patchQuestionTitleRequest.getTitle());
+        User user = userDetails.getUser();
+        question.editTitle(user, patchQuestionTitleRequest.getTitle());
     }
 
     // 질문 내용 변경
     @Override
     @Transactional
-    public void changeQuestionContent(Long questionId, PatchQuestionContentRequest patchQuestionContentRequest){
+    public void changeQuestionContent(Long questionId, PatchQuestionContentRequest patchQuestionContentRequest, UserDetailsImpl userDetails){
         Question question = questionRepository.findById(questionId).orElseThrow
                 (()-> new IllegalArgumentException("해당 아이디의 질문이 없습니다."));
-        question.editContent(patchQuestionContentRequest.getContent());
+        User user = userDetails.getUser();
+        question.editContent(user, patchQuestionContentRequest.getContent());
     }
 
 
     //질문 삭제
     @Override
     @Transactional
-    public void deleteQuestion(Long questionId) {
-        questionRepository.deleteById(questionId);
-    }
+    public void deleteQuestion(Long questionId, UserDetailsImpl userDetails) {
+
+
+        Question question = questionRepository.findById(questionId).orElseThrow(
+                () -> new IllegalArgumentException("해당 아이디의 질문이 없습니다.")
+        );
+        User user = userDetails.getUser();
+
+        if(question.isOwnedBy(user)){
+            questionRepository.deleteById(questionId);
+        } else {
+            throw new IllegalArgumentException("삭제 권한이 없는 유저입니다.");
+        }
+
 
     // 질문에 이미지 업로드
     @Value("${app.upload.dir:${user.home}}")
@@ -185,6 +199,5 @@ public class QuestionServiceImpl implements QuestionService {
             e.printStackTrace();
             throw new FileStorageException("Could not store file : " + image.getOriginalFilename());
         }
-
     }
 }

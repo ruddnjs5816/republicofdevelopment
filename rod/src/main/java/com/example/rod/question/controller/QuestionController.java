@@ -24,21 +24,19 @@ public class QuestionController {
     // 질문 작성 API
     @PostMapping("/questions")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createQuestion(@RequestBody QuestionRequest questionRequest, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        questionService.createQuestion(questionRequest,userDetails);
+    public void createQuestion(@RequestBody QuestionRequest questionRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        questionService.createQuestion(questionRequest, userDetails);
     }
 
 
     // 내 질문 리스트 조회 API
-    @GetMapping("/my-questions/{userId}")   // Security 없는 상황에서 테스트를 위해 임의로 userId를 PathVariable로 사용. -> 시큐리티 추가되면, URL & 서비스 레이어 수정 필요!
+    @GetMapping("/my-questions")
     @ResponseStatus(HttpStatus.OK)
-    public GetQuestionsResponse getMyQuestions(@PathVariable Long userId,
-                                                 @RequestParam(defaultValue = "1") int page,
-                                                 @PageableDefault(size = 10,
-                                                 sort = "questionId",
-                                                 direction = Sort.Direction.ASC) Pageable pageable
-                                                /* @AuthenticationPrincipal userDetailsImpl userDetails */) {
-        GetQuestionsResponse myQuestionList = questionService.getMyQuestions(userId, pageable, page);
+    public GetQuestionsResponse getMyQuestions(@RequestParam(defaultValue = "1") int page,
+                                               @PageableDefault(size = 10, sort = "questionId", direction = Sort.Direction.ASC) Pageable pageable,
+                                               @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        GetQuestionsResponse myQuestionList = questionService.getMyQuestions(userDetails, pageable, page);
 
         return myQuestionList;
     }
@@ -48,20 +46,27 @@ public class QuestionController {
     @ResponseStatus(HttpStatus.OK)
     public GetQuestionsResponse getQuestions(
             @RequestParam(defaultValue = "1") int page,
-            @PageableDefault(size = 10, sort = "questionId", direction = Sort.Direction.ASC) Pageable pageable/* @AuthenticationPrincipal userDetailsImpl userDetails */) {
+            @PageableDefault(size = 10, sort = "questionId", direction = Sort.Direction.ASC) Pageable pageable) {
 
-        GetQuestionsResponse questionResponseList = questionService.getQuestions(pageable, page);    //  추후 페이징 처리 해줘야 함.
+        GetQuestionsResponse questionResponseList = questionService.getQuestions(pageable, page);
         return questionResponseList;
     }
 
 
-
-    // 세부 질문 조회 API
+    // 특정 질문 조회 API ( Question - Answer - Comment 전부 다 반환 )
     @GetMapping("/questions/{questionId}")
     @ResponseStatus(HttpStatus.OK)
-    public QuestionWithAnswersResponse getSpecificQuestion(@PathVariable Long questionId){
+    public QuestionWithAnswersResponse getSpecificQuestion(@PathVariable Long questionId) {
         QuestionWithAnswersResponse questionResponse = questionService.getSpecificQuestion(questionId);
         return questionResponse;
+    }
+
+
+    // 질문의 답변 채택 API
+    @PatchMapping("/questions/{questionId}/{answerId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void selectAnswerForQuestion(@PathVariable Long questionId, @PathVariable Long answerId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        questionService.selectAnswerForQuestion(questionId, answerId, userDetails);
     }
 
 
@@ -69,25 +74,26 @@ public class QuestionController {
     // 질문의 제목을 바꾸는 경우 API
     @PatchMapping("/questions/{questionId}/title")
     @ResponseStatus(HttpStatus.OK)
-    public void changeQuestionTitle(@PathVariable Long questionId, @RequestBody PatchQuestionTitleRequest patchQuestionTitleRequest /* @AuthenticationPrincipal userDetailsImpl userDetails */){
-        questionService.changeQuestionTitle(questionId, patchQuestionTitleRequest);
+    public void changeQuestionTitle(@PathVariable Long questionId, @RequestBody PatchQuestionTitleRequest patchQuestionTitleRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        questionService.changeQuestionTitle(questionId, patchQuestionTitleRequest, userDetails);
     }
 
 
     // 질문의 내용(content)를 바꾸는 경우 API
     @PatchMapping("/questions/{questionId}/content")
     @ResponseStatus(HttpStatus.OK)
-    public void changeQuestionContent(@PathVariable Long questionId, @RequestBody PatchQuestionContentRequest patchQuestionContentRequest /* @AuthenticationPrincipal userDetailsImpl userDetails */){
-        questionService.changeQuestionContent(questionId, patchQuestionContentRequest);
+    public void changeQuestionContent(@PathVariable Long questionId, @RequestBody PatchQuestionContentRequest patchQuestionContentRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        questionService.changeQuestionContent(questionId, patchQuestionContentRequest, userDetails);
     }
 
 
     // 내 질문 삭제 API
     @DeleteMapping("/questions/{questionId}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteQuestion(@PathVariable Long questionId/* @AuthenticationPrincipal userDetailsImpl userDetails */){
-        questionService.deleteQuestion(questionId);
+    public void deleteQuestion(@PathVariable Long questionId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        questionService.deleteQuestion(questionId, userDetails);
     }
+
 
     // 질문에 이미지 업로드 API
     @PostMapping("/questions/upload")
@@ -99,3 +105,4 @@ public class QuestionController {
         return "redirect:/";
     }
 }
+
