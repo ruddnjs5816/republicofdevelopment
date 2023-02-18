@@ -36,7 +36,7 @@ public class Question extends TimeStamped {
 
 
     @Column
-    private float difficulty;   //  난이도
+    private double difficulty;   //  난이도
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
@@ -44,7 +44,7 @@ public class Question extends TimeStamped {
 
 
     @JsonBackReference
-    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.REMOVE })
     private List<Answer> answers = new ArrayList<>();
 
     // question에서 어떤 행위를 할 때, answer 를 쓸 건지의 여부에 따라 이 연관관계를 ....
@@ -64,15 +64,16 @@ public class Question extends TimeStamped {
 //        this.questionTags = questionRequest.getTagList();
     }
 
-    public void calculateDifficulty(float difficulty){
+    public void calculateDifficulty(double difficulty){
 
-        // 이전 답변들의 총 난이도 깞들
-        float totalAmount = this.difficulty * answers.size() ;
+        // 이전 답변들의 총 난이도 값들
+        double totalAmountBefore = this.difficulty * answers.size() ;
 
-        (totalAmount + difficulty) / (answers.size() + 1)
+        // 새로운 난이도값 후보 ( => 소수점 둘째자리에서 반올림 해야 함 )
+        double difficultyCaldidate = (totalAmountBefore + difficulty) / (answers.size() + 1);
 
-
-        answers.size()
+        // 새로운 난이도 계산.
+        this.difficulty = Math.round(difficultyCaldidate*10)/10.0;
     }
 
 

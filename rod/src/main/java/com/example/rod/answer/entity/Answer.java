@@ -40,9 +40,11 @@ public class Answer extends TimeStamped {
 //    private String savedFileName;
 
 //    @OneToMany(mappedBy = "Answer", cascade = CascadeType.ALL)
-    @OneToMany(mappedBy = "answer", cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "answer", cascade = { CascadeType.DETACH, CascadeType.REMOVE })
     @OrderBy("createdAt DESC")
     private List<Comment> comments = new ArrayList<>();
+
+
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id")
