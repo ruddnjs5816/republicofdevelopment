@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 public class AnswerRequestDto {
     private String content;
 
-    private float difficulty;
+    private double difficulty;
 
 }

@@ -12,6 +12,7 @@ import com.example.rod.question.entity.Question;
 import com.example.rod.question.repository.QuestionRepository;
 import com.example.rod.security.details.UserDetailsImpl;
 import com.example.rod.user.entity.User;
+import com.example.rod.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +31,8 @@ public class AnswerServiceImpl implements AnswerService {
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
 
+    private final UserRepository userRepository;
+
     @Transactional
     @Override
     public void createAnswer(Long questionId, AnswerRequestDto answerRequestDto, UserDetailsImpl userDetails) {
@@ -38,13 +41,20 @@ public class AnswerServiceImpl implements AnswerService {
                 () -> new IllegalArgumentException("해당하는 질문이 존재하지 않습니다.")
         );
 
-        User user = userDetails.getUser();
+        User answerer = userDetails.getUser();
 
-        if(question.isOwnedBy(user)){
+        if(question.isOwnedBy(answerer)){
             throw new IllegalArgumentException("자신의 질문에는 답변할 수 없습니다.");
         }
 
         question.calculateDifficulty(answerRequestDto.getDifficulty());
+
+        User answererEntity = userRepository.findById(answerer.getUserId()).orElseThrow(
+                () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다.")
+        );
+
+        answererEntity.increasePoint(10); // 답변 작성 시 10포인트 지급
+
 
         Answer answer = Answer.builder()
                         .content(answerRequestDto.getContent())
