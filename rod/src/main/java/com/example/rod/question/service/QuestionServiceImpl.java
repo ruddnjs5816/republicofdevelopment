@@ -11,7 +11,6 @@ import com.example.rod.question.entity.Question;
 import com.example.rod.question.repository.QuestionRepository;
 import com.example.rod.security.details.UserDetailsImpl;
 import com.example.rod.user.entity.User;
-import com.example.rod.user.entity.UserGrade;
 import com.example.rod.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,6 +32,8 @@ public class QuestionServiceImpl implements QuestionService {
 
     private final AnswerRepository answerRepository;
 
+    private final QuestionHashTagService questionHashTagService;
+
     private final CommentRepository commentRepository;
 
     private final UserRepository userRepository;
@@ -43,6 +44,9 @@ public class QuestionServiceImpl implements QuestionService {
     @Transactional
     public void createQuestion(QuestionRequest questionRequest, UserDetailsImpl userDetails){
         User user = userDetails.getUser();
+
+        String hashtagStrs = questionRequest.getHashtagStrs();
+
         Question question = Question.builder()
                 .title(questionRequest.getTitle())
                 .content(questionRequest.getContent())
@@ -50,7 +54,10 @@ public class QuestionServiceImpl implements QuestionService {
                 .isClosed(false)
                 .difficulty(0f) //  기본 난이도 0으로 고정.
                 .build();
+
         questionRepository.save(question);
+        // 태그 저장
+        questionHashTagService.saveHashTags(question, hashtagStrs);
     }
 
     @Override
@@ -64,7 +71,7 @@ public class QuestionServiceImpl implements QuestionService {
         List<QuestionResponse> questionResponseList = new ArrayList<>();
 
         for (Question question : questionList) {
-            questionResponseList.add(new QuestionResponse(question.getQuestionId(), question.getTitle(), question.getContent()));
+            questionResponseList.add(new QuestionResponse(question.getId(), question.getTitle(), question.getContent()));
         }
         return new GetQuestionsResponse(page, questionResponseList);
     }
@@ -80,7 +87,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 
         for (Question question : questionList) {
-            questionResponseList.add(new QuestionResponse(question.getQuestionId(), question.getTitle(), question.getContent()));
+            questionResponseList.add(new QuestionResponse(question.getId(), question.getTitle(), question.getContent()));
         }
 
         return new GetQuestionsResponse(page, questionResponseList);

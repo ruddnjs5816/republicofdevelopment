@@ -23,7 +23,7 @@ public class Question extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private Long questionId;
+    private Long id;
 
     @Column
     private String title;

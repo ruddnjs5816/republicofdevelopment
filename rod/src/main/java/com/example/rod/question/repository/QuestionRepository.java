@@ -11,8 +11,6 @@ import java.util.List;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
-    List<Question> findByUser(@NonNull User user);
-
     Page<Question> findAllByUser(User user, Pageable pageable);
 
 
