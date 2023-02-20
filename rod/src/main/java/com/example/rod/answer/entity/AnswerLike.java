@@ -2,8 +2,11 @@ package com.example.rod.answer.entity;
 
 import com.example.rod.user.entity.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -22,8 +25,15 @@ public class AnswerLike {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "ANSWERS_ID")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "answer_id")
     private Answer answer;
+
+    @Builder
+    public AnswerLike(User user, Answer answer){
+        this.user = user;
+        this.answer = answer;
+    }
 
     public AnswerLike(Answer answer) {
         this.answer = answer;
