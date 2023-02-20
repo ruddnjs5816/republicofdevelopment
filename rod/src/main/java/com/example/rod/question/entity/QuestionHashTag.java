@@ -1,10 +1,16 @@
-/*
 package com.example.rod.question.entity;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
 @Entity
-public class QuestionTag {
+@Getter
+@NoArgsConstructor
+@SuperBuilder
+public class QuestionHashTag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,9 +21,7 @@ public class QuestionTag {
     private Question question;
 
     @ManyToOne
-    @JoinColumn(name = "tag_id")
-    private Tag tag;
-
+    @JoinColumn(name = "hashtag_id")
+    private HashTag hashTag;
 
 }
-*/
