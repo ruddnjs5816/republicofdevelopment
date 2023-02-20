@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class ProfileRequestDto {
 
-    private String username;
+    private String name;
 
     private String password;
 

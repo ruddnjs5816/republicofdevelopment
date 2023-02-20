@@ -47,7 +47,7 @@ public class UserService {
         String uuid = UUID.randomUUID().toString();
         String unique = uuid.substring(0,7);
         String filename = unique + "-" + multipartFile.getOriginalFilename();
-        String username = profileRequestDto.getUsername();
+        String username = profileRequestDto.getName();
         String phoneNumber = profileRequestDto.getPhoneNumber();
         String password = profileRequestDto.getPassword();
 
@@ -63,7 +63,7 @@ public class UserService {
                                  ProfileRequestDto profileRequestDto,
                                  UserDetailsImpl userDetails) throws IOException {
         String password = profileRequestDto.getPassword();
-        String username = profileRequestDto.getUsername();
+        String username = profileRequestDto.getName();
         String phoneNumber = profileRequestDto.getPhoneNumber();
         User user = userDetails.getUser();
         String filename = image.getName();
@@ -72,32 +72,20 @@ public class UserService {
 
         try{
             user.setPassword(passwordEncoder.encode(password));
-            user.setUsername(username);
-            user.setPhoneNumber(phoneNumber);
         } catch (IllegalArgumentException e){
             System.out.println(e.getMessage());
             user.setPassword(userDetails.getPassword());
-            user.setUsername(userDetails.getUsername());
-            user.setPhoneNumber(userDetails.getPhoneNumber());
         }
         try{
-            user.setPassword(passwordEncoder.encode(password));
             user.setUsername(username);
-            user.setPhoneNumber(phoneNumber);
         } catch (IllegalArgumentException e){
             System.out.println(e.getMessage());
-            user.setPassword(userDetails.getPassword());
-            user.setUsername(userDetails.getUsername());
-            user.setPhoneNumber(userDetails.getPhoneNumber());
+            user.setUsername(userDetails.getName());
         }
         try{
-            user.setPassword(passwordEncoder.encode(password));
-            user.setUsername(username);
             user.setPhoneNumber(phoneNumber);
         } catch (IllegalArgumentException e){
             System.out.println(e.getMessage());
-            user.setPassword(userDetails.getPassword());
-            user.setUsername(userDetails.getUsername());
             user.setPhoneNumber(userDetails.getPhoneNumber());
         }
 

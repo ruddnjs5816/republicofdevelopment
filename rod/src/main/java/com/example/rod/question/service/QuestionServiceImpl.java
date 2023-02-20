@@ -14,12 +14,9 @@ import com.example.rod.security.details.UserDetailsImpl;
 import com.example.rod.user.entity.User;
 import com.example.rod.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-<<<<<<< HEAD
-import org.springframework.beans.factory.annotation.Value;
-=======
 
-import lombok.Value;
->>>>>>> 94b4b1cb905af07cf69589ae2e2ddaa349d0db09
+import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -197,21 +194,10 @@ public class QuestionServiceImpl implements QuestionService {
         } else {
             throw new IllegalArgumentException("삭제 권한이 없는 유저입니다.");
         }
+    }
 
-
-    // 질문에 이미지 업로드
-    @Value("${app.upload.dir:${user.home}}")
-    private String uploadDir;
+    @Override
     public void uploadImage(MultipartFile image) throws GetException {
-        Path copyOfLocation = Paths.get(uploadDir + File.separator +  StringUtils.cleanPath(image.getOriginalFilename()));
-        try {
-            // inputStream을 가져와서
-            // copyOfLocation (저장위치)로 파일을 쓴다.
-            // copy의 옵션은 기존에 존재하면 REPLACE(대체한다), 오버라이딩 한다
-            Files.copy(image.getInputStream(), copyOfLocation, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new GetException(FILE_NOT_FOUND);
-        }
+
     }
 }

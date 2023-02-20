@@ -24,6 +24,7 @@ public class UserDetailsImpl implements UserDetails {
 
     private Long userId;
     private String username;
+    private String name;
     private String phoneNumber;
     private String password;
     private UserGrade grade;
@@ -41,7 +42,7 @@ public class UserDetailsImpl implements UserDetails {
                            User user, UserRole role,
                            GrantedAuthority authority,
                            String phoneNumber, Integer rating,
-                           String imageUrl, String filename
+                           String imageUrl, String filename, String name
                            ) {
         this.userId = userId;
         this.username = username;
@@ -54,6 +55,7 @@ public class UserDetailsImpl implements UserDetails {
         this.phoneNumber = phoneNumber;
         this.rating = rating;
         this.filename = filename;
+        this.name = name;
     }
 
     public void changeUserDetails(User user){
