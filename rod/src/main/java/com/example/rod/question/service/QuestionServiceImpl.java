@@ -6,6 +6,7 @@ import com.example.rod.answer.repository.AnswerRepository;
 import com.example.rod.comment.dto.CommentResponseDto;
 import com.example.rod.comment.entity.Comment;
 import com.example.rod.comment.repository.CommentRepository;
+import com.example.rod.exception.GetException;
 import com.example.rod.question.dto.*;
 import com.example.rod.question.entity.Question;
 import com.example.rod.question.repository.QuestionRepository;
@@ -14,7 +15,8 @@ import com.example.rod.user.entity.User;
 import com.example.rod.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +36,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.rod.exception.StatusExceptionCode.FILE_NOT_FOUND;
 
 @RequiredArgsConstructor
 @Service
@@ -190,7 +194,10 @@ public class QuestionServiceImpl implements QuestionService {
         } else {
             throw new IllegalArgumentException("삭제 권한이 없는 유저입니다.");
         }
+    }
 
+//    @Override
+//    public void uploadImage(MultipartFile image) throws GetException {
 
         // 질문에 이미지 업로드
 //        @Value("${app.upload.dir:${user.home}}")
@@ -207,5 +214,6 @@ public class QuestionServiceImpl implements QuestionService {
 //                throw new FileStorageException("Could not store file : " + image.getOriginalFilename());
 //            }
 //        }
+
     }
 }

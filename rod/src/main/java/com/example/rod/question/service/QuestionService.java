@@ -1,5 +1,6 @@
 package com.example.rod.question.service;
 
+import com.example.rod.exception.GetException;
 import com.example.rod.question.dto.*;
 import com.example.rod.security.details.UserDetailsImpl;
 import org.springframework.data.domain.Pageable;
@@ -28,4 +29,5 @@ public interface QuestionService {
 
 
 //    void uploadImage(MultipartFile image);
+
 }

@@ -3,7 +3,6 @@ package com.example.rod.product.service;
 import com.example.rod.product.entity.ProductImg;
 import com.example.rod.product.repository.ProductImgRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -19,7 +18,7 @@ public class ProductImgService {
     private String productImgLocation;
 
     private final ProductImgRepository productImgRepository;
-    private final FileService fileService;
+    private final ProductFileService fileService;
 
     public void saveProductImg(ProductImg productImg, MultipartFile productImgFile) throws Exception {
         String oriImgName = productImgFile.getOriginalFilename();
