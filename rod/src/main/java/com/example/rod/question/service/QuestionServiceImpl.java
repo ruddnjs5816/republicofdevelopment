@@ -6,6 +6,7 @@ import com.example.rod.answer.repository.AnswerRepository;
 import com.example.rod.comment.dto.CommentResponseDto;
 import com.example.rod.comment.entity.Comment;
 import com.example.rod.comment.repository.CommentRepository;
+import com.example.rod.exception.GetException;
 import com.example.rod.question.dto.*;
 import com.example.rod.question.entity.Question;
 import com.example.rod.question.repository.QuestionRepository;
@@ -15,7 +16,7 @@ import com.example.rod.security.jwt.JwtUtil;
 import com.example.rod.user.entity.User;
 import com.example.rod.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,6 +40,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.rod.exception.StatusExceptionCode.FILE_NOT_FOUND;
 
 @RequiredArgsConstructor
 @Service
@@ -174,7 +177,7 @@ public class QuestionServiceImpl implements QuestionService {
     // 질문에 이미지 업로드
     @Value("${app.upload.dir:${user.home}}")
     private String uploadDir;
-    public void uploadImage(MultipartFile image){
+    public void uploadImage(MultipartFile image) throws GetException {
         Path copyOfLocation = Paths.get(uploadDir + File.separator +  StringUtils.cleanPath(image.getOriginalFilename()));
         try {
             // inputStream을 가져와서
@@ -183,7 +186,7 @@ public class QuestionServiceImpl implements QuestionService {
             Files.copy(image.getInputStream(), copyOfLocation, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new FileStorageException("Could not store file : " + image.getOriginalFilename());
+            throw new GetException(FILE_NOT_FOUND);
         }
 
     }

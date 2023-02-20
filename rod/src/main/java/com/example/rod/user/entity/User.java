@@ -2,10 +2,11 @@ package com.example.rod.user.entity;
 
 
 import com.example.rod.question.entity.Question;
+import com.example.rod.share.TimeStamped;
+import com.example.rod.profile.dto.ProfileRequestDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Setter
-public class User {
+public class User extends TimeStamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,9 +47,14 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Question> question;
 
+    private String imageUrl;
+    private String filename;
+
 
     @Builder
-    public User(String username, String name, String password, Integer point, String phoneNumber, Integer rating, UserGrade grade, UserRole role) {
+    public User(String username, String name, String password, Integer point,
+                String phoneNumber, Integer rating, UserGrade grade, UserRole role,
+                String imageUrl, String filename) {
         this.username = username;
         this.name = name;
         this.password = password;
@@ -57,6 +63,8 @@ public class User {
         this.rating = rating;
         this.grade = grade;
         this.role = role;
+        this.imageUrl = imageUrl;
+        this.filename = filename;
     }
 
 //    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -70,12 +78,15 @@ public class User {
 //        this.grade = UserGrade.valueOf(role);
 //    }
 
-    public void update(String username, String name, String password, String phoneNumber) {
+    public void changeProfile(String username, String password, String phoneNumber) {
         this.username = username;
-        this.name= name;
         this.password = password;
         this.phoneNumber = phoneNumber;
     }
+
+    public void changeImage(String filename){
+        this.filename = filename;
+    };
 
     // 질문 등록, 답변 등록, 답변 채택 -> 실행
 
@@ -83,4 +94,7 @@ public class User {
         this.grade = newGrade;
     }
 
+    public void setImageUrl(String storedFileName) {
+        this.imageUrl = storedFileName;
+    }
 }

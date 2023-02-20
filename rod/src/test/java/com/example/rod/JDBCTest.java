@@ -19,7 +19,8 @@ public class JDBCTest {
         // su - postgres
         // psql --username teasun --dbname messenger
 
-        String url = "jdbc:postgresql://localhost:5432/messenger";
+        String url2 = "jdbc:postgresql://localhost:5432/messenger";
+        String url = "jdbc:h2://localhost:8080";
         String username = "byeongdoo";
         String password = "pass";
 
