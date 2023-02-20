@@ -27,5 +27,5 @@ public interface QuestionService {
     void deleteQuestion(Long questionId, UserDetailsImpl userDetails);
 
 
-    void uploadImage(MultipartFile image);
+//    void uploadImage(MultipartFile image);
 }
