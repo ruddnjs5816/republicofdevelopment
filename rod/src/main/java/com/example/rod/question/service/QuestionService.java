@@ -3,6 +3,7 @@ package com.example.rod.question.service;
 import com.example.rod.question.dto.*;
 import com.example.rod.security.details.UserDetailsImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,5 +27,5 @@ public interface QuestionService {
     void deleteQuestion(Long questionId, UserDetailsImpl userDetails);
 
 
-
+//    void uploadImage(MultipartFile image);
 }
