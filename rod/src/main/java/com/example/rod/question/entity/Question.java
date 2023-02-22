@@ -12,28 +12,32 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import lombok.*;
+
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name="questions")
+@Entity
 @Getter
+@Table(name = "questions")
 @NoArgsConstructor
+@Setter
 public class Question extends TimeStamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
-    private Long id;
+    private Long questionId;
 
-    @Column
     private String title;
 
-    @Column
+
     private String content;
 
-    @Column
-    private boolean isClosed;   // 채택마감여부
+
+    private Boolean isClosed;   // 채택마감여부
 
 
     @Column(name = "difficulty", columnDefinition = "double precision")
@@ -45,8 +49,11 @@ public class Question extends TimeStamped {
 
 
     @JsonBackReference
-    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.REMOVE })
-    private List<Answer> answers = new ArrayList<>();
+//    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.REMOVE })
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Answer> answersList;
+
+
 
 
     // 승튜한테 질문
@@ -60,7 +67,6 @@ public class Question extends TimeStamped {
         this.title = title;
         this.content = content;
         this.user = user;
-        this.answers = answers;
         this.isClosed = isClosed;
         this.difficulty = difficulty;
     }
@@ -68,10 +74,10 @@ public class Question extends TimeStamped {
     public void calculateDifficulty(double difficulty){
 
         // 이전 답변들의 총 난이도 값들
-        double totalAmountBefore = this.difficulty * answers.size() ;
+        double totalAmountBefore = this.difficulty * answersList.size() ;
 
         // 새로운 난이도값 후보 ( => 소수점 둘째자리에서 반올림 해야 함 )
-        double difficultyCaldidate = (totalAmountBefore + difficulty) / (answers.size() + 1);
+        double difficultyCaldidate = (totalAmountBefore + difficulty) / (answersList.size() + 1);
 
         // 새로운 난이도 계산.
         this.difficulty = Math.round(difficultyCaldidate*10)/10.0;
@@ -97,14 +103,14 @@ public class Question extends TimeStamped {
 
     public boolean isOwnedBy (User user) { return (this.user.equals(user)); }
 
-    public boolean contains (Answer answer) { return answers.contains(answer); }
+    public boolean contains (Answer answer) { return answersList.contains(answer); }
 
     public void adopted(){ this.isClosed = true; }
 
 
     public void processSelectionResult(User questioner, Question question, Answer answer){
 
-        if(question.isClosed()){
+        if(question.isClosed){
             throw new IllegalArgumentException("이미 채택완료된 질문입니다.");
         }
 
@@ -123,8 +129,4 @@ public class Question extends TimeStamped {
             throw new IllegalArgumentException("채택은 질문자만 할 수 있습니다.");
         }
     }
-
-
-
-
 }

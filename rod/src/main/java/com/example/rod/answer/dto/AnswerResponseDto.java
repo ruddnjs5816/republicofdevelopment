@@ -19,7 +19,7 @@ public class AnswerResponseDto {
     private int commentCount;
 
     public AnswerResponseDto(Answer answer) {
-        this.questionId = answer.getQuestion().getId();
+        this.questionId = answer.getQuestion().getQuestionId();
         this.answerId = answer.getId();
         this.content = answer.getContent();
         this.likes = answer.getLikes();

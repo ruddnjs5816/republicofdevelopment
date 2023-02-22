@@ -11,9 +11,9 @@ import java.util.Optional;
 public interface QuestionHashTagRepository extends JpaRepository<QuestionHashTag, Long> {
 
 
-    Optional<QuestionHashTag> findByQuestionIdAndHashTagId(Long questionId, Long hashTagId);
+    Optional<QuestionHashTag> findByQuestionQuestionIdAndHashTagId(Long questionId, Long hashTagId);
 
-    List<QuestionHashTag> findAllByQuestionId(Long questionId);
+    List<QuestionHashTag> findAllByQuestionQuestionId(Long questionId);
 
     Page<QuestionHashTag> findByHashTag_HashTagName(String tagname, Pageable pageable);
 

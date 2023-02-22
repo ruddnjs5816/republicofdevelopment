@@ -4,5 +4,4 @@ public class Address {
 
     public String zipCode;
 
-
 }

@@ -17,28 +17,16 @@ import com.example.rod.user.entity.User;
 import com.example.rod.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Value;
-
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.data.domain.*;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.example.rod.exception.StatusExceptionCode.FILE_NOT_FOUND;
 
 @RequiredArgsConstructor
 @Service
@@ -90,10 +78,10 @@ public class QuestionServiceImpl implements QuestionService {
 
         for (Question question : questionList) {
             questionResponseList.add(QuestionResponse.builder()
-                    .questionId(question.getId())
+                    .questionId(question.getQuestionId())
                     .title(question.getTitle())
                     .nickname(question.getUser().getName())
-                    .answerCount(question.getAnswers().size())
+                    .answerCount(question.getAnswersList().size())
                     .createdAt(question.getCreatedAt()).build());
         }
         return new GetQuestionsResponse(page, questionResponseList);
@@ -109,10 +97,10 @@ public class QuestionServiceImpl implements QuestionService {
 
         for (Question question : questionList) {
             questionResponseList.add(QuestionResponse.builder()
-                    .questionId(question.getId())
+                    .questionId(question.getQuestionId())
                     .title(question.getTitle())
                     .nickname(question.getUser().getName())
-                    .answerCount(question.getAnswers().size())
+                    .answerCount(question.getAnswersList().size())
                     .createdAt(question.getCreatedAt()).build());
         }
 
@@ -242,10 +230,10 @@ public class QuestionServiceImpl implements QuestionService {
 
         List<QuestionResponse> questionResponseList = questionListWithPage.stream()
                 .map(question -> QuestionResponse.builder()
-                        .questionId(question.getId())
+                        .questionId(question.getQuestionId())
                         .title(question.getTitle())
                         .nickname(question.getUser().getName())
-                        .answerCount(question.getAnswers().size())
+                        .answerCount(question.getAnswersList().size())
                         .createdAt(question.getCreatedAt()).build())
                 .collect(Collectors.toList());
 
