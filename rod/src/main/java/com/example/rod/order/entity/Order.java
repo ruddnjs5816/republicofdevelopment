@@ -21,7 +21,8 @@ public class Order extends TimeStamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
-//    private  Long userId; //주문 회원
+
+//    private Long userId; //주문 회원
 
     private Long productId; //주문 상품
 

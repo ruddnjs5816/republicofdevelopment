@@ -67,10 +67,17 @@ public class OrderService {
 //        List<Order> orderList = orderRepository.findAllByUser(userId);
         List<OrderResponseDto> result = new ArrayList<>();
 
+<<<<<<< HEAD
      /*   for (Order order: orderList) {
             OrderResponseDto dto = new OrderResponseDto(order.getId(), order.getProductId(), order.getOrderDate(), order.getOrderStatus());
             result.add(dto);
         }*/
+=======
+//        for (Order order: orderList) {
+//            OrderResponseDto dto = new OrderResponseDto(order.getOrderId(), order.getProductId(), order.getOrderDate(), order.getOrderStatus());
+//            result.add(dto);
+//        }
+>>>>>>> a1c178494620b02727e69ced0ffafc9a766a38df
         return result;
 
     }

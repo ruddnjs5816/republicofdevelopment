@@ -1,7 +1,5 @@
 package com.example.rod.rating.service;
 
-import com.example.rod.rating.dto.PointRequestDto;
-import com.example.rod.rating.dto.PointResultDto;
 import com.example.rod.user.entity.UserGrade;
 import com.example.rod.user.entity.User;
 import com.example.rod.user.repository.UserRepository;
@@ -13,8 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class PointServiceTest {
 
-    @Autowired
-    public PointService pointService;
+//    @Autowired
+//    public PointService pointService;
     @Autowired
     private UserRepository userRepository;
     @Test
