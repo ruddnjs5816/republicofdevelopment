@@ -38,7 +38,7 @@ public class QuestionHashTagService {
 
         HashTag hashTag = hashTagService.save(hashTagContent);
 
-        Optional<QuestionHashTag> optQuestionHTag = questionHashTagRepository.findByQuestionIdAndHashTagId(question.getId(), hashTag.getId());
+        Optional<QuestionHashTag> optQuestionHTag = questionHashTagRepository.findByQuestionQuestionIdAndHashTagId(question.getQuestionId(), hashTag.getId());
 
         if(optQuestionHTag.isPresent()){
             return optQuestionHTag.get();
@@ -56,7 +56,7 @@ public class QuestionHashTagService {
 
     public HashTagDto findTagsByQuestionId(Long questionId) {
 
-        List<QuestionHashTag> questionHashTags = questionHashTagRepository.findAllByQuestionId(questionId);
+        List<QuestionHashTag> questionHashTags = questionHashTagRepository.findAllByQuestionQuestionId(questionId);
 
         HashTagDto hashTagDtoList = new HashTagDto();
 

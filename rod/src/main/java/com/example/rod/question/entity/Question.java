@@ -7,36 +7,35 @@ import com.example.rod.share.TimeStamped;
 import com.example.rod.user.entity.User;
 import com.example.rod.user.entity.UserGrade;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@Table(name = "questions")
 @NoArgsConstructor
+@Setter
 public class Question extends TimeStamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
-    private Long id;
+    private Long questionId;
 
-    @Column
     private String title;
 
-    @Column
+
     private String content;
 
-    @Column
-    private boolean isClosed;   // 채택마감여부
 
+    private Boolean isClosed;   // 채택마감여부
 
-    @Column
-    private double difficulty;   //  난이도
+    @Column(columnDefinition = "float8")
+    private Double difficulty;   //  난이도
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
@@ -44,8 +43,11 @@ public class Question extends TimeStamped {
 
 
     @JsonBackReference
-    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.REMOVE })
-    private List<Answer> answers = new ArrayList<>();
+//    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.REMOVE })
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Answer> answersList;
+
+
 
     // question에서 어떤 행위를 할 때, answer 를 쓸 건지의 여부에 따라 이 연관관계를 ....
 
@@ -54,23 +56,24 @@ public class Question extends TimeStamped {
 
 */
     @Builder
-    public Question(String title, String content, User user, List<Answer> answers, boolean isClosed, float difficulty){
+    public Question(String title, String content, User user, Boolean isClosed, Double difficulty){
         this.title = title;
         this.content = content;
         this.user = user;
-        this.answers = answers;
         this.isClosed = isClosed;
         this.difficulty = difficulty;
+
+
 //        this.questionTags = questionRequest.getTagList();
     }
 
     public void calculateDifficulty(double difficulty){
 
         // 이전 답변들의 총 난이도 값들
-        double totalAmountBefore = this.difficulty * answers.size() ;
+        double totalAmountBefore = this.difficulty * answersList.size() ;
 
         // 새로운 난이도값 후보 ( => 소수점 둘째자리에서 반올림 해야 함 )
-        double difficultyCaldidate = (totalAmountBefore + difficulty) / (answers.size() + 1);
+        double difficultyCaldidate = (totalAmountBefore + difficulty) / (answersList.size() + 1);
 
         // 새로운 난이도 계산.
         this.difficulty = Math.round(difficultyCaldidate*10)/10.0;
@@ -98,14 +101,14 @@ public class Question extends TimeStamped {
 
     public boolean isOwnedBy (User user) { return (this.user.equals(user)); }
 
-    public boolean contains (Answer answer) { return answers.contains(answer); }
+    public boolean contains (Answer answer) { return answersList.contains(answer); }
 
     public void adopted(){ this.isClosed = true; }
 
 
     public void processSelectionResult(User questioner, Question question, Answer answer){
 
-        if(question.isClosed()){
+        if(question.isClosed){
             throw new IllegalArgumentException("이미 채택완료된 질문입니다.");
         }
 
@@ -124,8 +127,4 @@ public class Question extends TimeStamped {
             throw new IllegalArgumentException("채택은 질문자만 할 수 있습니다.");
         }
     }
-
-
-
-
 }
