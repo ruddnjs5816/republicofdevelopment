@@ -82,7 +82,12 @@ public class QuestionServiceImpl implements QuestionService {
         List<QuestionResponse> questionResponseList = new ArrayList<>();
 
         for (Question question : questionList) {
-            questionResponseList.add(new QuestionResponse(question.getId(), question.getTitle(), question.getContent()));
+            questionResponseList.add(QuestionResponse.builder()
+                    .questionId(question.getId())
+                    .title(question.getTitle())
+                    .nickname(question.getUser().getName())
+                    .answerCount(question.getAnswers().size())
+                    .createdAt(question.getCreatedAt()).build());
         }
         return new GetQuestionsResponse(page, questionResponseList);
     }
@@ -98,7 +103,12 @@ public class QuestionServiceImpl implements QuestionService {
 
 
         for (Question question : questionList) {
-            questionResponseList.add(new QuestionResponse(question.getId(), question.getTitle(), question.getContent()));
+            questionResponseList.add(QuestionResponse.builder()
+                    .questionId(question.getId())
+                    .title(question.getTitle())
+                    .nickname(question.getUser().getName())
+                    .answerCount(question.getAnswers().size())
+                    .createdAt(question.getCreatedAt()).build());
         }
 
         return new GetQuestionsResponse(page, questionResponseList);
