@@ -44,7 +44,7 @@ public class QuestionController {
     }
 
     // 모든 질문 리스트 조회 API : 질문 제목 / 내용만 가져오는 API.
-    @GetMapping("/questions")
+    @GetMapping("/questions/all")
     @ResponseStatus(HttpStatus.OK)
     public GetQuestionsResponse getQuestions(
             @RequestParam(defaultValue = "1") int page,
@@ -56,7 +56,7 @@ public class QuestionController {
 
 
     // 특정 질문 조회 API ( Question - Answer - Comment 전부 다 반환 )
-    @GetMapping("/questions/{questionId}")
+    @GetMapping("/questions/specific/{questionId}")
     @ResponseStatus(HttpStatus.OK)
     public QuestionWithAnswersResponse getSpecificQuestion(@PathVariable Long questionId) {
         QuestionWithAnswersResponse questionResponse = questionService.getSpecificQuestion(questionId);
