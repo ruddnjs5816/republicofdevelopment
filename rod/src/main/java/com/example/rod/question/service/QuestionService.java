@@ -28,5 +28,7 @@ public interface QuestionService {
     void deleteQuestion(Long questionId, UserDetailsImpl userDetails);
 
 
-    void uploadImage(MultipartFile image) throws GetException;
+
+//    void uploadImage(MultipartFile image) throws GetException;
+
 }

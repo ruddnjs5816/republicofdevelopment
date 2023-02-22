@@ -1,5 +1,6 @@
 package com.example.rod.question.service;
 
+import com.example.rod.question.dto.HashTagDto;
 import com.example.rod.question.entity.HashTag;
 import com.example.rod.question.entity.Question;
 import com.example.rod.question.entity.QuestionHashTag;
@@ -7,6 +8,7 @@ import com.example.rod.question.repository.QuestionHashTagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -52,4 +54,18 @@ public class QuestionHashTagService {
         return questionHashTag;
     }
 
+    public HashTagDto findTagsByQuestionId(Long questionId) {
+
+        List<QuestionHashTag> questionHashTags = questionHashTagRepository.findAllByQuestionId(questionId);
+
+        HashTagDto hashTagDtoList = new HashTagDto();
+
+        questionHashTags.forEach(questionHashTag ->{
+            String tagName = questionHashTag.getHashTag().getHashTagName();
+
+            hashTagDtoList.getHashTags().add(tagName);
+        });
+
+        return hashTagDtoList;
+    }
 }

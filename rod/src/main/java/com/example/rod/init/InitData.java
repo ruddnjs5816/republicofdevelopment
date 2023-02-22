@@ -4,6 +4,7 @@ import com.example.rod.user.entity.User;
 import com.example.rod.user.entity.UserGrade;
 import com.example.rod.user.entity.UserRole;
 import com.example.rod.user.repository.UserRepository;
+import com.example.rod.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -20,7 +21,7 @@ public class InitData implements ApplicationRunner {
 
     private final UserRepository userRepository;
 
-
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
 
@@ -46,7 +47,6 @@ public class InitData implements ApplicationRunner {
                 .password(encodedPassword)
                 .build();
         userRepository.save(byeongdoo);
-
 
 
 //        User byeongdoo = new User(
