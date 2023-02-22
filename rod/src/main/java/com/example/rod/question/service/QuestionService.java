@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface QuestionService {
 
@@ -26,8 +27,8 @@ public interface QuestionService {
 
     void deleteQuestion(Long questionId, UserDetailsImpl userDetails);
 
-    GetQuestionsResponse searchQuestionByTitle(String title, int page, Pageable pageable);
+    GetQuestionsResponse searchQuestion(Optional<String> title, Optional<String> nickname, Optional<String> hashtagname,
+                                               int page, Pageable pageable);
 
 
-//    void uploadImage(MultipartFile image);
 }

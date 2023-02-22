@@ -8,6 +8,8 @@ import com.example.rod.comment.entity.Comment;
 import com.example.rod.comment.repository.CommentRepository;
 import com.example.rod.question.dto.*;
 import com.example.rod.question.entity.Question;
+import com.example.rod.question.entity.QuestionHashTag;
+import com.example.rod.question.repository.QuestionHashTagRepository;
 import com.example.rod.question.repository.QuestionRepository;
 import com.example.rod.security.details.UserDetailsImpl;
 import com.example.rod.user.entity.User;
@@ -16,10 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 import lombok.Value;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -34,6 +33,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -43,6 +43,8 @@ public class QuestionServiceImpl implements QuestionService {
     private final QuestionRepository questionRepository;
 
     private final AnswerRepository answerRepository;
+
+    private final QuestionHashTagRepository questionHashTagRepository;
 
     private final QuestionHashTagService questionHashTagService;
 
@@ -99,9 +101,7 @@ public class QuestionServiceImpl implements QuestionService {
 
         Page<Question> questionList = questionRepository.findAll(pageable.withPage(page - 1));
 
-
         List<QuestionResponse> questionResponseList = new ArrayList<>();
-
 
         for (Question question : questionList) {
             questionResponseList.add(QuestionResponse.builder()
@@ -206,13 +206,32 @@ public class QuestionServiceImpl implements QuestionService {
         }
     }
 
-    // 질문 검색 API
+    // 질문 검색 API ( 제목으로 검색 )
+
     @Override
     @Transactional
-    public GetQuestionsResponse searchQuestionByTitle(String title, int page, Pageable pageable){
-        Page<Question> questionList = questionRepository.findByTitleContaining(title, pageable.withPage(page-1));
+    public GetQuestionsResponse searchQuestion(Optional<String> title, Optional<String> nickname, Optional<String> hashtagname,
+                                               int page, Pageable pageable){
 
-        List<QuestionResponse> questionResponseList = questionList.stream()
+        List<Question> questionList = new ArrayList<>();
+
+        if(title.isPresent()){
+            Page<Question> pageQ = questionRepository.findByTitleContaining(title.get(), pageable.withPage(page-1));
+            questionList.addAll(pageQ.getContent());
+        } else if(nickname.isPresent()){
+            Page<Question> pageQ = questionRepository.findByUser_NameContaining(nickname.get(), pageable.withPage(page-1));
+            questionList.addAll(pageQ.getContent());
+        } else if(hashtagname.isPresent()){
+            Page<QuestionHashTag> questionHashtags = questionHashTagRepository.findByHashTag_HashTagName(hashtagname.get(), pageable.withPage(page-1));
+
+            for(QuestionHashTag questionHashtag : questionHashtags){
+                questionList.add(questionHashtag.getQuestion());
+            }
+        }
+
+        Page<Question> questionListWithPage = new PageImpl<>(questionList, pageable, questionList.size());
+
+        List<QuestionResponse> questionResponseList = questionListWithPage.stream()
                 .map(question -> QuestionResponse.builder()
                         .questionId(question.getId())
                         .title(question.getTitle())

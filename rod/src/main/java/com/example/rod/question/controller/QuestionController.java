@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Optional;
+
 
 @RequiredArgsConstructor
 @RestController
@@ -94,15 +96,22 @@ public class QuestionController {
         questionService.deleteQuestion(questionId, userDetails);
     }
 
-    // 질문 검색 API
+    // 질문 검색 API ( 제목, 유저 닉네임으로 검색 )
     @GetMapping("/questions/search")
-    public GetQuestionsResponse searchQuestionByTitle(@RequestParam("title") String title,
+    @ResponseStatus(HttpStatus.OK)
+    public GetQuestionsResponse searchQuestion(@RequestParam("title") Optional<String> title,
+                                                      @RequestParam("nickname") Optional<String> nickname,
+                                                      @RequestParam("tagname") Optional<String> tagname,
                                                       @RequestParam(defaultValue = "1") int page,
-                                                      @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
-        return questionService.searchQuestionByTitle(title, page, pageable);
+                                                      @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+
+        if (title.isPresent() || nickname.isPresent() || tagname.isPresent()) {
+            return questionService.searchQuestion(title, nickname, tagname, page, pageable);
+        }
+        else {
+            throw new IllegalArgumentException("제목 혹은 닉네임 혹은 태그이름을 매개변수로 전달해주어야 합니다.");
+        }
     }
-
-
 
 
     // 질문에 이미지 업로드 API
