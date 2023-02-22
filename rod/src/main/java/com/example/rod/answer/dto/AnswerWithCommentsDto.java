@@ -16,6 +16,7 @@ public class AnswerWithCommentsDto {
 
     private Long answerId;
     private String content;
+    private boolean isSelected;
     private int likes;
     private List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 

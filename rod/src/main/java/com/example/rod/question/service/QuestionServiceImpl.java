@@ -122,32 +122,39 @@ public class QuestionServiceImpl implements QuestionService {
         Question question = questionRepository.findById(questionId).orElseThrow
                 (() -> new IllegalArgumentException("해당 아이디의 질문이 없습니다."));
 
-        List<AnswerWithCommentsDto> answerWithComments = new ArrayList<>();
-
-
-        // 1. AnswerList 페이징 처리해서 뽑아온다.
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "createdAt"));
-
-        Page<Answer> answerList = answerRepository.findByQuestion(question, pageRequest);
-
-        // 2.Answer -> AnswerResponseDto로 변환.
-
-        for (Answer answer : answerList) {
-            List<CommentResponseDto> comments = new ArrayList<>();
-            for (Comment comment : answer.getComments()) {
-                CommentResponseDto commentResponseDto = new CommentResponseDto(comment.getId(), comment.getContent());
-                comments.add(commentResponseDto);
-            }
-            AnswerWithCommentsDto answerWithCommentsDto = new AnswerWithCommentsDto(answer.getId(), answer.getContent(), answer.getLikes(), comments);
-            answerWithComments.add(answerWithCommentsDto);
-        }
-
-        // 3. Question 의 Tag들 조회.
+        // 1. Question 의 Tag들 조회.
         HashTagDto hashTagDto = questionHashTagService.findTagsByQuestionId(questionId);
 
-        QuestionWithAnswersResponse questionWithAnswersResponse = new QuestionWithAnswersResponse(question.getTitle(), question.getContent(), question.getDifficulty(), answerWithComments, hashTagDto);
+        List<AnswerWithCommentsDto> answerWithComments = new ArrayList<>();
+
+        // 2. 채택된 답변(is_selected = true)을 먼저 가져온다.
+        List<Answer> selectedAnswers = answerRepository.findByQuestionAndIsSelected(question, true);
+        for(Answer answer : selectedAnswers){
+            answerWithComments.add(convertToAnswerWithCommentsDto(answer));
+        }
+
+        // 3. 나머지 답변들을 좋아요 수에 따라 정렬해서 가져온다.
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "likes"));
+        Page<Answer> otherAnswers = answerRepository.findByQuestionAndIsSelected(question, false, pageRequest);
+
+        for (Answer answer : otherAnswers) {
+            answerWithComments.add(convertToAnswerWithCommentsDto(answer));
+        }
+
+        QuestionWithAnswersResponse questionWithAnswersResponse = new QuestionWithAnswersResponse
+                (question.getTitle(), question.getContent(), hashTagDto, question.getDifficulty(), answerWithComments);
 
         return questionWithAnswersResponse;
+    }
+
+    public AnswerWithCommentsDto convertToAnswerWithCommentsDto(Answer answer){
+        List<CommentResponseDto> comments = new ArrayList<>();
+        for (Comment comment : answer.getComments()) {
+            CommentResponseDto commentResponseDto = new CommentResponseDto(comment.getId(), comment.getContent());
+            comments.add(commentResponseDto);
+        }
+        AnswerWithCommentsDto answerWithCommentsDto = new AnswerWithCommentsDto(answer.getId(), answer.getContent(), answer.isSelected(), answer.getLikes(), comments);
+        return answerWithCommentsDto;
     }
 
 
