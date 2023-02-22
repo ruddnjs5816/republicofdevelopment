@@ -4,6 +4,7 @@ package com.example.rod.user.entity;
 import com.example.rod.answer.entity.Answer;
 import com.example.rod.comment.entity.Comment;
 import com.example.rod.exception.OutOfStockException;
+import com.example.rod.order.entity.Order;
 import com.example.rod.question.entity.Question;
 import com.example.rod.share.TimeStamped;
 import com.example.rod.profile.dto.ProfileRequestDto;
@@ -59,6 +60,7 @@ public class User extends TimeStamped {
     private List<Comment> commentList;
 
 
+
     private String imageUrl;
     private String filename;
 
@@ -72,7 +74,7 @@ public class User extends TimeStamped {
         this.password = password;
         this.point = point;
         this.phoneNumber = phoneNumber;
-        rating = rating;
+        this.rating = rating;
         this.grade = grade;
         this.role = role;
         this.imageUrl = imageUrl;

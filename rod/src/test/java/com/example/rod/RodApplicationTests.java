@@ -6,11 +6,4 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class RodApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
-
-    @Test
-    v
-
 }

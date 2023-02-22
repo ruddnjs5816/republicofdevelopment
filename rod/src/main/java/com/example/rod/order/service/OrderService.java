@@ -53,24 +53,24 @@ public class OrderService {
     public void cancelOrder(Long orderId, Long userId) {
 
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException("주문이 없습니다"));
-        User user = userRepository.findById(order.getUserId()).orElseThrow(() -> new IllegalArgumentException("유저가 없습니다"));
+//        User user = userRepository.findById(order.getUserId()).orElseThrow(() -> new IllegalArgumentException("유저가 없습니다"));
         Product product = productRepository.findById(order.getProductId()).orElseThrow(() -> new IllegalArgumentException("상품이 없습니다"));
 
         order.cancelOrder();
-        user.refundPoint(product.getPrice());
+//        user.refundPoint(product.getPrice());
         orderRepository.save(order);
-        userRepository.save(user);
+//        userRepository.save(user);
 
     }
 
     public List<OrderResponseDto> getMyOrders(Long userId) {
-        List<Order> orderList = orderRepository.findAllByUser(userId);
+//        List<Order> orderList = orderRepository.findAllByUser(userId);
         List<OrderResponseDto> result = new ArrayList<>();
 
-        for (Order order: orderList) {
-            OrderResponseDto dto = new OrderResponseDto(order.getId(), order.getProductId(), order.getOrderDate(), order.getOrderStatus());
-            result.add(dto);
-        }
+//        for (Order order: orderList) {
+//            OrderResponseDto dto = new OrderResponseDto(order.getOrderId(), order.getProductId(), order.getOrderDate(), order.getOrderStatus());
+//            result.add(dto);
+//        }
         return result;
 
     }
