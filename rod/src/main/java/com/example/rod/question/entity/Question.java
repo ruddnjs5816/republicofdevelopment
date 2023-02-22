@@ -7,6 +7,7 @@ import com.example.rod.share.TimeStamped;
 import com.example.rod.user.entity.User;
 import com.example.rod.user.entity.UserGrade;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Entity(name="questions")
 @Getter
 @NoArgsConstructor
 public class Question extends TimeStamped {
@@ -35,7 +36,7 @@ public class Question extends TimeStamped {
     private boolean isClosed;   // 채택마감여부
 
 
-    @Column
+    @Column(name = "difficulty", columnDefinition = "double precision")
     private double difficulty;   //  난이도
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -47,21 +48,21 @@ public class Question extends TimeStamped {
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.REMOVE })
     private List<Answer> answers = new ArrayList<>();
 
-    // question에서 어떤 행위를 할 때, answer 를 쓸 건지의 여부에 따라 이 연관관계를 ....
 
-  /*  @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
-    private List<QuestionTag> questionTags = new ArrayList<>();
+    // 승튜한테 질문
+    @JsonManagedReference
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<QuestionHashTag> hashTags = new ArrayList<>();
 
-*/
+
     @Builder
-    public Question(String title, String content, User user, List<Answer> answers, boolean isClosed, float difficulty){
+    public Question(String title, String content, User user, List<Answer> answers, boolean isClosed, double difficulty){
         this.title = title;
         this.content = content;
         this.user = user;
         this.answers = answers;
         this.isClosed = isClosed;
         this.difficulty = difficulty;
-//        this.questionTags = questionRequest.getTagList();
     }
 
     public void calculateDifficulty(double difficulty){
@@ -76,8 +77,6 @@ public class Question extends TimeStamped {
         this.difficulty = Math.round(difficultyCaldidate*10)/10.0;
     }
 
-
-//    public void setFK(User user){ this.user = user; }
 
     public void editTitle(User user, String title){
         if(this.isOwnedBy(user)){

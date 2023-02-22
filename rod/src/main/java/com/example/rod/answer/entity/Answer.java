@@ -36,10 +36,7 @@ public class Answer extends TimeStamped {
     private boolean isSelected;
 
 
-//    private String originalFileName;
-//    private String savedFileName;
 
-//    @OneToMany(mappedBy = "Answer", cascade = CascadeType.ALL)
     @OneToMany(mappedBy = "answer", cascade = { CascadeType.DETACH, CascadeType.REMOVE })
     @OrderBy("createdAt DESC")
     private List<Comment> comments = new ArrayList<>();

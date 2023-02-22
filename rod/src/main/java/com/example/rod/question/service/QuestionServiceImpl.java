@@ -70,7 +70,7 @@ public class QuestionServiceImpl implements QuestionService {
                 .content(questionRequest.getContent())
                 .user(user)
                 .isClosed(false)
-                .difficulty(0f) //  기본 난이도 0으로 고정.
+                .difficulty(0d) //  기본 난이도 0으로 고정.
                 .build();
 
         questionRepository.save(question);
@@ -154,7 +154,7 @@ public class QuestionServiceImpl implements QuestionService {
     public AnswerWithCommentsDto convertToAnswerWithCommentsDto(Answer answer) {
         List<CommentResponseDto> comments = new ArrayList<>();
         for (Comment comment : answer.getComments()) {
-            CommentResponseDto commentResponseDto = new CommentResponseDto(comment.getId(), comment.getContent());
+            CommentResponseDto commentResponseDto = new CommentResponseDto(comment.getId(), comment.getContent(), comment.getCreatedAt());
             comments.add(commentResponseDto);
         }
         AnswerWithCommentsDto answerWithCommentsDto = new AnswerWithCommentsDto(answer.getId(), answer.getContent(), answer.isSelected(), answer.getLikes(), comments);
@@ -203,7 +203,6 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional
     public void deleteQuestion(Long questionId, UserDetailsImpl userDetails) {
-
 
         Question question = questionRepository.findById(questionId).orElseThrow(
                 () -> new IllegalArgumentException("해당 아이디의 질문이 없습니다.")
@@ -276,5 +275,4 @@ public class QuestionServiceImpl implements QuestionService {
     }*/
 
     }
-}
 

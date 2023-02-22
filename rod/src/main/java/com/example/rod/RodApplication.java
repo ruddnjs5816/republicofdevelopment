@@ -10,9 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 // For Test. 시큐리티 설정 해제.
 //@SpringBootApplication(exclude={SecurityAutoConfiguration.class})
-@SpringBootApplication(scanBasePackages = {"com.example.rod"},
-        exclude = {SecurityAutoConfiguration.class},
-        excludeName = {"com.example.rod.order.*"})
+@SpringBootApplication
 public class RodApplication {
 
     public static void main(String[] args) {

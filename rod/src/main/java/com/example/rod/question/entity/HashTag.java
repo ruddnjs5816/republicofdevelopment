@@ -20,8 +20,5 @@ public class HashTag {
     private String hashTagName;
 
 
-   /* @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "questionTag_Id")
-    private List<QuestionTag> questionTags;*/
 
 }
