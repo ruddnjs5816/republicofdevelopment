@@ -32,6 +32,7 @@ public enum StatusExceptionCode {
     REVIEW_NOT_FOUND(NOT_FOUND, "해당 리뷰 정보를 찾을 수 없습니다."),
     CHATROOM_NOT_FOUND(NOT_FOUND, "해당 대화방 정보를 찾을 수 없습니다."),
     REFRESH_TOKEN_NOT_FOUND(NOT_FOUND, "로그아웃 된 사용자입니다."),
+    FILE_NOT_FOUND(NOT_FOUND, "파일을 찾을 수 없습니다."),
 
     /* 409 CONFLICT : Resource 의 현재 상태와 충돌. 보통 중복된 데이터 존재 */
     DUPLICATE_RESOURCE(CONFLICT, "데이터가 이미 존재합니다."),

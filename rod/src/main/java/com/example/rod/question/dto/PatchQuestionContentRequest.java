@@ -7,6 +7,6 @@ public class PatchQuestionContentRequest {
 
     private String content;
 
-    // private List<String> imageUrls - 이미지들.
+    // private List<String> imageUrlUrls - 이미지들.
 
 }

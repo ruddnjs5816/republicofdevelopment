@@ -3,11 +3,13 @@ package com.example.rod.user.entity;
 
 import com.example.rod.answer.entity.Answer;
 import com.example.rod.comment.entity.Comment;
+import com.example.rod.exception.OutOfStockException;
 import com.example.rod.question.entity.Question;
+import com.example.rod.share.TimeStamped;
+import com.example.rod.profile.dto.ProfileRequestDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Setter
-public class User {
+public class User extends TimeStamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,9 +59,14 @@ public class User {
     private List<Comment> commentList;
 
 
+    private String imageUrl;
+    private String filename;
+
 
     @Builder
-    public User(String username, String name, String password, Integer point, String phoneNumber, Integer rating, UserGrade grade, UserRole role) {
+    public User(String username, String name, String password, Integer point,
+                String phoneNumber, Integer rating, UserGrade grade, UserRole role,
+                String imageUrl, String filename) {
         this.username = username;
         this.name = name;
         this.password = password;
@@ -68,6 +75,8 @@ public class User {
         rating = rating;
         this.grade = grade;
         this.role = role;
+        this.imageUrl = imageUrl;
+        this.filename = filename;
     }
 
     @Override
@@ -95,12 +104,15 @@ public class User {
 //        this.grade = UserGrade.valueOf(role);
 //    }
 
-    public void update(String username, String name, String password, String phoneNumber) {
+    public void changeProfile(String username, String password, String phoneNumber) {
         this.username = username;
-        this.name= name;
         this.password = password;
         this.phoneNumber = phoneNumber;
     }
+
+    public void changeImage(String filename){
+        this.filename = filename;
+    };
 
     // 질문 등록, 답변 등록, 답변 채택 -> 실행
 
@@ -124,4 +136,24 @@ public class User {
         
     }
 
+    public void setImageUrl(String storedFileName) {
+        this.imageUrl = storedFileName;
+    }
+
+
+
+    //포인트 관련 메서드
+
+    //포인트 환불
+    public void refundPoint(int price) {
+        this.point += price;
+    }
+    //포인트 차감
+    public void payPoint(int price) {
+        int restPoint = this.point - price;
+        if (restPoint < 0) {
+            throw new OutOfStockException("유저의 포인트가 부족합니다.(현재 포인트: " + this.point + ")");
+        }
+        this.point = restPoint;
+    }
 }

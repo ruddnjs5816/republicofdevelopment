@@ -6,6 +6,7 @@ import com.example.rod.answer.repository.AnswerRepository;
 import com.example.rod.comment.dto.CommentResponseDto;
 import com.example.rod.comment.entity.Comment;
 import com.example.rod.comment.repository.CommentRepository;
+import com.example.rod.exception.GetException;
 import com.example.rod.question.dto.*;
 import com.example.rod.question.entity.Question;
 import com.example.rod.question.entity.QuestionHashTag;
@@ -16,7 +17,8 @@ import com.example.rod.user.entity.User;
 import com.example.rod.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.data.domain.*;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -35,6 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.example.rod.exception.StatusExceptionCode.FILE_NOT_FOUND;
 
 @RequiredArgsConstructor
 @Service
@@ -212,7 +216,6 @@ public class QuestionServiceImpl implements QuestionService {
             throw new IllegalArgumentException("삭제 권한이 없는 유저입니다.");
         }
     }
-
     // 질문 검색 API ( 제목으로 검색 )
 
     @Override
@@ -252,6 +255,9 @@ public class QuestionServiceImpl implements QuestionService {
         return response;
     }
 
+//    @Override
+
+    public void uploadImage(MultipartFile image) throws GetException {
 
     /*// 질문에 이미지 업로드
     @Value("${app.upload.dir:${user.home}}")

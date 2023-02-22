@@ -1,5 +1,6 @@
 package com.example.rod.question.controller;
 
+import com.example.rod.exception.GetException;
 import com.example.rod.question.dto.*;
 import com.example.rod.question.service.QuestionService;
 import com.example.rod.security.details.UserDetailsImpl;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost")
 
 @RequiredArgsConstructor
 @RestController
@@ -115,9 +117,10 @@ public class QuestionController {
 
 
     // 질문에 이미지 업로드 API
+
     /*@PostMapping("/questions/upload")
     @ResponseStatus(HttpStatus.OK)
-    public String uploadImage(@RequestParam("image")MultipartFile image, RedirectAttributes redirectAttributes){
+    public String uploadImage(@RequestParam("image")MultipartFile image, RedirectAttributes redirectAttributes) throws GetException {
         questionService.uploadImage(image);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully upload " + image.getOriginalFilename() + "!");

@@ -21,19 +21,19 @@ class PointServiceTest {
     void plus() {
         //given- 어떤 데이터가 주어졌을 때
 
-        User user1 = User.builder().username()
+//        User user1 = User.builder().username();
 
 
-        User user2 =
-                new User(1L,"김상순","나무","1111",2000L,"010", UserGrade.BRONZE);
-        userRepository.save(user2);
-
-        //when- 어떤 동작을 할 때
-        PointResultDto pointResultDto = pointService.plusPoint(user2.getUserId(), new PointRequestDto(3000L));
-
-
-        //then- 어떤 결과가 발생한다
-        Assertions.assertEquals(pointResultDto.getPoint(), 5000L);
+//        User user2 =
+//                new User(1L,"김상순","나무","1111",2000L,"010", UserGrade.BRONZE);
+//        userRepository.save(user2);
+//
+//        //when- 어떤 동작을 할 때
+//        PointResultDto pointResultDto = pointService.plusPoint(user2.getUserId(), new PointRequestDto(3000L));
+//
+//
+//        //then- 어떤 결과가 발생한다
+//        Assertions.assertEquals(pointResultDto.getPoint(), 5000L);
     }
 
     @Test

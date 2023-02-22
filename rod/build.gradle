@@ -60,9 +60,7 @@ dependencies {
 
     implementation 'org.hibernate:hibernate-entitymanager:5.6.15.Final'
 
-
-
-
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
 tasks.named('test') {

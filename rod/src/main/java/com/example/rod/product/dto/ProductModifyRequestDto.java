@@ -15,7 +15,6 @@ public class ProductModifyRequestDto {
     private int price;
     private String productImage;
     private String productDescription;
-    private int stockQuantity;
     private ProductSellStatus productSellStatus;
     private List<ProductImgDto> productImgDtoList = new ArrayList<>(); //상품 저장 후 수정 시 상품이미지 정보 저장
 
