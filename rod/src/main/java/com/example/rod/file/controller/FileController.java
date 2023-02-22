@@ -7,6 +7,7 @@ import com.example.rod.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,12 +27,12 @@ public class FileController {
     }
 
     @ResponseBody   // Long 타입을 리턴하고 싶은 경우 붙여야 함 (Long - 객체)
-    @PostMapping(value="/users/mypage",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/users/mypage/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void saveProfileImage(HttpServletRequest request,
                                  @RequestParam(value="image") MultipartFile image,
-                                 ProfileRequestDto profileRequestDto,
+//                                 ProfileRequestDto profileRequestDto,
                                  @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
-        userService.saveProfileImage(image,profileRequestDto, userDetails);
+        userService.saveProfileImage(image, userDetails);
     }
 
 }

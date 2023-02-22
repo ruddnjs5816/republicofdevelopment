@@ -95,16 +95,20 @@ public class QuestionController {
         questionService.deleteQuestion(questionId, userDetails);
     }
 
+    //
+
+
+
 
     // 질문에 이미지 업로드 API
-//    @PostMapping("/questions/upload")
-//    @ResponseStatus(HttpStatus.OK)
-//    public String uploadImage(@RequestParam("image")MultipartFile image, RedirectAttributes redirectAttributes){
-//        questionService.uploadImage(image);
-//        redirectAttributes.addFlashAttribute("message",
-//                "You successfully upload " + image.getOriginalFilename() + "!");
-//        return "redirect:/";
-//    }
 
+    /*@PostMapping("/questions/upload")
+    @ResponseStatus(HttpStatus.OK)
+    public String uploadImage(@RequestParam("image")MultipartFile image, RedirectAttributes redirectAttributes) throws GetException {
+        questionService.uploadImage(image);
+        redirectAttributes.addFlashAttribute("message",
+                "You successfully upload " + image.getOriginalFilename() + "!");
+        return "redirect:/";
+    }*/
 }
 

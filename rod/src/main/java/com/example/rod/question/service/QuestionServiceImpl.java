@@ -86,7 +86,12 @@ public class QuestionServiceImpl implements QuestionService {
         List<QuestionResponse> questionResponseList = new ArrayList<>();
 
         for (Question question : questionList) {
-            questionResponseList.add(new QuestionResponse(question.getId(), question.getTitle(), question.getContent()));
+            questionResponseList.add(QuestionResponse.builder()
+                    .questionId(question.getId())
+                    .title(question.getTitle())
+                    .nickname(question.getUser().getName())
+                    .answerCount(question.getAnswers().size())
+                    .createdAt(question.getCreatedAt()).build());
         }
         return new GetQuestionsResponse(page, questionResponseList);
     }
@@ -102,7 +107,12 @@ public class QuestionServiceImpl implements QuestionService {
 
 
         for (Question question : questionList) {
-            questionResponseList.add(new QuestionResponse(question.getId(), question.getTitle(), question.getContent()));
+            questionResponseList.add(QuestionResponse.builder()
+                    .questionId(question.getId())
+                    .title(question.getTitle())
+                    .nickname(question.getUser().getName())
+                    .answerCount(question.getAnswers().size())
+                    .createdAt(question.getCreatedAt()).build());
         }
 
         return new GetQuestionsResponse(page, questionResponseList);
@@ -135,7 +145,10 @@ public class QuestionServiceImpl implements QuestionService {
             answerWithComments.add(answerWithCommentsDto);
         }
 
-        QuestionWithAnswersResponse questionWithAnswersResponse = new QuestionWithAnswersResponse(question.getTitle(), question.getContent(), answerWithComments);
+        // 3. Question 의 Tag들 조회.
+        HashTagDto hashTagDto = questionHashTagService.findTagsByQuestionId(questionId);
+
+        QuestionWithAnswersResponse questionWithAnswersResponse = new QuestionWithAnswersResponse(question.getTitle(), question.getContent(), question.getDifficulty(), answerWithComments, hashTagDto);
 
         return questionWithAnswersResponse;
     }
@@ -197,23 +210,23 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
 //    @Override
-//    public void uploadImage(MultipartFile image) throws GetException {
 
-        // 질문에 이미지 업로드
-//        @Value("${app.upload.dir:${user.home}}")
-//        private String uploadDir;
-//        public void uploadImage (MultipartFile image){
-//            Path copyOfLocation = Paths.get(uploadDir + File.separator + StringUtils.cleanPath(image.getOriginalFilename()));
-//            try {
-//                // inputStream을 가져와서
-//                // copyOfLocation (저장위치)로 파일을 쓴다.
-//                // copy의 옵션은 기존에 존재하면 REPLACE(대체한다), 오버라이딩 한다
-//                Files.copy(image.getInputStream(), copyOfLocation, StandardCopyOption.REPLACE_EXISTING);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                throw new FileStorageException("Could not store file : " + image.getOriginalFilename());
-//            }
-//        }
+    public void uploadImage(MultipartFile image) throws GetException {
 
-    }
+    /*// 질문에 이미지 업로드
+    @Value("${app.upload.dir:${user.home}}")
+    private String uploadDir;
+    public void uploadImage(MultipartFile image){
+        Path copyOfLocation = Paths.get(uploadDir + File.separator +  StringUtils.cleanPath(image.getOriginalFilename()));
+        try {
+            // inputStream을 가져와서
+            // copyOfLocation (저장위치)로 파일을 쓴다.
+            // copy의 옵션은 기존에 존재하면 REPLACE(대체한다), 오버라이딩 한다
+            Files.copy(image.getInputStream(), copyOfLocation, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new FileStorageException("Could not store file : " + image.getOriginalFilename());
+        }
+    }*/
+    }}
 
