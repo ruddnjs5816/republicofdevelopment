@@ -29,6 +29,7 @@ public interface QuestionService {
 
 
 
+
 //    void uploadImage(MultipartFile image) throws GetException;
 
 }

@@ -3,6 +3,7 @@ package com.example.rod.user.entity;
 
 import com.example.rod.answer.entity.Answer;
 import com.example.rod.comment.entity.Comment;
+import com.example.rod.exception.OutOfStockException;
 import com.example.rod.question.entity.Question;
 import com.example.rod.share.TimeStamped;
 import com.example.rod.profile.dto.ProfileRequestDto;
@@ -137,5 +138,22 @@ public class User extends TimeStamped {
 
     public void setImageUrl(String storedFileName) {
         this.imageUrl = storedFileName;
+    }
+
+
+
+    //포인트 관련 메서드
+
+    //포인트 환불
+    public void refundPoint(int price) {
+        this.point += price;
+    }
+    //포인트 차감
+    public void payPoint(int price) {
+        int restPoint = this.point - price;
+        if (restPoint < 0) {
+            throw new OutOfStockException("유저의 포인트가 부족합니다.(현재 포인트: " + this.point + ")");
+        }
+        this.point = restPoint;
     }
 }

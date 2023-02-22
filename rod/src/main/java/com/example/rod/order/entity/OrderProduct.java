@@ -1,6 +1,8 @@
 //package com.example.rod.order.entity;
 //
 //import com.example.rod.product.entity.Product;
+//import com.example.rod.share.TimeStamped;
+//import com.example.rod.user.entity.User;
 //import lombok.Builder;
 //import lombok.Getter;
 //import lombok.NoArgsConstructor;
@@ -13,7 +15,7 @@
 //@Getter @Setter
 //@NoArgsConstructor
 //@Table(name = "order_product")
-//public class OrderProduct extends BaseEntity {
+//public class OrderProduct extends TimeStamped {
 //
 //    @Id @GeneratedValue
 //    @Column(name = "order_product_id")
@@ -27,39 +29,34 @@
 //    @JoinColumn(name = "order_id")
 //    private Order order; //주문
 //    private int orderPrice; //주문 가격
-//    private int count; //주문 수량
 //
 //
 //    @Builder
-//    public OrderProduct(Product product, Order order, int orderPrice, int count) {
+//    public OrderProduct(Product product, Order order, int orderPrice) {
 //        this.product = product;
 //        this.order = order;
 //        this.orderPrice = orderPrice;
-//        this.count = count;
 //    }
 //
 //    public void setOrder(Order order) {this.order = order;}
 //
 //
 //
-//    public static OrderProduct createOrderProduct(Product product, int count) {
+//    public static OrderProduct createOrderProduct(Product product) {
 //        OrderProduct orderProduct = OrderProduct.builder()
 //                .product(product)
-//                .count(count)
 //                .orderPrice(product.getPrice())
 //                .build();
-//        product.removeStock(count);
+//        user.removePoint(point);
 //
 //        return orderProduct;
 //    }
 //
-//    public int getTotalPrice() {
-//        return orderPrice * count;
-//    }
 //
-//    //주문 취소시 재고 수량 증가
+//
+//    //주문 취소시 포인트 환불
 //    public void cancel() {
-//        this.getProduct().addStock(count);
+//        this.getProduct().addPoint(point);
 //    }
 //
 //

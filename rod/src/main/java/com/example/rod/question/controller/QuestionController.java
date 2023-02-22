@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
+@CrossOrigin(origins = "http://localhost")
 @RequiredArgsConstructor
 @RestController
 public class QuestionController {
@@ -101,6 +101,7 @@ public class QuestionController {
 
 
     // 질문에 이미지 업로드 API
+
     /*@PostMapping("/questions/upload")
     @ResponseStatus(HttpStatus.OK)
     public String uploadImage(@RequestParam("image")MultipartFile image, RedirectAttributes redirectAttributes) throws GetException {

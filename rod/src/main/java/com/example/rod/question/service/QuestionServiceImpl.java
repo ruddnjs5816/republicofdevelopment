@@ -210,6 +210,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
 //    @Override
+
     public void uploadImage(MultipartFile image) throws GetException {
 
     /*// 질문에 이미지 업로드
@@ -227,5 +228,5 @@ public class QuestionServiceImpl implements QuestionService {
             throw new FileStorageException("Could not store file : " + image.getOriginalFilename());
         }
     }*/
-    }
-}
+    }}
+

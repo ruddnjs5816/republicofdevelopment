@@ -11,14 +11,13 @@ public class ProductRequestDto {
 
 
 
-    public ProductRequestDto(Long id, String productName, int price, String productImage, String productDescription, int stockQuantity,
+    public ProductRequestDto(Long id, String productName, int price, String productImage, String productDescription,
                              ProductSellStatus productSellStatus) {
         this.id = id;
         this.productName = productName;
         this.price = price;
         this.productImage = productImage;
         this.productDescription = productDescription;
-        this.stockQuantity = stockQuantity;
         this.productSellStatus = productSellStatus;
     }
 
@@ -28,7 +27,6 @@ public class ProductRequestDto {
     private String productImage;
     private String productDescription;
 
-    private int stockQuantity;
     private ProductSellStatus productSellStatus;
 
 

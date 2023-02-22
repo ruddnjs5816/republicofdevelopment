@@ -88,12 +88,12 @@ public class ProductService {
         return productResponseDtoList;
     }
 
-    //개별 상품 조회
-    @Transactional(readOnly = true)
-    public ProductResponseDto getProductByProductId(Long productId) {
-        Product product = findProduct(productId);
-        return new ProductResponseDto(product);
-    }
+//    //개별 상품 조회
+//    @Transactional(readOnly = true)
+//    public ProductResponseDto getProductByProductId(Long productId) {
+//        Product product = findProduct(productId);
+//        return new ProductResponseDto(product);
+//    }
     public Product findProduct(Long productId) {
         Optional<Product> foundProduct = productRepository.findProductByProductId(productId);
         if (foundProduct.isEmpty()) {

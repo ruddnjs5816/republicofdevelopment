@@ -1,9 +1,9 @@
 package com.example.rod.product.entity;
 
-import com.example.rod.exception.OutOfStockException;
-import com.example.rod.order.entity.BaseEntity;
+
 import com.example.rod.product.dto.ProductRequestDto;
 import com.example.rod.product.dto.ProductModifyRequestDto;
+import com.example.rod.share.TimeStamped;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,7 +17,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Table(name = "product")
-public class Product extends BaseEntity {
+public class Product extends TimeStamped {
 
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,9 +32,6 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private String productDescription; //상품 설명
 
-    @Column(nullable = false)
-    private int stockQuantity; //상품 재고 수량
-
     @Enumerated(EnumType.STRING)
     private ProductSellStatus productSellStatus;  //상품 판매 상태
 
@@ -44,7 +41,6 @@ public class Product extends BaseEntity {
         this.productName = productRequestDto.getProductName();
         this.price = productRequestDto.getPrice();
         this.productDescription = productRequestDto.getProductDescription();
-        this.stockQuantity = productRequestDto.getStockQuantity();
         this.productSellStatus = productRequestDto.getProductSellStatus();
 
     }
@@ -54,22 +50,10 @@ public class Product extends BaseEntity {
         this.productName = productModifyRequestDto.getProductName();
         this.price = productModifyRequestDto.getPrice();
         this.productDescription = productModifyRequestDto.getProductDescription();
-        this.stockQuantity = productModifyRequestDto.getStockQuantity();
         this.productSellStatus = productModifyRequestDto.getProductSellStatus();
 
     }
 
-    //재고 관련 메서드
-    public void addStock(int stockQuantity) {
-        this.stockQuantity += stockQuantity;
-    }
 
-    public void removeStock(int stockQuantity) {
-        int restStock = this.stockQuantity - stockQuantity;
-        if (restStock < 0) {
-            throw new OutOfStockException("상품의 재고가 부족합니다.(현재 재고 수량: " + this.stockQuantity + ")");
-        }
-        this.stockQuantity = restStock;
-    }
 
 }
