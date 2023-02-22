@@ -94,7 +94,13 @@ public class QuestionController {
         questionService.deleteQuestion(questionId, userDetails);
     }
 
-    //
+    // 질문 검색 API
+    @GetMapping("/questions/search")
+    public GetQuestionsResponse searchQuestionByTitle(@RequestParam("title") String title,
+                                                      @RequestParam(defaultValue = "1") int page,
+                                                      @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+        return questionService.searchQuestionByTitle(title, page, pageable);
+    }
 
 
 

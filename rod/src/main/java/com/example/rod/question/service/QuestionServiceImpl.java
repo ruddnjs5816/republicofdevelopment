@@ -34,6 +34,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -203,6 +204,27 @@ public class QuestionServiceImpl implements QuestionService {
         } else {
             throw new IllegalArgumentException("삭제 권한이 없는 유저입니다.");
         }
+    }
+
+    // 질문 검색 API
+    @Override
+    @Transactional
+    public GetQuestionsResponse searchQuestionByTitle(String title, int page, Pageable pageable){
+        Page<Question> questionList = questionRepository.findByTitleContaining(title, pageable.withPage(page-1));
+
+        List<QuestionResponse> questionResponseList = questionList.stream()
+                .map(question -> QuestionResponse.builder()
+                        .questionId(question.getId())
+                        .title(question.getTitle())
+                        .nickname(question.getUser().getName())
+                        .answerCount(question.getAnswers().size())
+                        .createdAt(question.getCreatedAt()).build())
+                .collect(Collectors.toList());
+
+        GetQuestionsResponse response = new GetQuestionsResponse(page, questionResponseList);
+
+        return response;
+    }
 
 
     /*// 질문에 이미지 업로드
@@ -220,5 +242,5 @@ public class QuestionServiceImpl implements QuestionService {
             throw new FileStorageException("Could not store file : " + image.getOriginalFilename());
         }
     }*/
-    }
+
 }

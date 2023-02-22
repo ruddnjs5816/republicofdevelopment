@@ -26,6 +26,8 @@ public interface QuestionService {
 
     void deleteQuestion(Long questionId, UserDetailsImpl userDetails);
 
+    GetQuestionsResponse searchQuestionByTitle(String title, int page, Pageable pageable);
+
 
 //    void uploadImage(MultipartFile image);
 }
