@@ -129,7 +129,7 @@ public class AnswerServiceImpl implements AnswerService {
             commentResponseDtoList.add(commentResponseDto);
         }
 
-        return new AnswerWithCommentsDto(answer.getId(), answer.getContent(), answer.getLikes(), commentResponseDtoList);
+        return new AnswerWithCommentsDto(answer.getId(), answer.getContent(), answer.isSelected(), answer.getLikes(), commentResponseDtoList);
     }
 }
 

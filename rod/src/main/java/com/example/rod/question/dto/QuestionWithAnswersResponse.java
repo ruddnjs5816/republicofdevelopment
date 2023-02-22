@@ -19,12 +19,13 @@ public class QuestionWithAnswersResponse {
 
 
 
-    public QuestionWithAnswersResponse(String title, String content, double difficulty, List<AnswerWithCommentsDto> answerWithComments, HashTagDto tagList) {
+    public QuestionWithAnswersResponse(String title, String content, HashTagDto tagList, double difficulty, List<AnswerWithCommentsDto> answerWithComments){
         this.title = title;
         this.content = content;
+        this.tagList = tagList;
         this.difficulty = difficulty;
         this.answerWithComments = answerWithComments;
-        this.tagList = tagList;
+
     }
 
 }

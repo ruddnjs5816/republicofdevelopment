@@ -9,6 +9,8 @@ import com.example.rod.comment.repository.CommentRepository;
 import com.example.rod.exception.GetException;
 import com.example.rod.question.dto.*;
 import com.example.rod.question.entity.Question;
+import com.example.rod.question.entity.QuestionHashTag;
+import com.example.rod.question.repository.QuestionHashTagRepository;
 import com.example.rod.question.repository.QuestionRepository;
 import com.example.rod.security.details.UserDetailsImpl;
 import com.example.rod.user.entity.User;
@@ -18,10 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -36,6 +35,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.example.rod.exception.StatusExceptionCode.FILE_NOT_FOUND;
 
@@ -46,6 +47,8 @@ public class QuestionServiceImpl implements QuestionService {
     private final QuestionRepository questionRepository;
 
     private final AnswerRepository answerRepository;
+
+    private final QuestionHashTagRepository questionHashTagRepository;
 
     private final QuestionHashTagService questionHashTagService;
 
@@ -102,9 +105,7 @@ public class QuestionServiceImpl implements QuestionService {
 
         Page<Question> questionList = questionRepository.findAll(pageable.withPage(page - 1));
 
-
         List<QuestionResponse> questionResponseList = new ArrayList<>();
-
 
         for (Question question : questionList) {
             questionResponseList.add(QuestionResponse.builder()
@@ -125,32 +126,39 @@ public class QuestionServiceImpl implements QuestionService {
         Question question = questionRepository.findById(questionId).orElseThrow
                 (() -> new IllegalArgumentException("해당 아이디의 질문이 없습니다."));
 
-        List<AnswerWithCommentsDto> answerWithComments = new ArrayList<>();
-
-
-        // 1. AnswerList 페이징 처리해서 뽑아온다.
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "createdAt"));
-
-        Page<Answer> answerList = answerRepository.findByQuestion(question, pageRequest);
-
-        // 2.Answer -> AnswerResponseDto로 변환.
-
-        for (Answer answer : answerList) {
-            List<CommentResponseDto> comments = new ArrayList<>();
-            for (Comment comment : answer.getComments()) {
-                CommentResponseDto commentResponseDto = new CommentResponseDto(comment.getId(), comment.getContent());
-                comments.add(commentResponseDto);
-            }
-            AnswerWithCommentsDto answerWithCommentsDto = new AnswerWithCommentsDto(answer.getId(), answer.getContent(), answer.getLikes(), comments);
-            answerWithComments.add(answerWithCommentsDto);
-        }
-
-        // 3. Question 의 Tag들 조회.
+        // 1. Question 의 Tag들 조회.
         HashTagDto hashTagDto = questionHashTagService.findTagsByQuestionId(questionId);
 
-        QuestionWithAnswersResponse questionWithAnswersResponse = new QuestionWithAnswersResponse(question.getTitle(), question.getContent(), question.getDifficulty(), answerWithComments, hashTagDto);
+        List<AnswerWithCommentsDto> answerWithComments = new ArrayList<>();
+
+        // 2. 채택된 답변(is_selected = true)을 먼저 가져온다.
+        List<Answer> selectedAnswers = answerRepository.findByQuestionAndIsSelected(question, true);
+        for(Answer answer : selectedAnswers){
+            answerWithComments.add(convertToAnswerWithCommentsDto(answer));
+        }
+
+        // 3. 나머지 답변들을 좋아요 수에 따라 정렬해서 가져온다.
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "likes"));
+        Page<Answer> otherAnswers = answerRepository.findByQuestionAndIsSelected(question, false, pageRequest);
+
+        for (Answer answer : otherAnswers) {
+            answerWithComments.add(convertToAnswerWithCommentsDto(answer));
+        }
+
+        QuestionWithAnswersResponse questionWithAnswersResponse = new QuestionWithAnswersResponse
+                (question.getTitle(), question.getContent(), hashTagDto, question.getDifficulty(), answerWithComments);
 
         return questionWithAnswersResponse;
+    }
+
+    public AnswerWithCommentsDto convertToAnswerWithCommentsDto(Answer answer){
+        List<CommentResponseDto> comments = new ArrayList<>();
+        for (Comment comment : answer.getComments()) {
+            CommentResponseDto commentResponseDto = new CommentResponseDto(comment.getId(), comment.getContent());
+            comments.add(commentResponseDto);
+        }
+        AnswerWithCommentsDto answerWithCommentsDto = new AnswerWithCommentsDto(answer.getId(), answer.getContent(), answer.isSelected(), answer.getLikes(), comments);
+        return answerWithCommentsDto;
     }
 
 
@@ -208,6 +216,44 @@ public class QuestionServiceImpl implements QuestionService {
             throw new IllegalArgumentException("삭제 권한이 없는 유저입니다.");
         }
     }
+    // 질문 검색 API ( 제목으로 검색 )
+
+    @Override
+    @Transactional
+    public GetQuestionsResponse searchQuestion(Optional<String> title, Optional<String> nickname, Optional<String> hashtagname,
+                                               int page, Pageable pageable){
+
+        List<Question> questionList = new ArrayList<>();
+
+        if(title.isPresent()){
+            Page<Question> pageQ = questionRepository.findByTitleContaining(title.get(), pageable.withPage(page-1));
+            questionList.addAll(pageQ.getContent());
+        } else if(nickname.isPresent()){
+            Page<Question> pageQ = questionRepository.findByUser_NameContaining(nickname.get(), pageable.withPage(page-1));
+            questionList.addAll(pageQ.getContent());
+        } else if(hashtagname.isPresent()){
+            Page<QuestionHashTag> questionHashtags = questionHashTagRepository.findByHashTag_HashTagName(hashtagname.get(), pageable.withPage(page-1));
+
+            for(QuestionHashTag questionHashtag : questionHashtags){
+                questionList.add(questionHashtag.getQuestion());
+            }
+        }
+
+        Page<Question> questionListWithPage = new PageImpl<>(questionList, pageable, questionList.size());
+
+        List<QuestionResponse> questionResponseList = questionListWithPage.stream()
+                .map(question -> QuestionResponse.builder()
+                        .questionId(question.getId())
+                        .title(question.getTitle())
+                        .nickname(question.getUser().getName())
+                        .answerCount(question.getAnswers().size())
+                        .createdAt(question.getCreatedAt()).build())
+                .collect(Collectors.toList());
+
+        GetQuestionsResponse response = new GetQuestionsResponse(page, questionResponseList);
+
+        return response;
+    }
 
 //    @Override
 
@@ -228,5 +274,5 @@ public class QuestionServiceImpl implements QuestionService {
             throw new FileStorageException("Could not store file : " + image.getOriginalFilename());
         }
     }*/
-    }}
 
+}

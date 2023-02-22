@@ -10,6 +10,8 @@ import java.util.List;
 @NoArgsConstructor
 public class AnswerResponseDto {
 
+
+    private Long questionId;
     private Long answerId;
     private String content;
     private int likes;
@@ -17,6 +19,7 @@ public class AnswerResponseDto {
     private int commentCount;
 
     public AnswerResponseDto(Answer answer) {
+        this.questionId = answer.getQuestion().getId();
         this.answerId = answer.getId();
         this.content = answer.getContent();
         this.likes = answer.getLikes();

@@ -1,6 +1,8 @@
 package com.example.rod.question.repository;
 
 import com.example.rod.question.entity.QuestionHashTag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -12,5 +14,7 @@ public interface QuestionHashTagRepository extends JpaRepository<QuestionHashTag
     Optional<QuestionHashTag> findByQuestionIdAndHashTagId(Long questionId, Long hashTagId);
 
     List<QuestionHashTag> findAllByQuestionId(Long questionId);
+
+    Page<QuestionHashTag> findByHashTag_HashTagName(String tagname, Pageable pageable);
 
 }
