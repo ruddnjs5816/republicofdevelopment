@@ -59,11 +59,8 @@ public class User extends TimeStamped {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> commentList;
 
-
-
     private String imageUrl;
     private String filename;
-
 
     @Builder
     public User(String username, String name, String password, Integer point,
