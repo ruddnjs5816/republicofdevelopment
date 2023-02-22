@@ -68,13 +68,13 @@ public class ProductController {
         return productService.getAllProducts(page-1, size, sortBy, isAsc);
     }
 
-    //개별 상품 조회
-    @GetMapping("/shop/{productId}")
-    public ProductResponseDto getProductByProductId(@PathVariable Long productId) {
-        ProductResponseDto productResponseDto = productService.getProductByProductId(productId);
-
-        return productResponseDto;
-    }
+//    //개별 상품 조회
+//    @GetMapping("/shop/{productId}")
+//    public ProductResponseDto getProductByProductId(@PathVariable Long productId) {
+//        ProductResponseDto productResponseDto = productService.getProductByProductId(productId);
+//
+//        return productResponseDto;
+//    }
 
 }
 
