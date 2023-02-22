@@ -42,3 +42,6 @@ out/
 .vscode/
 
 ### application.properties ###
+application-aws.properties
+build.gradle
+application.properties

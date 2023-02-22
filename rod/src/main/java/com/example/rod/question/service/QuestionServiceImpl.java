@@ -133,7 +133,7 @@ public class QuestionServiceImpl implements QuestionService {
 
         // 2. 채택된 답변(is_selected = true)을 먼저 가져온다.
         List<Answer> selectedAnswers = answerRepository.findByQuestionAndIsSelected(question, true);
-        for(Answer answer : selectedAnswers){
+        for (Answer answer : selectedAnswers) {
             answerWithComments.add(convertToAnswerWithCommentsDto(answer));
         }
 
@@ -151,7 +151,7 @@ public class QuestionServiceImpl implements QuestionService {
         return questionWithAnswersResponse;
     }
 
-    public AnswerWithCommentsDto convertToAnswerWithCommentsDto(Answer answer){
+    public AnswerWithCommentsDto convertToAnswerWithCommentsDto(Answer answer) {
         List<CommentResponseDto> comments = new ArrayList<>();
         for (Comment comment : answer.getComments()) {
             CommentResponseDto commentResponseDto = new CommentResponseDto(comment.getId(), comment.getContent());
@@ -221,20 +221,20 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional
     public GetQuestionsResponse searchQuestion(Optional<String> title, Optional<String> nickname, Optional<String> hashtagname,
-                                               int page, Pageable pageable){
+                                               int page, Pageable pageable) {
 
         List<Question> questionList = new ArrayList<>();
 
-        if(title.isPresent()){
-            Page<Question> pageQ = questionRepository.findByTitleContaining(title.get(), pageable.withPage(page-1));
+        if (title.isPresent()) {
+            Page<Question> pageQ = questionRepository.findByTitleContaining(title.get(), pageable.withPage(page - 1));
             questionList.addAll(pageQ.getContent());
-        } else if(nickname.isPresent()){
-            Page<Question> pageQ = questionRepository.findByUser_NameContaining(nickname.get(), pageable.withPage(page-1));
+        } else if (nickname.isPresent()) {
+            Page<Question> pageQ = questionRepository.findByUser_NameContaining(nickname.get(), pageable.withPage(page - 1));
             questionList.addAll(pageQ.getContent());
-        } else if(hashtagname.isPresent()){
-            Page<QuestionHashTag> questionHashtags = questionHashTagRepository.findByHashTag_HashTagName(hashtagname.get(), pageable.withPage(page-1));
+        } else if (hashtagname.isPresent()) {
+            Page<QuestionHashTag> questionHashtags = questionHashTagRepository.findByHashTag_HashTagName(hashtagname.get(), pageable.withPage(page - 1));
 
-            for(QuestionHashTag questionHashtag : questionHashtags){
+            for (QuestionHashTag questionHashtag : questionHashtags) {
                 questionList.add(questionHashtag.getQuestion());
             }
         }
@@ -257,7 +257,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 //    @Override
 
-    public void uploadImage(MultipartFile image) throws GetException {
+    // public void uploadImage(MultipartFile image) throws GetException {}
 
     /*// 질문에 이미지 업로드
     @Value("${app.upload.dir:${user.home}}")
@@ -274,5 +274,6 @@ public class QuestionServiceImpl implements QuestionService {
             throw new FileStorageException("Could not store file : " + image.getOriginalFilename());
         }
     }*/
+
 
 }

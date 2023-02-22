@@ -20,7 +20,7 @@ public class OrderResponseDto {
     private final OrderStatus orderStatus;
 
     public OrderResponseDto(Order order) {
-        this.orderId = order.getId();
+        this.orderId = order.getOrderId();
         this.productId = order.getProductId();
         this.orderDate = order.getOrderDate();
         this.orderStatus = order.getOrderStatus();
