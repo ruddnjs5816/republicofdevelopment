@@ -192,13 +192,16 @@ public class QuestionServiceImpl implements QuestionService {
     @Transactional
     public void deleteQuestion(Long questionId, UserDetailsImpl userDetails) {
 
-        Question question = questionRepository.findById(questionId).orElseThrow(
+    Question question = questionRepository.findById(questionId).orElseThrow(
                 () -> new IllegalArgumentException("해당 아이디의 질문이 없습니다.")
         );
+
         User user = userDetails.getUser();
 
         if (question.isOwnedBy(user)) {
+            List<Long> hashtagIds = questionHashTagService.findTagIdsByQuestionId(questionId);
             questionRepository.deleteById(questionId);
+            questionHashTagService.deleteTagsIfNotExistMatchingQuestion(hashtagIds);
         } else {
             throw new IllegalArgumentException("삭제 권한이 없는 유저입니다.");
         }

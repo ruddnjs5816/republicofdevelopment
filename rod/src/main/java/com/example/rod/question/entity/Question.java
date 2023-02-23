@@ -54,8 +54,6 @@ public class Question extends TimeStamped {
     private List<Answer> answersList;
 
 
-
-
     // 승튜한테 질문
     @JsonManagedReference
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
@@ -129,4 +127,7 @@ public class Question extends TimeStamped {
             throw new IllegalArgumentException("채택은 질문자만 할 수 있습니다.");
         }
     }
+
+
+
 }

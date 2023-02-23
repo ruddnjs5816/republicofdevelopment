@@ -78,7 +78,7 @@ public class AnswerServiceImpl implements AnswerService {
         if(answer.isOwnedBy(user)){
             answer.updateContent(answerRequestDto.getContent());
         } else {
-            throw new IllegalArgumentException("자신이 답한 질문이 아니면 수정할 수 업습니다.");
+            throw new IllegalArgumentException("자신의 답변이 아니면 수정할 수 업습니다.");
         }
     }
 
@@ -95,7 +95,7 @@ public class AnswerServiceImpl implements AnswerService {
         if(answer.isOwnedBy(user)){
             answerRepository.deleteById(answerId);
         } else {
-            throw new IllegalArgumentException("자신이 답한 질문이 아니면 삭제할 수 없습니다.");
+            throw new IllegalArgumentException("자신의 답변이 아니면 삭제할 수 없습니다.");
         }
     }
 
