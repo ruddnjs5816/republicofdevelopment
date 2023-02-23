@@ -30,7 +30,7 @@ public class AWSConfig {
     private String regions;
 
 
-    @Bean
+    /*@Bean
     public AmazonS3 amazonS3Client() {
         AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
 
@@ -39,5 +39,5 @@ public class AWSConfig {
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(regions)
                 .build();
-    }
+    }*/
 }

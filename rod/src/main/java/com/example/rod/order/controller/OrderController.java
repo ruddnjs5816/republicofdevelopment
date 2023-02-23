@@ -16,7 +16,6 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@Controller
 public class OrderController {
     private final OrderService orderService;
 

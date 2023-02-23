@@ -12,12 +12,13 @@ import com.example.rod.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Pageable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -73,8 +74,20 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
+    @Override
+    @Transactional
+    public List<CommentResponseDto> getComments(Long answerId, int page, Pageable pageable) {
 
-    /*
+        Page<Comment> comments = commentRepository.findAllByAnswerId(answerId, pageable.withPage(page-1));
+
+        List<CommentResponseDto> commentResponseDtoList= comments.stream()
+                .map(comment -> new CommentResponseDto(comment.getId(), comment.getContent(), comment.getCreatedAt()))
+                .collect(Collectors.toList());
+
+        return commentResponseDtoList;
+    }
+
+/*
     @Transactional(readOnly = true)
     public CommentResultDto getListComment(int offset, int limit) {
         PageRequest pageRequest = PageRequest.of(offset, limit, Sort.by(Sort.Direction.ASC, "id"));

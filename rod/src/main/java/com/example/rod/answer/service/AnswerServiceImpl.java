@@ -125,7 +125,7 @@ public class AnswerServiceImpl implements AnswerService {
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
         for(Comment comment : answer.getComments()){
-            CommentResponseDto commentResponseDto = new CommentResponseDto(comment.getId(), comment.getContent());
+            CommentResponseDto commentResponseDto = new CommentResponseDto(comment.getId(), comment.getContent(), comment.getCreatedAt());
             commentResponseDtoList.add(commentResponseDto);
         }
 

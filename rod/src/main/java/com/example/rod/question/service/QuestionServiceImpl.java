@@ -142,7 +142,7 @@ public class QuestionServiceImpl implements QuestionService {
     public AnswerWithCommentsDto convertToAnswerWithCommentsDto(Answer answer) {
         List<CommentResponseDto> comments = new ArrayList<>();
         for (Comment comment : answer.getComments()) {
-            CommentResponseDto commentResponseDto = new CommentResponseDto(comment.getId(), comment.getContent());
+            CommentResponseDto commentResponseDto = new CommentResponseDto(comment.getId(), comment.getContent(), comment.getCreatedAt());
             comments.add(commentResponseDto);
         }
         AnswerWithCommentsDto answerWithCommentsDto = new AnswerWithCommentsDto(answer.getId(), answer.getContent(), answer.isSelected(), answer.getLikes(), comments);
@@ -191,7 +191,6 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional
     public void deleteQuestion(Long questionId, UserDetailsImpl userDetails) {
-
 
         Question question = questionRepository.findById(questionId).orElseThrow(
                 () -> new IllegalArgumentException("해당 아이디의 질문이 없습니다.")
@@ -245,7 +244,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 //    @Override
 
-    public void uploadImage(MultipartFile image) throws GetException {
+    // public void uploadImage(MultipartFile image) throws GetException {}
 
     /*// 질문에 이미지 업로드
     @Value("${app.upload.dir:${user.home}}")
@@ -262,6 +261,6 @@ public class QuestionServiceImpl implements QuestionService {
             throw new FileStorageException("Could not store file : " + image.getOriginalFilename());
         }
     }*/
+
     }
-}
 

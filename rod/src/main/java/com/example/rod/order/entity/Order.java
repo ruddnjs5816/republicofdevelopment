@@ -21,6 +21,7 @@ public class Order extends TimeStamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
+
 //    private Long userId; //주문 회원
 
     private Long productId; //주문 상품
@@ -45,8 +46,6 @@ public class Order extends TimeStamped {
     //주문 취소 시 주문 상태 취소로 변환
     public void cancelOrder() {
         this.orderStatus = OrderStatus.CANCEL;
-
-
     }
 
 }

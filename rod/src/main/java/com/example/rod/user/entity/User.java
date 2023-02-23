@@ -92,16 +92,8 @@ public class User extends TimeStamped {
     }
 
 
-//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    private List<Question> questions = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    private List<Answer> answers = new ArrayList<>();
 
 
-//    public void changeGrade(UserGrade){
-//        this.grade = UserGrade.valueOf(role);
-//    }
 
     public void changeProfile(String username, String password, String phoneNumber) {
         this.username = username;

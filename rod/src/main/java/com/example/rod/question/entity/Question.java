@@ -7,8 +7,13 @@ import com.example.rod.share.TimeStamped;
 import com.example.rod.user.entity.User;
 import com.example.rod.user.entity.UserGrade;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import lombok.*;
-import org.springframework.beans.factory.annotation.Value;
+
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -34,8 +39,9 @@ public class Question extends TimeStamped {
 
     private Boolean isClosed;   // 채택마감여부
 
-    @Column(columnDefinition = "float8")
-    private Double difficulty;   //  난이도
+
+    @Column(name = "difficulty", columnDefinition = "double precision")
+    private double difficulty;   //  난이도
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
@@ -49,22 +55,20 @@ public class Question extends TimeStamped {
 
 
 
-    // question에서 어떤 행위를 할 때, answer 를 쓸 건지의 여부에 따라 이 연관관계를 ....
 
-  /*  @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
-    private List<QuestionTag> questionTags = new ArrayList<>();
+    // 승튜한테 질문
+    @JsonManagedReference
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<QuestionHashTag> hashTags = new ArrayList<>();
 
-*/
+
     @Builder
-    public Question(String title, String content, User user, Boolean isClosed, Double difficulty){
+    public Question(String title, String content, User user, List<Answer> answers, boolean isClosed, double difficulty){
         this.title = title;
         this.content = content;
         this.user = user;
         this.isClosed = isClosed;
         this.difficulty = difficulty;
-
-
-//        this.questionTags = questionRequest.getTagList();
     }
 
     public void calculateDifficulty(double difficulty){
@@ -79,8 +83,6 @@ public class Question extends TimeStamped {
         this.difficulty = Math.round(difficultyCaldidate*10)/10.0;
     }
 
-
-//    public void setFK(User user){ this.user = user; }
 
     public void editTitle(User user, String title){
         if(this.isOwnedBy(user)){

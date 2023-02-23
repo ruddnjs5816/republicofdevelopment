@@ -67,10 +67,12 @@ public class OrderService {
 //        List<Order> orderList = orderRepository.findAllByUser(userId);
         List<OrderResponseDto> result = new ArrayList<>();
 
-//        for (Order order: orderList) {
-//            OrderResponseDto dto = new OrderResponseDto(order.getOrderId(), order.getProductId(), order.getOrderDate(), order.getOrderStatus());
-//            result.add(dto);
-//        }
+
+     /*   for (Order order: orderList) {
+            OrderResponseDto dto = new OrderResponseDto(order.getId(), order.getProductId(), order.getOrderDate(), order.getOrderStatus());
+            result.add(dto);
+        }*/
+
         return result;
 
     }

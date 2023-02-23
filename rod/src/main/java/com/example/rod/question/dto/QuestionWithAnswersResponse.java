@@ -25,7 +25,6 @@ public class QuestionWithAnswersResponse {
         this.tagList = tagList;
         this.difficulty = difficulty;
         this.answerWithComments = answerWithComments;
-
     }
 
 }
