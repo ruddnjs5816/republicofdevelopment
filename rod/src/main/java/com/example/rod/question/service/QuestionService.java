@@ -1,12 +1,9 @@
 package com.example.rod.question.service;
 
-import com.example.rod.exception.GetException;
 import com.example.rod.question.dto.*;
 import com.example.rod.security.details.UserDetailsImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface QuestionService {
@@ -22,9 +19,7 @@ public interface QuestionService {
 
     void selectAnswerForQuestion(Long questionId, Long answerId, UserDetailsImpl userDetails);
 
-    void changeQuestionTitle(Long questionId, PatchQuestionTitleRequest patchQuestionTitleRequest, UserDetailsImpl userDetails);
-
-    void changeQuestionContent(Long questionId, PatchQuestionContentRequest patchQuestionContentRequest, UserDetailsImpl userDetails);
+    void changeQuestion(Long questionId, ChangeQuestionRequest changeQuestionRequest, UserDetailsImpl userDetails);
 
     void deleteQuestion(Long questionId, UserDetailsImpl userDetails);
 
