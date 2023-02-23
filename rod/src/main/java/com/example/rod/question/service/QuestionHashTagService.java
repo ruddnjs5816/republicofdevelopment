@@ -70,6 +70,34 @@ public class QuestionHashTagService {
     }
 
 
+    public List<Long> findTagIdsByQuestionId(Long questionId) {
+
+        List<QuestionHashTag> questionHashTags = questionHashTagRepository.findAllByQuestionQuestionId(questionId);
+
+        List<Long> hashtagIds = new ArrayList<>();
+
+        questionHashTags.forEach(questionHashTag -> {
+           hashtagIds.add(questionHashTag.getHashTag().getId());
+        });
+
+        return hashtagIds;
+    }
+
+    public void deleteTagsIfNotExistMatchingQuestion(List<Long> hashtagIds) {
+
+        List<Long> noMatchingTagIds = new ArrayList<>();
+
+        hashtagIds.forEach(hashTagId->{
+            if( ! questionHashTagRepository.existsByHashTagId(hashTagId) ) {
+                noMatchingTagIds.add(hashTagId);
+            }
+        });
+
+        hashTagService.deleteHashTagsById(noMatchingTagIds);
 
 
+
+
+
+    }
 }

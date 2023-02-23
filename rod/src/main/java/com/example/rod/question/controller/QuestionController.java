@@ -37,7 +37,7 @@ public class QuestionController {
     @GetMapping("/my-questions")
     @ResponseStatus(HttpStatus.OK)
     public GetQuestionsResponse getMyQuestions(@RequestParam(defaultValue = "1") int page,
-                                               @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+                                               @PageableDefault(size = 10, sort = "questionId", direction = Sort.Direction.ASC) Pageable pageable,
                                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         GetQuestionsResponse myQuestionList = questionService.getMyQuestions(userDetails, pageable, page);
@@ -50,7 +50,7 @@ public class QuestionController {
     @ResponseStatus(HttpStatus.OK)
     public GetQuestionsResponse getQuestions(
             @RequestParam(defaultValue = "1") int page,
-            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+            @PageableDefault(size = 10, sort = "questionId", direction = Sort.Direction.ASC) Pageable pageable) {
 
         GetQuestionsResponse questionResponseList = questionService.getQuestions(pageable, page);
         return questionResponseList;
@@ -105,7 +105,7 @@ public class QuestionController {
                                                       @RequestParam("nickname") Optional<String> nickname,
                                                       @RequestParam("tagname") Optional<String> tagname,
                                                       @RequestParam(defaultValue = "1") int page,
-                                                      @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+                                                      @PageableDefault(size = 10, sort = "questionId", direction = Sort.Direction.ASC) Pageable pageable) {
 
         if (title.isPresent() || nickname.isPresent() || tagname.isPresent()) {
             return questionService.searchQuestion(title, nickname, tagname, page, pageable);

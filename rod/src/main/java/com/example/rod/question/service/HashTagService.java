@@ -5,6 +5,7 @@ import com.example.rod.question.repository.HashTagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -30,6 +31,9 @@ public class HashTagService {
         return hashTag;
     }
 
-
-
+    public void deleteHashTagsById(List<Long> noMatchingTagIds) {
+        noMatchingTagIds.forEach(noMatchingTagId->{
+           hashTagRepository.deleteById(noMatchingTagId);
+        });
+    }
 }
