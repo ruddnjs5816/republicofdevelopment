@@ -80,7 +80,7 @@ public class QuestionServiceImpl implements QuestionService {
             questionResponseList.add(QuestionResponse.builder()
                     .questionId(question.getQuestionId())
                     .title(question.getTitle())
-                    .nickname(question.getUser().getName())
+                    .nickname(question.getUser().getNickname())
                     .answerCount(question.getAnswersList().size())
                     .createdAt(question.getCreatedAt()).build());
         }
@@ -99,7 +99,7 @@ public class QuestionServiceImpl implements QuestionService {
             questionResponseList.add(QuestionResponse.builder()
                     .questionId(question.getQuestionId())
                     .title(question.getTitle())
-                    .nickname(question.getUser().getName())
+                    .nickname(question.getUser().getNickname())
                     .answerCount(question.getAnswersList().size())
                     .createdAt(question.getCreatedAt()).build());
         }
@@ -216,7 +216,7 @@ public class QuestionServiceImpl implements QuestionService {
             Page<Question> pageQ = questionRepository.findByTitleContaining(title.get(), pageable.withPage(page - 1));
             questionList.addAll(pageQ.getContent());
         } else if (nickname.isPresent()) {
-            Page<Question> pageQ = questionRepository.findByUser_NameContaining(nickname.get(), pageable.withPage(page - 1));
+            Page<Question> pageQ = questionRepository.findByUserNicknameContaining(nickname.get(), pageable.withPage(page - 1));
             questionList.addAll(pageQ.getContent());
         } else if (hashtagname.isPresent()) {
             Page<QuestionHashTag> questionHashtags = questionHashTagRepository.findByHashTag_HashTagName(hashtagname.get(), pageable.withPage(page - 1));
@@ -232,7 +232,7 @@ public class QuestionServiceImpl implements QuestionService {
                 .map(question -> QuestionResponse.builder()
                         .questionId(question.getQuestionId())
                         .title(question.getTitle())
-                        .nickname(question.getUser().getName())
+                        .nickname(question.getUser().getNickname())
                         .answerCount(question.getAnswersList().size())
                         .createdAt(question.getCreatedAt()).build())
                 .collect(Collectors.toList());

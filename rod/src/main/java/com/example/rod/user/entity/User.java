@@ -26,9 +26,10 @@ public class User extends TimeStamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
+    @Column(nullable = false, unique = true)
     private String username;
 
-    private String name;
+    private String nickname;
     private String password;
 
     @Column(nullable = false)
@@ -63,11 +64,11 @@ public class User extends TimeStamped {
     private String filename;
 
     @Builder
-    public User(String username, String name, String password, Integer point,
+    public User(String username, String nickname, String password, Integer point,
                 String phoneNumber, Integer rating, UserGrade grade, UserRole role,
                 String imageUrl, String filename) {
         this.username = username;
-        this.name = name;
+        this.nickname = nickname;
         this.password = password;
         this.point = point;
         this.phoneNumber = phoneNumber;
@@ -95,15 +96,11 @@ public class User extends TimeStamped {
 
 
 
-    public void changeProfile(String username, String password, String phoneNumber) {
-        this.username = username;
+    public void changeProfile(String nickname, String password, String phoneNumber) {
+        this.nickname = nickname;
         this.password = password;
         this.phoneNumber = phoneNumber;
     }
-
-    public void changeImage(String filename){
-        this.filename = filename;
-    };
 
     // 질문 등록, 답변 등록, 답변 채택 -> 실행
 
