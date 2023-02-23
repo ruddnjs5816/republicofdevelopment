@@ -6,7 +6,6 @@ import com.example.rod.answer.repository.AnswerRepository;
 import com.example.rod.comment.dto.CommentResponseDto;
 import com.example.rod.comment.entity.Comment;
 import com.example.rod.comment.repository.CommentRepository;
-import com.example.rod.exception.GetException;
 import com.example.rod.question.dto.*;
 import com.example.rod.question.entity.Question;
 import com.example.rod.question.entity.QuestionHashTag;
@@ -20,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -167,23 +165,14 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
 
+    // 질문 수정
     @Override
     @Transactional
-    public void changeQuestionTitle(Long questionId, PatchQuestionTitleRequest patchQuestionTitleRequest, UserDetailsImpl userDetails) {
+    public void changeQuestion(Long questionId, ChangeQuestionRequest changeQuestionRequest, UserDetailsImpl userDetails) {
         Question question = questionRepository.findById(questionId).orElseThrow
                 (() -> new IllegalArgumentException("해당 아이디의 질문이 없습니다."));
         User user = userDetails.getUser();
-        question.editTitle(user, patchQuestionTitleRequest.getTitle());
-    }
-
-    // 질문 내용 변경
-    @Override
-    @Transactional
-    public void changeQuestionContent(Long questionId, PatchQuestionContentRequest patchQuestionContentRequest, UserDetailsImpl userDetails) {
-        Question question = questionRepository.findById(questionId).orElseThrow
-                (() -> new IllegalArgumentException("해당 아이디의 질문이 없습니다."));
-        User user = userDetails.getUser();
-        question.editContent(user, patchQuestionContentRequest.getContent());
+        question.editQuestion(user, changeQuestionRequest.getTitle(), changeQuestionRequest.getContent());
     }
 
 
@@ -191,8 +180,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional
     public void deleteQuestion(Long questionId, UserDetailsImpl userDetails) {
-
-    Question question = questionRepository.findById(questionId).orElseThrow(
+        Question question = questionRepository.findById(questionId).orElseThrow(
                 () -> new IllegalArgumentException("해당 아이디의 질문이 없습니다.")
         );
 

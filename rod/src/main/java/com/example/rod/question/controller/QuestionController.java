@@ -1,6 +1,6 @@
 package com.example.rod.question.controller;
 
-import com.example.rod.exception.GetException;
+import com.amazonaws.services.cloudformation.model.Change;
 import com.example.rod.question.dto.*;
 import com.example.rod.question.service.QuestionService;
 import com.example.rod.security.details.UserDetailsImpl;
@@ -11,8 +11,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
@@ -74,20 +72,11 @@ public class QuestionController {
     }
 
 
-
-    // 질문의 제목을 바꾸는 경우 API
-    @PatchMapping("/questions/{questionId}/title")
+    // 질문 수정 API
+    @PutMapping("/questions/{questionId}")
     @ResponseStatus(HttpStatus.OK)
-    public void changeQuestionTitle(@PathVariable Long questionId, @RequestBody PatchQuestionTitleRequest patchQuestionTitleRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        questionService.changeQuestionTitle(questionId, patchQuestionTitleRequest, userDetails);
-    }
-
-
-    // 질문의 내용(content)를 바꾸는 경우 API
-    @PatchMapping("/questions/{questionId}/content")
-    @ResponseStatus(HttpStatus.OK)
-    public void changeQuestionContent(@PathVariable Long questionId, @RequestBody PatchQuestionContentRequest patchQuestionContentRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        questionService.changeQuestionContent(questionId, patchQuestionContentRequest, userDetails);
+    public void changeQuestion(@PathVariable Long questionId, @RequestBody ChangeQuestionRequest changeQuestionRequest, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        questionService.changeQuestion(questionId, changeQuestionRequest, userDetails);
     }
 
 

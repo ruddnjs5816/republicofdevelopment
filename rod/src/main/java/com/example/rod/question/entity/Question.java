@@ -82,16 +82,10 @@ public class Question extends TimeStamped {
     }
 
 
-    public void editTitle(User user, String title){
+
+    public void editQuestion(User user, String title, String content){
         if(this.isOwnedBy(user)){
             this.title = title;
-        } else {
-            throw new IllegalArgumentException("수정 권한이 없는 유저입니다.");
-        }
-    }
-
-    public void editContent(User user, String content){
-        if(this.isOwnedBy(user)){
             this.content = content;
         } else {
             throw new IllegalArgumentException("수정 권한이 없는 유저입니다.");
