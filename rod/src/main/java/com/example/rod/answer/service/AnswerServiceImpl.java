@@ -125,11 +125,26 @@ public class AnswerServiceImpl implements AnswerService {
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
         for(Comment comment : answer.getComments()){
-            CommentResponseDto commentResponseDto = new CommentResponseDto(comment.getId(), comment.getContent(), comment.getCreatedAt());
+            CommentResponseDto commentResponseDto = CommentResponseDto.builder()
+                    .commentId(comment.getId())
+                    .writerName(comment.getUser().getName())
+                    .content(comment.getContent())
+                    .createdAt(comment.getCreatedAt())
+                    .build();
             commentResponseDtoList.add(commentResponseDto);
         }
 
-        return new AnswerWithCommentsDto(answer.getId(), answer.getContent(), answer.isSelected(), answer.getLikes(), commentResponseDtoList);
+        AnswerWithCommentsDto answerWithCommentsDto = AnswerWithCommentsDto.builder()
+                .answerId(answer.getId())
+                .writerName(answer.getUser().getName())
+                .content(answer.getContent())
+                .createdAt(answer.getCreatedAt())
+                .isSelected(answer.isSelected())
+                .likes(answer.getLikes())
+                .commentResponseDtoList(commentResponseDtoList)
+                .build();
+
+        return answerWithCommentsDto;
     }
 }
 

@@ -18,4 +18,5 @@ public interface QuestionHashTagRepository extends JpaRepository<QuestionHashTag
     Page<QuestionHashTag> findByHashTag_HashTagName(String tagname, Pageable pageable);
 
     boolean existsByHashTagId(Long hashTagId);
+    Long countByHashTag_HashTagName(String hashTagName);
 }

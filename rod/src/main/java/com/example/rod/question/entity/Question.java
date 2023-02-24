@@ -37,7 +37,7 @@ public class Question extends TimeStamped {
     private String content;
 
 
-    private Boolean isClosed;   // 채택마감여부
+    private boolean isClosed;   // 채택마감여부
 
 
     @Column(name = "difficulty", columnDefinition = "double precision")
@@ -102,7 +102,7 @@ public class Question extends TimeStamped {
 
     public void processSelectionResult(User questioner, Question question, Answer answer){
 
-        if(question.isClosed){
+        if(question.isClosed()){
             throw new IllegalArgumentException("이미 채택완료된 질문입니다.");
         }
 
