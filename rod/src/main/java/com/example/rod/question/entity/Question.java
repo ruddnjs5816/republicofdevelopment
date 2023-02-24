@@ -61,7 +61,7 @@ public class Question extends TimeStamped {
 
 
     @Builder
-    public Question(String title, String content, User user, List<Answer> answers, boolean isClosed, double difficulty){
+    public Question(String title, String content, User user, List<Answer> answersList, boolean isClosed, double difficulty){
         this.title = title;
         this.content = content;
         this.user = user;

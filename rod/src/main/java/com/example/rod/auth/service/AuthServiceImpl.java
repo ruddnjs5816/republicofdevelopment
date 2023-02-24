@@ -31,7 +31,7 @@ public class AuthServiceImpl implements AuthService{
     public void signUp(SignupRequestDto signupRequestDto) {
         String username = signupRequestDto.getUsername();
         String password = signupRequestDto.getPassword();
-        String name = signupRequestDto.getName();
+        String nickname = signupRequestDto.getNickname();
         String phoneNumber = signupRequestDto.getPhoneNumber();
         String encodedPassword = passwordEncoder.encode(password);
         Integer point = 0;
@@ -39,10 +39,7 @@ public class AuthServiceImpl implements AuthService{
         UserGrade userGrade = UserGrade.BRONZE;
 
         // 회원 중복 확인
-//        Optional<User> found = userRepository.findByUsername(username);
-//        if (found.isPresent()) {
-//            throw new CustomException(DUPLICATED_USERNAME);
-//        }
+
         validateUsername(username);
 
         // 사용자 ROLE(권한) 확인
@@ -61,7 +58,7 @@ public class AuthServiceImpl implements AuthService{
 
         User user = User.builder()
                 .username(username)
-                .name(name)
+                .nickname(nickname)
                 .role(userRole)
                 .phoneNumber(phoneNumber)
                 .grade(userGrade)

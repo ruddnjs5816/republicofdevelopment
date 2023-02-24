@@ -79,6 +79,7 @@ public class QuestionServiceImpl implements QuestionService {
                     .questionId(question.getQuestionId())
                     .title(question.getTitle())
                     .writerName(question.getUser().getName())
+
                     .answerCount(question.getAnswersList().size())
                     .createdAt(question.getCreatedAt()).build());
         }
