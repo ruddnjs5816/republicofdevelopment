@@ -20,16 +20,16 @@ public class AnswerWithCommentsDto {
 
     private Long answerId;
 
-    private String nickName;
+    private String nickname;
     private String createdAt;
     private String content;
     private boolean isSelected;
     private int likes;
     private List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
-    public AnswerWithCommentsDto(Long answerId, String nickName, String createdAt, String content, boolean isSelected, int likes, List<CommentResponseDto> commentResponseDtoList) {
+    public AnswerWithCommentsDto(Long answerId, String nickname, String createdAt, String content, boolean isSelected, int likes, List<CommentResponseDto> commentResponseDtoList) {
         this.answerId = answerId;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.createdAt = createdAt;
         this.content = content;
         this.isSelected = isSelected;
