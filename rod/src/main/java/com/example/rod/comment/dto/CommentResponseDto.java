@@ -21,9 +21,9 @@ public class CommentResponseDto {
     private String content;
     private String createdAt;
 
-    public CommentResponseDto(Long commentId, String nickName, String content, String createdAt) {
+    public CommentResponseDto(Long commentId, String nickname, String content, String createdAt) {
         this.commentId = commentId;
-        this.nickName = nickName;
+        this.nickName = nickname;
         this.content = content;
         this.createdAt = createdAt;
     }
