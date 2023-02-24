@@ -81,7 +81,12 @@ public class CommentServiceImpl implements CommentService {
         Page<Comment> comments = commentRepository.findAllByAnswerId(answerId, pageable.withPage(page-1));
 
         List<CommentResponseDto> commentResponseDtoList= comments.stream()
-                .map(comment -> new CommentResponseDto(comment.getId(), comment.getContent(), comment.getCreatedAt()))
+                .map(comment -> CommentResponseDto.builder()
+                        .commentId(comment.getId())
+                        .writerName(comment.getUser().getName())
+                        .content(comment.getContent())
+                        .createdAt(comment.getCreatedAt())
+                        .build())
                 .collect(Collectors.toList());
 
         return commentResponseDtoList;

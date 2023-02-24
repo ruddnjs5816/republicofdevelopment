@@ -1,12 +1,16 @@
 package com.example.rod.question.dto;
 
 import com.example.rod.answer.entity.Answer;
+import com.example.rod.comment.dto.CommentResponseDto;
 import com.example.rod.question.entity.Question;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 @Getter
@@ -16,22 +20,35 @@ public class QuestionResponse {
 
     private String title;
 
-    private String nickname;
+    // 질문 작성자 이름
+    private String writerName;
 
     // 만든 날짜
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     // 이 Question에 달린 답변의 수
     private Integer answerCount;
 
 
     @Builder
-    public QuestionResponse(Long questionId, String title, String nickname, LocalDateTime createdAt, Integer answerCount) {
+    public QuestionResponse(Long questionId, String title, String writerName, String createdAt, Integer answerCount) {
         this.questionId = questionId;
         this.title = title;
-        this.nickname = nickname;
+        this.writerName = writerName;
         this.createdAt = createdAt;
         this.answerCount = answerCount;
+    }
+
+
+    public static class QuestionResponseBuilder{
+        private String createdAt;
+
+        public QuestionResponse.QuestionResponseBuilder createdAt(LocalDateTime createdAt){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            String formattedTime = createdAt.format(formatter);
+            this.createdAt = formattedTime;
+            return this;
+        }
     }
 
 }

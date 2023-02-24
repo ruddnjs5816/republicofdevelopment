@@ -11,17 +11,17 @@ public class QuestionWithAnswersResponse {
 
     private String title;
     private String content;
-
     private HashTagDto tagList;
-
+    private Long totalAnswerCount;
     private double difficulty;
     private List<AnswerWithCommentsDto> answerWithComments;
 
 
 
-    public QuestionWithAnswersResponse(String title, String content, HashTagDto tagList, double difficulty, List<AnswerWithCommentsDto> answerWithComments){
+    public QuestionWithAnswersResponse(String title, String content, HashTagDto tagList, Long totalAnswerCount, double difficulty, List<AnswerWithCommentsDto> answerWithComments){
         this.title = title;
         this.content = content;
+        this.totalAnswerCount = totalAnswerCount;
         this.tagList = tagList;
         this.difficulty = difficulty;
         this.answerWithComments = answerWithComments;

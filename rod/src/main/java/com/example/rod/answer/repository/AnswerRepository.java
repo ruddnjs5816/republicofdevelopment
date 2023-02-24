@@ -22,4 +22,6 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     Page<Answer> findByQuestionAndIsSelected(Question question, boolean isSelected, Pageable pageable);
 
+    Long countByQuestionQuestionId(Long questionId);
+
 }

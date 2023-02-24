@@ -38,11 +38,6 @@ public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionHashTagService questionHashTagService;
 
-    private final CommentRepository commentRepository;
-
-    private final UserRepository userRepository;
-
-    private final UserDetailsService userDetailsService;
 
     @Override
     @Transactional
@@ -72,17 +67,22 @@ public class QuestionServiceImpl implements QuestionService {
 
         Page<Question> questionList = questionRepository.findAllByUser(user, pageable.withPage(page - 1));
 
+        // query를 가져오는 방법
+        // 트러블 슈팅 해볼만 함 -> Question - Count Mapping Table 만들기? 그래서 1씩 증가 시키기. <- 이거 수치화 해보기.
+        Long totalQuestionCount = questionRepository.countAllByUser(user);
+
+
         List<QuestionResponse> questionResponseList = new ArrayList<>();
 
         for (Question question : questionList) {
             questionResponseList.add(QuestionResponse.builder()
                     .questionId(question.getQuestionId())
                     .title(question.getTitle())
-                    .nickname(question.getUser().getName())
+                    .writerName(question.getUser().getName())
                     .answerCount(question.getAnswersList().size())
                     .createdAt(question.getCreatedAt()).build());
         }
-        return new GetQuestionsResponse(page, questionResponseList);
+        return new GetQuestionsResponse(page, totalQuestionCount, questionResponseList);
     }
 
     @Override
@@ -91,18 +91,25 @@ public class QuestionServiceImpl implements QuestionService {
 
         Page<Question> questionList = questionRepository.findAll(pageable.withPage(page - 1));
 
+        // query를 가져오는 방법
+        // 트러블 슈팅 해볼만 함 -> Question - Count Mapping Table 만들기? 그래서 1씩 증가 시키기. <- 이거 수치화 해보기.
+        Long totalQuestionCount = questionRepository.count();
+
         List<QuestionResponse> questionResponseList = new ArrayList<>();
 
         for (Question question : questionList) {
+
             questionResponseList.add(QuestionResponse.builder()
                     .questionId(question.getQuestionId())
                     .title(question.getTitle())
-                    .nickname(question.getUser().getName())
+                    .writerName(question.getUser().getName())
                     .answerCount(question.getAnswersList().size())
                     .createdAt(question.getCreatedAt()).build());
         }
 
-        return new GetQuestionsResponse(page, questionResponseList);
+
+
+        return new GetQuestionsResponse(page, totalQuestionCount, questionResponseList);
     }
 
 
@@ -131,8 +138,10 @@ public class QuestionServiceImpl implements QuestionService {
             answerWithComments.add(convertToAnswerWithCommentsDto(answer));
         }
 
+        Long totalAnswerCount = answerRepository.countByQuestionQuestionId(questionId);
+
         QuestionWithAnswersResponse questionWithAnswersResponse = new QuestionWithAnswersResponse
-                (question.getTitle(), question.getContent(), hashTagDto, question.getDifficulty(), answerWithComments);
+                (question.getTitle(), question.getContent(), hashTagDto, totalAnswerCount, question.getDifficulty(), answerWithComments);
 
         return questionWithAnswersResponse;
     }
@@ -140,10 +149,24 @@ public class QuestionServiceImpl implements QuestionService {
     public AnswerWithCommentsDto convertToAnswerWithCommentsDto(Answer answer) {
         List<CommentResponseDto> comments = new ArrayList<>();
         for (Comment comment : answer.getComments()) {
-            CommentResponseDto commentResponseDto = new CommentResponseDto(comment.getId(), comment.getContent(), comment.getCreatedAt());
+            CommentResponseDto commentResponseDto = CommentResponseDto.builder()
+                    .commentId(comment.getId())
+                    .writerName(comment.getUser().getName())
+                    .content(comment.getContent())
+                    .createdAt(comment.getCreatedAt())
+                    .build();
             comments.add(commentResponseDto);
         }
-        AnswerWithCommentsDto answerWithCommentsDto = new AnswerWithCommentsDto(answer.getId(), answer.getContent(), answer.isSelected(), answer.getLikes(), comments);
+        AnswerWithCommentsDto answerWithCommentsDto = AnswerWithCommentsDto.builder()
+                .answerId(answer.getId())
+                .writerName(answer.getUser().getName())
+                .content(answer.getContent())
+                .createdAt(answer.getCreatedAt())
+                .isSelected(answer.isSelected())
+                .likes(answer.getLikes())
+                .commentResponseDtoList(comments)
+                .build();
+
         return answerWithCommentsDto;
     }
 
@@ -202,16 +225,22 @@ public class QuestionServiceImpl implements QuestionService {
                                                int page, Pageable pageable) {
 
         List<Question> questionList = new ArrayList<>();
+        // query를 가져오는 방법
+        // 트러블 슈팅 해볼만 함 -> Question - Count Mapping Table 만들기? 그래서 1씩 증가 시키기. <- 이거 수치화 해보기.
+        Long totalQuestionCount = 0L;
+
 
         if (title.isPresent()) {
             Page<Question> pageQ = questionRepository.findByTitleContaining(title.get(), pageable.withPage(page - 1));
+            totalQuestionCount = questionRepository.countByTitleContaining(title.get());
             questionList.addAll(pageQ.getContent());
         } else if (nickname.isPresent()) {
             Page<Question> pageQ = questionRepository.findByUser_NameContaining(nickname.get(), pageable.withPage(page - 1));
+            totalQuestionCount = questionRepository.countByUser_NameContaining(nickname.get());
             questionList.addAll(pageQ.getContent());
         } else if (hashtagname.isPresent()) {
             Page<QuestionHashTag> questionHashtags = questionHashTagRepository.findByHashTag_HashTagName(hashtagname.get(), pageable.withPage(page - 1));
-
+            totalQuestionCount = questionHashTagRepository.countByHashTag_HashTagName(hashtagname.get());
             for (QuestionHashTag questionHashtag : questionHashtags) {
                 questionList.add(questionHashtag.getQuestion());
             }
@@ -223,12 +252,12 @@ public class QuestionServiceImpl implements QuestionService {
                 .map(question -> QuestionResponse.builder()
                         .questionId(question.getQuestionId())
                         .title(question.getTitle())
-                        .nickname(question.getUser().getName())
+                        .writerName(question.getUser().getName())
                         .answerCount(question.getAnswersList().size())
                         .createdAt(question.getCreatedAt()).build())
                 .collect(Collectors.toList());
 
-        GetQuestionsResponse response = new GetQuestionsResponse(page, questionResponseList);
+        GetQuestionsResponse response = new GetQuestionsResponse(page, totalQuestionCount, questionResponseList);
 
         return response;
     }
