@@ -282,6 +282,5 @@ public class QuestionServiceImpl implements QuestionService {
             throw new FileStorageException("Could not store file : " + image.getOriginalFilename());
         }
     }*/
-
-    }
+}
 
