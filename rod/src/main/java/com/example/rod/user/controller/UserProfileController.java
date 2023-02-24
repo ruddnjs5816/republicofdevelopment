@@ -24,14 +24,13 @@ public class UserProfileController {
     }
 
     // 내 프로필 수정
-//    @PutMapping("/users/mypage")
-//    public void editMyInfo(@RequestPart("image") MultipartFile multipartFile,
-//                           ProfileRequestDto profileRequestDto,
-//                           @AuthenticationPrincipal UserDetailsImpl userDetails){
-//        userService.editMyInfo(multipartFile, profileRequestDto, userDetails);
-//
-//
-//    }
+    @PatchMapping("/users/mypage")
+    public void editMyInfo(@RequestBody ProfileRequestDto profileRequestDto,
+                           @AuthenticationPrincipal UserDetailsImpl userDetails){
+        userService.editMyInfo(profileRequestDto, userDetails);
+
+
+    }
 
     // 내 프로필 등록
 

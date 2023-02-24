@@ -21,7 +21,7 @@ public class QuestionResponse {
     private String title;
 
     // 질문 작성자 이름
-    private String writerName;
+    private String nickName;
 
     // 만든 날짜
     private String createdAt;
@@ -31,10 +31,10 @@ public class QuestionResponse {
 
 
     @Builder
-    public QuestionResponse(Long questionId, String title, String writerName, String createdAt, Integer answerCount) {
+    public QuestionResponse(Long questionId, String title, String nickName, String createdAt, Integer answerCount) {
         this.questionId = questionId;
         this.title = title;
-        this.writerName = writerName;
+        this.nickName = nickName;
         this.createdAt = createdAt;
         this.answerCount = answerCount;
     }

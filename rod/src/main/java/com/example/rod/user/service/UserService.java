@@ -42,17 +42,13 @@ public class UserService {
 
     // 내 프로필 수정
     @Transactional
-    public void editMyInfo(MultipartFile multipartFile, ProfileRequestDto profileRequestDto, UserDetailsImpl userDetails) {
+    public void editMyInfo(ProfileRequestDto profileRequestDto, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
-        String uuid = UUID.randomUUID().toString();
-        String unique = uuid.substring(0,7);
-        String filename = unique + "-" + multipartFile.getOriginalFilename();
-        String username = profileRequestDto.getName();
+        String nickname = profileRequestDto.getNickname();
         String phoneNumber = profileRequestDto.getPhoneNumber();
         String password = profileRequestDto.getPassword();
-
+        user.changeProfile(nickname, password, phoneNumber);
 //        user.changeProfile(password, phoneNumber, username, filename);
-        fileService.upload(multipartFile, filename);
         userRepository.save(user);
     }
 
@@ -60,34 +56,10 @@ public class UserService {
     // fileController 에서 설정
     @Transactional
     public void saveProfileImage(MultipartFile image,
-//                                 ProfileRequestDto profileRequestDto,
                                  UserDetailsImpl userDetails) throws IOException {
-//        String password = profileRequestDto.getPassword();
-//        String username = profileRequestDto.getName();
-//        String phoneNumber = profileRequestDto.getPhoneNumber();
         User user = userDetails.getUser();
         String filename = image.getOriginalFilename();
-//        String filename = user.getFilename();
         user.setFilename(filename);
-
-//        try{
-//            user.setPassword(passwordEncoder.encode(password));
-//        } catch (IllegalArgumentException e){
-//            System.out.println(e.getMessage());
-//            user.setPassword(userDetails.getPassword());
-//        }
-//        try{
-//            user.setUsername(username);
-//        } catch (IllegalArgumentException e){
-//            System.out.println(e.getMessage());
-//            user.setUsername(userDetails.getName());
-//        }
-//        try{
-//            user.setPhoneNumber(phoneNumber);
-//        } catch (IllegalArgumentException e){
-//            System.out.println(e.getMessage());
-//            user.setPhoneNumber(userDetails.getPhoneNumber());
-//        }
 
         if(!image.isEmpty()) {
             String storedFileName = s3Uploader.upload(image,"images");

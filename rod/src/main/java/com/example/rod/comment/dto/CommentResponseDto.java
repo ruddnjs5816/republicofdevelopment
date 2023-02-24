@@ -17,13 +17,13 @@ import java.time.format.DateTimeFormatter;
 public class CommentResponseDto {
 
     private Long commentId;
-    private String writerName;
+    private String nickName;
     private String content;
     private String createdAt;
 
-    public CommentResponseDto(Long commentId, String writerName, String content, String createdAt) {
+    public CommentResponseDto(Long commentId, String nickName, String content, String createdAt) {
         this.commentId = commentId;
-        this.writerName = writerName;
+        this.nickName = nickName;
         this.content = content;
         this.createdAt = createdAt;
     }
