@@ -150,7 +150,7 @@ public class QuestionServiceImpl implements QuestionService {
                 .createdAt(question.getCreatedAt())
                 .totalAnswerCount(totalAnswerCount)
                 .difficulty(question.getDifficulty())
-                .nickname(question.getUser().getName())
+                .nickname(question.getUser().getNickname())
                 .answerWithComments(answerWithComments)
                 .build();
 
