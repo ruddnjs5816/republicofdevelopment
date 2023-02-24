@@ -83,7 +83,7 @@ public class CommentServiceImpl implements CommentService {
         List<CommentResponseDto> commentResponseDtoList= comments.stream()
                 .map(comment -> CommentResponseDto.builder()
                         .commentId(comment.getId())
-                        .writerName(comment.getUser().getName())
+                        .nickName(comment.getUser().getNickname())
                         .content(comment.getContent())
                         .createdAt(comment.getCreatedAt())
                         .build())

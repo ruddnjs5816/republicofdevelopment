@@ -78,7 +78,7 @@ public class QuestionServiceImpl implements QuestionService {
             questionResponseList.add(QuestionResponse.builder()
                     .questionId(question.getQuestionId())
                     .title(question.getTitle())
-                    .writerName(question.getUser().getName())
+                    .nickName(question.getUser().getNickname())
 
                     .answerCount(question.getAnswersList().size())
                     .createdAt(question.getCreatedAt()).build());
@@ -103,7 +103,7 @@ public class QuestionServiceImpl implements QuestionService {
             questionResponseList.add(QuestionResponse.builder()
                     .questionId(question.getQuestionId())
                     .title(question.getTitle())
-                    .writerName(question.getUser().getName())
+                    .nickName(question.getUser().getNickname())
                     .answerCount(question.getAnswersList().size())
                     .createdAt(question.getCreatedAt()).build());
         }
@@ -152,7 +152,7 @@ public class QuestionServiceImpl implements QuestionService {
         for (Comment comment : answer.getComments()) {
             CommentResponseDto commentResponseDto = CommentResponseDto.builder()
                     .commentId(comment.getId())
-                    .writerName(comment.getUser().getName())
+                    .nickName(comment.getUser().getNickname())
                     .content(comment.getContent())
                     .createdAt(comment.getCreatedAt())
                     .build();
@@ -160,7 +160,7 @@ public class QuestionServiceImpl implements QuestionService {
         }
         AnswerWithCommentsDto answerWithCommentsDto = AnswerWithCommentsDto.builder()
                 .answerId(answer.getId())
-                .writerName(answer.getUser().getName())
+                .nickName(answer.getUser().getNickname())
                 .content(answer.getContent())
                 .createdAt(answer.getCreatedAt())
                 .isSelected(answer.isSelected())
@@ -236,8 +236,8 @@ public class QuestionServiceImpl implements QuestionService {
             totalQuestionCount = questionRepository.countByTitleContaining(title.get());
             questionList.addAll(pageQ.getContent());
         } else if (nickname.isPresent()) {
-            Page<Question> pageQ = questionRepository.findByUser_NameContaining(nickname.get(), pageable.withPage(page - 1));
-            totalQuestionCount = questionRepository.countByUser_NameContaining(nickname.get());
+            Page<Question> pageQ = questionRepository.findByUserNicknameContaining(nickname.get(), pageable.withPage(page - 1));
+            totalQuestionCount = questionRepository.countByUserNicknameContaining(nickname.get());
             questionList.addAll(pageQ.getContent());
         } else if (hashtagname.isPresent()) {
             Page<QuestionHashTag> questionHashtags = questionHashTagRepository.findByHashTag_HashTagName(hashtagname.get(), pageable.withPage(page - 1));
@@ -253,7 +253,7 @@ public class QuestionServiceImpl implements QuestionService {
                 .map(question -> QuestionResponse.builder()
                         .questionId(question.getQuestionId())
                         .title(question.getTitle())
-                        .writerName(question.getUser().getName())
+                        .nickName(question.getUser().getNickname())
                         .answerCount(question.getAnswersList().size())
                         .createdAt(question.getCreatedAt()).build())
                 .collect(Collectors.toList());

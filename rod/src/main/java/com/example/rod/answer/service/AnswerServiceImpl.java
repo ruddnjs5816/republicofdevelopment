@@ -127,7 +127,7 @@ public class AnswerServiceImpl implements AnswerService {
         for(Comment comment : answer.getComments()){
             CommentResponseDto commentResponseDto = CommentResponseDto.builder()
                     .commentId(comment.getId())
-                    .writerName(comment.getUser().getName())
+                    .nickName(comment.getUser().getNickname())
                     .content(comment.getContent())
                     .createdAt(comment.getCreatedAt())
                     .build();
@@ -136,7 +136,7 @@ public class AnswerServiceImpl implements AnswerService {
 
         AnswerWithCommentsDto answerWithCommentsDto = AnswerWithCommentsDto.builder()
                 .answerId(answer.getId())
-                .writerName(answer.getUser().getName())
+                .nickName(answer.getUser().getNickname())
                 .content(answer.getContent())
                 .createdAt(answer.getCreatedAt())
                 .isSelected(answer.isSelected())
