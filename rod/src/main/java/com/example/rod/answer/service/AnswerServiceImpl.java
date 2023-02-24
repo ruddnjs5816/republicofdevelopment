@@ -3,6 +3,7 @@ package com.example.rod.answer.service;
 import com.example.rod.answer.dto.AnswerRequestDto;
 import com.example.rod.answer.dto.AnswerWithCommentsDto;
 import com.example.rod.answer.dto.AnswerResponseDto;
+import com.example.rod.answer.dto.CreateAnswerResponseDto;
 import com.example.rod.answer.entity.Answer;
 import com.example.rod.answer.repository.AnswerRepository;
 import com.example.rod.comment.dto.CommentResponseDto;
@@ -35,7 +36,7 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Transactional
     @Override
-    public void createAnswer(Long questionId, AnswerRequestDto answerRequestDto, UserDetailsImpl userDetails) {
+    public CreateAnswerResponseDto createAnswer(Long questionId, AnswerRequestDto answerRequestDto, UserDetailsImpl userDetails) {
 
         Question question = questionRepository.findById(questionId).orElseThrow(
                 () -> new IllegalArgumentException("해당하는 질문이 존재하지 않습니다.")
@@ -64,6 +65,8 @@ public class AnswerServiceImpl implements AnswerService {
                         .build();
 
         answerRepository.save(answer);
+
+        return new CreateAnswerResponseDto(answer.getId());
     }
 
 

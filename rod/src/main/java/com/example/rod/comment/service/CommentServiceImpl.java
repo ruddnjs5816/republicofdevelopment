@@ -5,6 +5,7 @@ import com.example.rod.answer.repository.AnswerRepository;
 import com.example.rod.comment.dto.CommentRequestDto;
 import com.example.rod.comment.dto.CommentResponseDto;
 import com.example.rod.comment.dto.CommentResultDto;
+import com.example.rod.comment.dto.CreateCommentResponseDto;
 import com.example.rod.comment.entity.Comment;
 import com.example.rod.comment.repository.CommentRepository;
 import com.example.rod.security.details.UserDetailsImpl;
@@ -28,7 +29,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public void createComment(Long answerId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
+    public CreateCommentResponseDto createComment(Long answerId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
         Answer answer = answerRepository.findById(answerId).orElseThrow(
                 () -> new IllegalArgumentException("해당 답변이 존재하지 않습니다.")
         );
@@ -42,6 +43,8 @@ public class CommentServiceImpl implements CommentService {
                 content(commentRequestDto.getContent()).build();
 
         commentRepository.save(comment);
+
+        return new CreateCommentResponseDto(comment.getId());
     }
 
     @Transactional

@@ -3,6 +3,7 @@ package com.example.rod.answer.controller;
 import com.example.rod.answer.dto.AnswerRequestDto;
 import com.example.rod.answer.dto.AnswerWithCommentsDto;
 import com.example.rod.answer.dto.AnswerResponseDto;
+import com.example.rod.answer.dto.CreateAnswerResponseDto;
 import com.example.rod.answer.service.AnswerService;
 import com.example.rod.security.details.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,8 @@ public class AnswerController {
     // 질문에 대한 답변 작성
     @PostMapping("/questions/{questionId}/answers")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createAnswer(@PathVariable Long questionId, @RequestBody AnswerRequestDto answerRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        answerService.createAnswer(questionId, answerRequestDto, userDetails);
+    public CreateAnswerResponseDto createAnswer(@PathVariable Long questionId, @RequestBody AnswerRequestDto answerRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return answerService.createAnswer(questionId, answerRequestDto, userDetails);
     }
 
     // 답변 수정

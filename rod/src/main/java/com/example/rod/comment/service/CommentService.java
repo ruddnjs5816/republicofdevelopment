@@ -3,6 +3,7 @@ package com.example.rod.comment.service;
 import com.example.rod.comment.dto.CommentRequestDto;
 import com.example.rod.comment.dto.CommentResponseDto;
 import com.example.rod.comment.dto.CommentResultDto;
+import com.example.rod.comment.dto.CreateCommentResponseDto;
 import com.example.rod.security.details.UserDetailsImpl;
 import org.springframework.data.domain.Pageable;
 
@@ -10,7 +11,7 @@ import java.util.List;
 
 public interface CommentService {
 
-    void createComment(Long answerId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails);
+    CreateCommentResponseDto createComment(Long answerId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails);
 
     void updateComment(Long answerId, Long commentsId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails);
 
