@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface QuestionService {
 
 //    void createQuestion(QuestionRequest questionRequest, UserDetailsImpl userDetails);
-    void createQuestion(QuestionRequest questionRequest, UserDetailsImpl userDetails);
+    CreateQuestionResponseDto createQuestion(QuestionRequest questionRequest, UserDetailsImpl userDetails);
 
     GetQuestionsResponse getMyQuestions(UserDetailsImpl userDetails, Pageable pageable, int page);
 

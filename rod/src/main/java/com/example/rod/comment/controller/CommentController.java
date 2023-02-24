@@ -3,6 +3,7 @@ package com.example.rod.comment.controller;
 import com.example.rod.comment.dto.CommentRequestDto;
 import com.example.rod.comment.dto.CommentResponseDto;
 import com.example.rod.comment.dto.CommentResultDto;
+import com.example.rod.comment.dto.CreateCommentResponseDto;
 import com.example.rod.comment.service.CommentService;
 import com.example.rod.comment.service.CommentServiceImpl;
 import com.example.rod.security.details.UserDetailsImpl;
@@ -24,9 +25,9 @@ public class CommentController {
 
     // 댓글 작성
     @PostMapping("/answers/{answerId}/comments")
-    public void createComment
+    public CreateCommentResponseDto createComment
                 (@PathVariable Long answerId, @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        commentService.createComment(answerId, commentRequestDto, userDetails);
+        return commentService.createComment(answerId, commentRequestDto, userDetails);
     }
 
     // 댓글 수정

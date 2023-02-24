@@ -26,8 +26,8 @@ public class QuestionController {
     // 질문 작성 API
     @PostMapping("/questions")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createQuestion(@RequestBody QuestionRequest questionRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        questionService.createQuestion(questionRequest, userDetails);
+    public CreateQuestionResponseDto createQuestion(@RequestBody QuestionRequest questionRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return questionService.createQuestion(questionRequest, userDetails);
     }
 
 

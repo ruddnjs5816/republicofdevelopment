@@ -41,7 +41,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     @Transactional
-    public void createQuestion(QuestionRequest questionRequest, UserDetailsImpl userDetails) {
+    public CreateQuestionResponseDto createQuestion(QuestionRequest questionRequest, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
 
         String hashtagStrs = questionRequest.getHashtagStrs();
@@ -57,6 +57,8 @@ public class QuestionServiceImpl implements QuestionService {
         questionRepository.save(question);
         // 태그 저장
         questionHashTagService.saveHashTags(question, hashtagStrs);
+
+        return new CreateQuestionResponseDto(question.getQuestionId());
     }
 
     @Override
@@ -141,8 +143,16 @@ public class QuestionServiceImpl implements QuestionService {
 
         Long totalAnswerCount = answerRepository.countByQuestionQuestionId(questionId);
 
-        QuestionWithAnswersResponse questionWithAnswersResponse = new QuestionWithAnswersResponse
-                (question.getTitle(), question.getContent(), hashTagDto, totalAnswerCount, question.getDifficulty(), answerWithComments);
+        QuestionWithAnswersResponse questionWithAnswersResponse = QuestionWithAnswersResponse.builder()
+                .title(question.getTitle())
+                .content(question.getContent())
+                .tagList(hashTagDto)
+                .createdAt(question.getCreatedAt())
+                .totalAnswerCount(totalAnswerCount)
+                .difficulty(question.getDifficulty())
+                .nickname(question.getUser().getNickname())
+                .answerWithComments(answerWithComments)
+                .build();
 
         return questionWithAnswersResponse;
     }
