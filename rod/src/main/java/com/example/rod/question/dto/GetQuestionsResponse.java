@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 public class GetQuestionsResponse {
 
+
     private Integer currentPage;
 
     private Long totalQuestionCount;

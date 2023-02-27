@@ -16,6 +16,8 @@ import com.example.rod.user.entity.User;
 import com.example.rod.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
+import org.hibernate.sql.Delete;
+import org.hibernate.sql.Select;
 import org.springframework.data.domain.*;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -80,7 +82,7 @@ public class QuestionServiceImpl implements QuestionService {
             questionResponseList.add(QuestionResponse.builder()
                     .questionId(question.getQuestionId())
                     .title(question.getTitle())
-                    .nickName(question.getUser().getNickname())
+                    .nickname(question.getUser().getNickname())
 
                     .answerCount(question.getAnswersList().size())
                     .createdAt(question.getCreatedAt()).build());
@@ -105,7 +107,7 @@ public class QuestionServiceImpl implements QuestionService {
             questionResponseList.add(QuestionResponse.builder()
                     .questionId(question.getQuestionId())
                     .title(question.getTitle())
-                    .nickName(question.getUser().getNickname())
+                    .nickname(question.getUser().getNickname())
                     .answerCount(question.getAnswersList().size())
                     .createdAt(question.getCreatedAt()).build());
         }
@@ -170,7 +172,7 @@ public class QuestionServiceImpl implements QuestionService {
         }
         AnswerWithCommentsDto answerWithCommentsDto = AnswerWithCommentsDto.builder()
                 .answerId(answer.getId())
-                .nickName(answer.getUser().getNickname())
+                .nickname(answer.getUser().getNickname())
                 .content(answer.getContent())
                 .createdAt(answer.getCreatedAt())
                 .isSelected(answer.isSelected())
@@ -184,7 +186,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     @Transactional
-    public void selectAnswerForQuestion(Long questionId, Long answerId, UserDetailsImpl userDetails) {
+    public SelectAnswerForQuestionResponseDto selectAnswerForQuestion(Long questionId, Long answerId, UserDetailsImpl userDetails) {
 
         User questioner = userDetails.getUser();
 
@@ -196,24 +198,27 @@ public class QuestionServiceImpl implements QuestionService {
         );
 
         question.processSelectionResult(questioner, question, answer);
+
+        return new SelectAnswerForQuestionResponseDto(answerId);
     }
 
 
     // 질문 수정
     @Override
     @Transactional
-    public void changeQuestion(Long questionId, ChangeQuestionRequest changeQuestionRequest, UserDetailsImpl userDetails) {
+    public ChangeQuestionResponseDto changeQuestion(Long questionId, ChangeQuestionRequest changeQuestionRequest, UserDetailsImpl userDetails) {
         Question question = questionRepository.findById(questionId).orElseThrow
                 (() -> new IllegalArgumentException("해당 아이디의 질문이 없습니다."));
         User user = userDetails.getUser();
         question.editQuestion(user, changeQuestionRequest.getTitle(), changeQuestionRequest.getContent());
+        return new ChangeQuestionResponseDto(questionId);
     }
 
 
     //질문 삭제
     @Override
     @Transactional
-    public void deleteQuestion(Long questionId, UserDetailsImpl userDetails) {
+    public DeleteQuestionResponseDto deleteQuestion(Long questionId, UserDetailsImpl userDetails) {
         Question question = questionRepository.findById(questionId).orElseThrow(
                 () -> new IllegalArgumentException("해당 아이디의 질문이 없습니다.")
         );
@@ -227,6 +232,8 @@ public class QuestionServiceImpl implements QuestionService {
         } else {
             throw new IllegalArgumentException("삭제 권한이 없는 유저입니다.");
         }
+
+        return new DeleteQuestionResponseDto(questionId);
     }
     // 질문 검색 API ( 제목으로 검색 )
 
@@ -263,7 +270,7 @@ public class QuestionServiceImpl implements QuestionService {
                 .map(question -> QuestionResponse.builder()
                         .questionId(question.getQuestionId())
                         .title(question.getTitle())
-                        .nickName(question.getUser().getNickname())
+                        .nickname(question.getUser().getNickname())
                         .answerCount(question.getAnswersList().size())
                         .createdAt(question.getCreatedAt()).build())
                 .collect(Collectors.toList());

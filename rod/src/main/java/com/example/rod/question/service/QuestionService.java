@@ -17,11 +17,11 @@ public interface QuestionService {
 
     QuestionWithAnswersResponse  getSpecificQuestion(Long questionId);
 
-    void selectAnswerForQuestion(Long questionId, Long answerId, UserDetailsImpl userDetails);
+    SelectAnswerForQuestionResponseDto selectAnswerForQuestion(Long questionId, Long answerId, UserDetailsImpl userDetails);
 
-    void changeQuestion(Long questionId, ChangeQuestionRequest changeQuestionRequest, UserDetailsImpl userDetails);
+    ChangeQuestionResponseDto changeQuestion(Long questionId, ChangeQuestionRequest changeQuestionRequest, UserDetailsImpl userDetails);
 
-    void deleteQuestion(Long questionId, UserDetailsImpl userDetails);
+    DeleteQuestionResponseDto deleteQuestion(Long questionId, UserDetailsImpl userDetails);
 
     GetQuestionsResponse searchQuestion(Optional<String> title, Optional<String> nickname, Optional<String> hashtagname,
                                                int page, Pageable pageable);

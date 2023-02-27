@@ -1,5 +1,6 @@
 package com.example.rod.answer.controller;
 
+import com.example.rod.answer.dto.LikeAnswerResponse;
 import com.example.rod.answer.service.AnswerLikeServiceImpl;
 import com.example.rod.security.details.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class LikeController {
     private final AnswerLikeServiceImpl AnswerLikeServiceImpl;
 
     @PostMapping("/answer/{answerId}")
-    public void likeAnswer(@PathVariable Long answerId, @AuthenticationPrincipal UserDetailsImpl userDetails){
-       AnswerLikeServiceImpl.likeAnswer(answerId, userDetails);
+    public LikeAnswerResponse likeAnswer(@PathVariable Long answerId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+       return AnswerLikeServiceImpl.likeAnswer(answerId, userDetails);
     }
 }
