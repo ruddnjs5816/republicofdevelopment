@@ -1,6 +1,7 @@
 
 package com.example.rod.auth.controller;
 
+import com.example.rod.admin.service.AdminService;
 import com.example.rod.auth.dto.SigninRequestDto;
 import com.example.rod.auth.dto.SignupRequestDto;
 import com.example.rod.auth.service.AuthService;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthController {
 
     private final AuthService authService;
+    private final AdminService adminService;
 
     @PostMapping("/auth/signup")
     @ResponseStatus(HttpStatus.CREATED)

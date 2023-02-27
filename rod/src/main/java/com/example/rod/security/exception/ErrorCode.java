@@ -17,7 +17,10 @@ public enum ErrorCode {
     409 Conflict
     */
 
+    //ADMIN 관련 ErrorCode
+
     // 토큰 관련 ErrorCode
+    INVALID_AUTH_ADMIN(HttpStatus.UNAUTHORIZED, "ADMIN 토큰이 일치하지 않습니다."),
     INVALID_AUTH_TOKEN(HttpStatus.UNAUTHORIZED, "권한 정보가 없는 토큰입니다"),
     INVALID_TOKEN(HttpStatus.BAD_REQUEST, "토큰이 유효하지 않습니다."),
 
@@ -28,6 +31,7 @@ public enum ErrorCode {
     INVALID_FORMAT(HttpStatus.BAD_REQUEST, "username과 password의 형식이 올바르지 않습니다."),
     NOT_MATCH_INFORMATION(HttpStatus.BAD_REQUEST, "회원정보가 일치하지 않습니다."),
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "회원을 찾을 수 없습니다."),
+    NOT_FOUND_ADMIN(HttpStatus.NOT_FOUND, "ADMIN을 찾을 수 없습니다."),
 
 
 
