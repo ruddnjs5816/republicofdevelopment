@@ -2,10 +2,7 @@ package com.example.rod.comment.service;
 
 import com.example.rod.answer.entity.Answer;
 import com.example.rod.answer.repository.AnswerRepository;
-import com.example.rod.comment.dto.CommentRequestDto;
-import com.example.rod.comment.dto.CommentResponseDto;
-import com.example.rod.comment.dto.CommentResultDto;
-import com.example.rod.comment.dto.CreateCommentResponseDto;
+import com.example.rod.comment.dto.*;
 import com.example.rod.comment.entity.Comment;
 import com.example.rod.comment.repository.CommentRepository;
 import com.example.rod.security.details.UserDetailsImpl;
@@ -48,10 +45,19 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Transactional
-    public void updateComment(Long answerId, Long commentsId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
+    public UpdateCommentResponseDto updateComment(Long answerId, Long commentsId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
+
+        Answer answer = answerRepository.findById(answerId).orElseThrow(
+                () -> new IllegalArgumentException("해당 답변이 존재하지 않습니다.")
+        );
 
         Comment comment = commentRepository.findById(commentsId).orElseThrow(
                 () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다"));
+
+        if(!comment.isOwnedBy(answer)){
+            throw new IllegalArgumentException("잘못된 요청입니다. 해당 질문에 이 댓글이 존재하지 않습니다.");
+        }
+
 
         User writer = userDetails.getUser();
 
@@ -60,13 +66,26 @@ public class CommentServiceImpl implements CommentService {
         } else {
             throw new IllegalArgumentException("수정 권한이 없는 유저입니다.");
         }
+
+        return new UpdateCommentResponseDto(commentsId);
     }
 
     @Transactional
-    public void deleteComment(Long answerId, Long commentId, UserDetailsImpl userDetails) {
+    @Override
+    public DeleteCommentResponseDto deleteComment(Long answerId, Long commentId, UserDetailsImpl userDetails) {
+
+
+        Answer answer = answerRepository.findById(answerId).orElseThrow(
+                () -> new IllegalArgumentException("해당 답변이 존재하지 않습니다.")
+        );
+
 
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다"));
+
+        if(!comment.isOwnedBy(answer)){
+            throw new IllegalArgumentException("잘못된 요청입니다. 해당 질문에 이 댓글이 존재하지 않습니다.");
+        }
 
         User user = userDetails.getUser();
 
@@ -75,6 +94,8 @@ public class CommentServiceImpl implements CommentService {
         } else {
             throw new IllegalArgumentException("삭제 권한이 없는 유저입니다.");
         }
+
+        return new DeleteCommentResponseDto(commentId);
     }
 
     @Override

@@ -1,9 +1,6 @@
 package com.example.rod.answer.service;
 
-import com.example.rod.answer.dto.AnswerRequestDto;
-import com.example.rod.answer.dto.AnswerWithCommentsDto;
-import com.example.rod.answer.dto.AnswerResponseDto;
-import com.example.rod.answer.dto.CreateAnswerResponseDto;
+import com.example.rod.answer.dto.*;
 import com.example.rod.answer.entity.Answer;
 import com.example.rod.answer.repository.AnswerRepository;
 import com.example.rod.comment.dto.CommentResponseDto;
@@ -72,7 +69,7 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Transactional
     @Override
-    public void updateAnswer(Long answerId, AnswerRequestDto answerRequestDto, UserDetailsImpl userDetails) {
+    public UpdateAnswerResponseDto updateAnswer(Long answerId, AnswerRequestDto answerRequestDto, UserDetailsImpl userDetails) {
 
         Answer answer = answerRepository.findById(answerId).orElseThrow(() -> new IllegalArgumentException("답변이 존재하지 않습니다."));
 
@@ -83,11 +80,13 @@ public class AnswerServiceImpl implements AnswerService {
         } else {
             throw new IllegalArgumentException("자신의 답변이 아니면 수정할 수 업습니다.");
         }
+
+        return new UpdateAnswerResponseDto(answerId);
     }
 
     @Transactional
     @Override
-    public void deleteAnswer(Long answerId, UserDetailsImpl userDetails) {
+    public DeleteAnswerResponseDto deleteAnswer(Long answerId, UserDetailsImpl userDetails) {
 
         Answer answer = answerRepository.findById(answerId).orElseThrow(
                 () -> new IllegalArgumentException("답변이 존재하지 않습니다.")
@@ -100,6 +99,8 @@ public class AnswerServiceImpl implements AnswerService {
         } else {
             throw new IllegalArgumentException("자신의 답변이 아니면 삭제할 수 없습니다.");
         }
+
+        return new DeleteAnswerResponseDto(answerId);
     }
 
     // '내 질문 리스트 보기' 호출 시, 유저 아이디, 유저가 답변한 내용, 좋아요 개수 들만 반환.
@@ -139,7 +140,7 @@ public class AnswerServiceImpl implements AnswerService {
 
         AnswerWithCommentsDto answerWithCommentsDto = AnswerWithCommentsDto.builder()
                 .answerId(answer.getId())
-                .nickName(answer.getUser().getNickname())
+                .nickname(answer.getUser().getNickname())
                 .content(answer.getContent())
                 .createdAt(answer.getCreatedAt())
                 .isSelected(answer.isSelected())

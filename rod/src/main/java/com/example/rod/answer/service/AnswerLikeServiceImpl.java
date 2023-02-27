@@ -1,5 +1,6 @@
 package com.example.rod.answer.service;
 
+import com.example.rod.answer.dto.LikeAnswerResponse;
 import com.example.rod.answer.entity.Answer;
 import com.example.rod.answer.entity.AnswerLike;
 import com.example.rod.answer.repository.AnswerLikeRepository;
@@ -23,7 +24,7 @@ public class AnswerLikeServiceImpl implements AnswerLikeService {
 
     @Transactional
     @Override
-    public void likeAnswer(Long answerId, UserDetailsImpl userDetails){
+    public LikeAnswerResponse likeAnswer(Long answerId, UserDetailsImpl userDetails){
         Answer answer = answerRepository.findById(answerId).orElseThrow(
                 () -> new IllegalArgumentException("찾는 답변이 없습니다.")
         );
@@ -55,6 +56,7 @@ public class AnswerLikeServiceImpl implements AnswerLikeService {
                 answer.increaseLikes();
             }
         }
+        return new LikeAnswerResponse(answerId);
 
     }
 }

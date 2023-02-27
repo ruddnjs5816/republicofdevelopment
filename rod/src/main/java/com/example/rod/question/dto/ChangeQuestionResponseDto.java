@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class CreateQuestionResponseDto {
+public class ChangeQuestionResponseDto {
 
     private Long questionId;
 

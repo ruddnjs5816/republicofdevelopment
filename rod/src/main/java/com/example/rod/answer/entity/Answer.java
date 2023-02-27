@@ -37,19 +37,19 @@ public class Answer extends TimeStamped {
 
 
 
-    @OneToMany(mappedBy = "answer", cascade = { CascadeType.DETACH, CascadeType.REMOVE })
+    @OneToMany(mappedBy = "answer", cascade = CascadeType.REMOVE)
     @OrderBy("createdAt DESC")
     private List<Comment> comments = new ArrayList<>();
 
 
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
 
     @JsonManagedReference
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     private Question question;
 
