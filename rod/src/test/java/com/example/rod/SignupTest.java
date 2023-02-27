@@ -78,7 +78,6 @@ public class SignupTest {
         signupTest();
 
         Optional<User> user = userRepository.findByUsername("bdhan");
-        authService.signIn();
 
         String dburl = "jdbc:postgresql://localhost:5432/messenger";
         String dbusername = "byeongdoo";

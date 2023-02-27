@@ -1,5 +1,7 @@
 package com.example.rod.auth.service;
 
+import com.example.rod.admin.entity.Admin;
+import com.example.rod.admin.repository.AdminRepository;
 import com.example.rod.auth.dto.SigninRequestDto;
 import com.example.rod.auth.dto.SignupRequestDto;
 import com.example.rod.security.exception.CustomException;
@@ -23,6 +25,7 @@ public class AuthServiceImpl implements AuthService{
 
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
+    private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
 
 
@@ -45,17 +48,6 @@ public class AuthServiceImpl implements AuthService{
         // 사용자 ROLE(권한) 확인
         UserRole userRole = UserRole.USER;
 
-        if (signupRequestDto.isAdmin()) {
-            if (!signupRequestDto.getAdminToken().equals(("${jwt.secret.key}"))) {
-                throw new CustomException(INVALID_TOKEN);
-            }
-            userRole = UserRole.ADMIN;
-        }
-
-//        User user = signupRequestDto.toEntity(passwordEncoder.encode(signupRequestDto.getPassword()), role);
-//        User user = new User(username, name, encodedPassword, point, phoneNumber, rating, userGrade, userRole);
-
-
         User user = User.builder()
                 .username(username)
                 .nickname(nickname)
@@ -67,6 +59,7 @@ public class AuthServiceImpl implements AuthService{
                 .password(encodedPassword)
                 .build();
         userRepository.save(user);
+
     }
 
     @Override

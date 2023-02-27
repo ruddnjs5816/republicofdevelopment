@@ -5,6 +5,7 @@ import com.example.rod.security.jwt.JwtAccessDeniedHandler;
 import com.example.rod.security.jwt.JwtAuthFilter;
 import com.example.rod.security.jwt.JwtAuthenticationEntryPoint;
 import com.example.rod.security.jwt.JwtUtil;
+import com.example.rod.user.entity.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -47,6 +49,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers("/questions/all", "/questions/specific/**").permitAll()
+                .antMatchers("/admin/auth/signup").permitAll()
+                .antMatchers("/admin/**").hasRole(UserRole.ADMIN.toString())
 //                .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
