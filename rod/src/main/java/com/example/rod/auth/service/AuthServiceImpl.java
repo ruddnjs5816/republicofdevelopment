@@ -1,7 +1,5 @@
 package com.example.rod.auth.service;
 
-import com.example.rod.admin.entity.Admin;
-import com.example.rod.admin.repository.AdminRepository;
 import com.example.rod.auth.dto.SigninRequestDto;
 import com.example.rod.auth.dto.SignupRequestDto;
 import com.example.rod.security.exception.CustomException;
@@ -11,6 +9,7 @@ import com.example.rod.user.entity.UserGrade;
 import com.example.rod.user.entity.UserRole;
 import com.example.rod.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,10 +24,10 @@ public class AuthServiceImpl implements AuthService{
 
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
-    private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
 
-
+    @Value("${jwt.secret.key}")
+    private String secretKey;
     @Override
     @Transactional
     public void signUp(SignupRequestDto signupRequestDto) {
@@ -40,6 +39,7 @@ public class AuthServiceImpl implements AuthService{
         Integer point = 0;
         Integer rating = 0;
         UserGrade userGrade = UserGrade.BRONZE;
+        String adminToken = signupRequestDto.getAdminToken();
 
         // 회원 중복 확인
 
@@ -47,6 +47,11 @@ public class AuthServiceImpl implements AuthService{
 
         // 사용자 ROLE(권한) 확인
         UserRole userRole = UserRole.USER;
+        if(signupRequestDto.isAdmin()){
+            if(validateAdminToken(adminToken)){
+                userRole = UserRole.ADMIN;
+            }
+        }
 
         User user = User.builder()
                 .username(username)
@@ -85,11 +90,18 @@ public class AuthServiceImpl implements AuthService{
         }
     }
 
-
     @Transactional
     public void validateUsername(String username) {
         if(userRepository.existsByUsername(username)) {
             throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
         }
+    }
+
+    @Transactional
+    public boolean validateAdminToken(String adminToken){
+        if(!adminToken.matches(secretKey)){
+            throw new IllegalArgumentException("토큰이 일치하지 않습니다.");
+        }
+        return true;
     }
 }

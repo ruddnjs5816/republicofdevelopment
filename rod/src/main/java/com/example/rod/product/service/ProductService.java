@@ -89,11 +89,7 @@ public class ProductService {
     }
 
 //    //개별 상품 조회
-//    @Transactional(readOnly = true)
-//    public ProductResponseDto getProductByProductId(Long productId) {
-//        Product product = findProduct(productId);
-//        return new ProductResponseDto(product);
-//    }
+    @Transactional(readOnly = true)
     public Product findProduct(Long productId) {
         Optional<Product> foundProduct = productRepository.findProductByProductId(productId);
         if (foundProduct.isEmpty()) {
@@ -102,5 +98,6 @@ public class ProductService {
         Product product = foundProduct.get();
         return product;
     }
+
 }
 

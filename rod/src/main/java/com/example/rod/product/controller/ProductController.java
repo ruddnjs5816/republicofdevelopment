@@ -23,41 +23,7 @@ public class ProductController {
     private final ProductService productService;
 
 
-    //상품 등록
-    @PostMapping("/admin/shop")
-    public void createProduct(
-            @RequestBody ProductRequestDto productRequestDto,List<MultipartFile> productImgFileList, Model model
-//            @AuthenticationPrincipal UserDetailsImpl userDetails
-    ) {
 
-        try {
-            productService.createProduct(productRequestDto, productImgFileList);
-        } catch (Exception e) {
-            model.addAttribute("errorMessage", "상품 등록 중 에러가 발생하였습니다.");
-        }
-    }
-
-    //상품 수정
-    @PutMapping("/admin/shop/{productId}")
-    public void updateProduct(
-            @PathVariable Long productId,
-            @RequestBody ProductModifyRequestDto productModifyRequestDto,List<MultipartFile> productImgFileList, Model model
-//            @AuthenticationPrincipal UserDetailsImpl userDetails
-    ) {
-        try {
-            productService.updateProduct(productId,productModifyRequestDto, productImgFileList);
-        } catch (Exception e) {
-            model.addAttribute("errorMessage", "상품 수정 중 에러가 발생하였습니다.");
-        }
-    }
-    //상품 삭제
-    @DeleteMapping("/admin/shop/{productId}")
-    public void deleteProduct(
-            @PathVariable Long productId
-            //@AuthenticationPrincipal UserDetailsImpl userDetails
-    ) {
-        productService.deleteProduct(productId);
-    }
 
     //전체 상품 조회
     @GetMapping("/shop")

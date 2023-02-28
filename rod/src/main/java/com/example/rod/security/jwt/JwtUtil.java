@@ -3,13 +3,10 @@
 package com.example.rod.security.jwt;
 
 import com.example.rod.security.SecurityExceptionResponse;
-import com.example.rod.user.entity.UserGrade;
-import com.example.rod.user.entity.User;
 import com.example.rod.user.entity.UserRole;
+import com.example.rod.user.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Encoders;
-import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -25,11 +22,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
-import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.beans.Encoder;
-import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 
@@ -47,6 +41,7 @@ public class JwtUtil {
 
 
     private final UserDetailsService userDetailsService;
+    private final UserRepository userRepository;
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256; // 이 알고리즘을 사용해서 키 객체를 암호화할 것이다.
 
 

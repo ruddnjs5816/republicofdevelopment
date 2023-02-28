@@ -12,6 +12,8 @@ import com.example.rod.question.entity.QuestionHashTag;
 import com.example.rod.question.repository.QuestionHashTagRepository;
 import com.example.rod.question.repository.QuestionRepository;
 import com.example.rod.security.details.UserDetailsImpl;
+import com.example.rod.security.exception.CustomException;
+import com.example.rod.security.exception.ErrorCode;
 import com.example.rod.user.entity.User;
 import com.example.rod.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     private final AnswerRepository answerRepository;
 
+    private final CommentRepository commentRepository;
     private final QuestionHashTagRepository questionHashTagRepository;
 
     private final QuestionHashTagService questionHashTagService;
@@ -80,7 +83,7 @@ public class QuestionServiceImpl implements QuestionService {
             questionResponseList.add(QuestionResponse.builder()
                     .questionId(question.getQuestionId())
                     .title(question.getTitle())
-                    .nickName(question.getUser().getNickname())
+                    .nickname(question.getUser().getNickname())
 
                     .answerCount(question.getAnswersList().size())
                     .createdAt(question.getCreatedAt()).build());
@@ -105,7 +108,7 @@ public class QuestionServiceImpl implements QuestionService {
             questionResponseList.add(QuestionResponse.builder()
                     .questionId(question.getQuestionId())
                     .title(question.getTitle())
-                    .nickName(question.getUser().getNickname())
+                    .nickname(question.getUser().getNickname())
                     .answerCount(question.getAnswersList().size())
                     .createdAt(question.getCreatedAt()).build());
         }
@@ -157,6 +160,7 @@ public class QuestionServiceImpl implements QuestionService {
         return questionWithAnswersResponse;
     }
 
+    @Transactional
     public AnswerWithCommentsDto convertToAnswerWithCommentsDto(Answer answer) {
         List<CommentResponseDto> comments = new ArrayList<>();
         for (Comment comment : answer.getComments()) {
@@ -170,7 +174,7 @@ public class QuestionServiceImpl implements QuestionService {
         }
         AnswerWithCommentsDto answerWithCommentsDto = AnswerWithCommentsDto.builder()
                 .answerId(answer.getId())
-                .nickName(answer.getUser().getNickname())
+                .nickname(answer.getUser().getNickname())
                 .content(answer.getContent())
                 .createdAt(answer.getCreatedAt())
                 .isSelected(answer.isSelected())
@@ -209,7 +213,6 @@ public class QuestionServiceImpl implements QuestionService {
         question.editQuestion(user, changeQuestionRequest.getTitle(), changeQuestionRequest.getContent());
     }
 
-
     //질문 삭제
     @Override
     @Transactional
@@ -227,6 +230,26 @@ public class QuestionServiceImpl implements QuestionService {
         } else {
             throw new IllegalArgumentException("삭제 권한이 없는 유저입니다.");
         }
+    }
+
+    // 답변 삭제
+    @Override
+    @Transactional
+    public void deleteAnswer(Long answerId, UserDetailsImpl userDetails) {
+        Answer targetAnswer = answerRepository.findById(answerId).orElseThrow(
+                () -> new CustomException(ErrorCode.NOT_FOUND_ANSWER)
+        );
+        answerRepository.delete(targetAnswer);
+    }
+
+    // 댓글 삭제
+    @Override
+    @Transactional
+    public void deleteComment(Long answerId, Long commentsId, UserDetailsImpl userDetails) {
+        Comment targetComment = commentRepository.findById(commentsId).orElseThrow(
+                () -> new CustomException(ErrorCode.NOT_FOUND_COMMENT)
+        );
+        commentRepository.delete(targetComment);
     }
     // 질문 검색 API ( 제목으로 검색 )
 
@@ -263,7 +286,7 @@ public class QuestionServiceImpl implements QuestionService {
                 .map(question -> QuestionResponse.builder()
                         .questionId(question.getQuestionId())
                         .title(question.getTitle())
-                        .nickName(question.getUser().getNickname())
+                        .nickname(question.getUser().getNickname())
                         .answerCount(question.getAnswersList().size())
                         .createdAt(question.getCreatedAt()).build())
                 .collect(Collectors.toList());

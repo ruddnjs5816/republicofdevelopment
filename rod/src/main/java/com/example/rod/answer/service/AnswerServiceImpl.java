@@ -139,7 +139,7 @@ public class AnswerServiceImpl implements AnswerService {
 
         AnswerWithCommentsDto answerWithCommentsDto = AnswerWithCommentsDto.builder()
                 .answerId(answer.getId())
-                .nickName(answer.getUser().getNickname())
+                .nickname(answer.getUser().getNickname())
                 .content(answer.getContent())
                 .createdAt(answer.getCreatedAt())
                 .isSelected(answer.isSelected())

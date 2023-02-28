@@ -63,10 +63,12 @@ public class User extends TimeStamped {
     private String imageUrl;
     private String filename;
 
+    private String adminToken;
+
     @Builder
     public User(String username, String nickname, String password, Integer point,
                 String phoneNumber, Integer rating, UserGrade grade, UserRole role,
-                String imageUrl, String filename) {
+                String imageUrl, String filename, String adminToken) {
         this.username = username;
         this.nickname = nickname;
         this.password = password;
@@ -77,6 +79,7 @@ public class User extends TimeStamped {
         this.role = role;
         this.imageUrl = imageUrl;
         this.filename = filename;
+        this.adminToken = adminToken;
     }
 
     @Override
@@ -91,10 +94,6 @@ public class User extends TimeStamped {
     public void increasePoint(int amount){
         this.point += amount;
     }
-
-
-
-
 
     public void changeProfile(String nickname, String password, String phoneNumber) {
         this.nickname = nickname;
@@ -127,8 +126,6 @@ public class User extends TimeStamped {
     public void setImageUrl(String storedFileName) {
         this.imageUrl = storedFileName;
     }
-
-
 
     //포인트 관련 메서드
 

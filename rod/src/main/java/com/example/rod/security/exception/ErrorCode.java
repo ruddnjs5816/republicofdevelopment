@@ -33,12 +33,12 @@ public enum ErrorCode {
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "회원을 찾을 수 없습니다."),
     NOT_FOUND_ADMIN(HttpStatus.NOT_FOUND, "ADMIN을 찾을 수 없습니다."),
 
-
+    //질문 관련 errorcode
+    NOT_FOUND_QUESTION(HttpStatus.NOT_FOUND, "해당 질문을 찾을 수 없습니다."),
+    NOT_EXIST_HASHTAG(HttpStatus.NOT_FOUND, "해당 해시태그가 존재하지 않습니다."),
 
     // 게시글 관련 ErrorCode
-    NOT_FOUND_BOARD(HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다."),
-    NOT_EXIST_CATEGORY(HttpStatus.NOT_FOUND, "카테고리가 존재하지 않습니다."),
-
+    NOT_FOUND_ANSWER(HttpStatus.NOT_FOUND, "해당 답변을 찾을 수 없습니다."),
 
     // 댓글 관련 ErrorCode
     NOT_FOUND_COMMENT(HttpStatus.BAD_REQUEST, "댓글을 찾을 수 없습니다.");

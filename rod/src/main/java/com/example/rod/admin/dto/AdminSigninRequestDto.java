@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class AdminSigninRequestDto {
 
-    private String adminName;
-    private String adminPassword;
+    private String username;
+    private String password;
 
 }

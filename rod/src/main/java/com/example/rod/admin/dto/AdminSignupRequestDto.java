@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 @Getter
 public class AdminSignupRequestDto {
-    private String adminName;
-    private String adminPassword;
+    private String username;
+    private String password;
     private String adminToken;
 }
