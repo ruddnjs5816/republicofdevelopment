@@ -94,10 +94,5 @@ public class QuestionHashTagService {
         });
 
         hashTagService.deleteHashTagsById(noMatchingTagIds);
-
-
-
-
-
     }
 }
