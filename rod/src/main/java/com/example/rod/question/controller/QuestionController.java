@@ -5,6 +5,7 @@ import com.example.rod.question.dto.*;
 import com.example.rod.question.service.QuestionService;
 import com.example.rod.security.details.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.Select;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -67,24 +68,24 @@ public class QuestionController {
     // 질문의 답변 채택 API
     @PatchMapping("/questions/{questionId}/{answerId}")
     @ResponseStatus(HttpStatus.OK)
-    public void selectAnswerForQuestion(@PathVariable Long questionId, @PathVariable Long answerId, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        questionService.selectAnswerForQuestion(questionId, answerId, userDetails);
+    public SelectAnswerForQuestionResponseDto selectAnswerForQuestion(@PathVariable Long questionId, @PathVariable Long answerId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return questionService.selectAnswerForQuestion(questionId, answerId, userDetails);
     }
 
 
     // 질문 수정 API
     @PutMapping("/questions/{questionId}")
     @ResponseStatus(HttpStatus.OK)
-    public void changeQuestion(@PathVariable Long questionId, @RequestBody ChangeQuestionRequest changeQuestionRequest, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        questionService.changeQuestion(questionId, changeQuestionRequest, userDetails);
+    public ChangeQuestionResponseDto changeQuestion(@PathVariable Long questionId, @RequestBody ChangeQuestionRequest changeQuestionRequest, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return questionService.changeQuestion(questionId, changeQuestionRequest, userDetails);
     }
 
 
     // 내 질문 삭제 API
     @DeleteMapping("/questions/{questionId}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteQuestion(@PathVariable Long questionId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        questionService.deleteQuestion(questionId, userDetails);
+    public DeleteQuestionResponseDto deleteQuestion(@PathVariable Long questionId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return questionService.deleteQuestion(questionId, userDetails);
     }
 
     // 질문 검색 API ( 제목, 유저 닉네임으로 검색 )

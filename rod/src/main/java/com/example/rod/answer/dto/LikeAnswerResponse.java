@@ -6,8 +6,9 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class CreateAnswerResponseDto {
+public class LikeAnswerResponse {
 
     private Long answerId;
+
 
 }

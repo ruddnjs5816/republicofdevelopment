@@ -1,9 +1,6 @@
 package com.example.rod.answer.controller;
 
-import com.example.rod.answer.dto.AnswerRequestDto;
-import com.example.rod.answer.dto.AnswerWithCommentsDto;
-import com.example.rod.answer.dto.AnswerResponseDto;
-import com.example.rod.answer.dto.CreateAnswerResponseDto;
+import com.example.rod.answer.dto.*;
 import com.example.rod.answer.service.AnswerService;
 import com.example.rod.security.details.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -32,14 +29,14 @@ public class AnswerController {
 
     // 답변 수정
     @PutMapping("/answers/{answerId}")
-    public void updateAnswer(@PathVariable Long answerId, AnswerRequestDto answerRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        answerService.updateAnswer(answerId, answerRequestDto, userDetails);
+    public UpdateAnswerResponseDto updateAnswer(@PathVariable Long answerId, AnswerRequestDto answerRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return answerService.updateAnswer(answerId, answerRequestDto, userDetails);
     }
 
     // 답변 삭제
     @DeleteMapping("/answers/{answerId}")
-    public void deleteAnswer(@PathVariable Long answerId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        answerService.deleteAnswer(answerId, userDetails);
+    public DeleteAnswerResponseDto deleteAnswer(@PathVariable Long answerId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return answerService.deleteAnswer(answerId, userDetails);
     }
 
     // 내가 한 답변 리스트 조회

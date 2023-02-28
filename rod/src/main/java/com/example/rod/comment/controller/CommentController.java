@@ -1,9 +1,6 @@
 package com.example.rod.comment.controller;
 
-import com.example.rod.comment.dto.CommentRequestDto;
-import com.example.rod.comment.dto.CommentResponseDto;
-import com.example.rod.comment.dto.CommentResultDto;
-import com.example.rod.comment.dto.CreateCommentResponseDto;
+import com.example.rod.comment.dto.*;
 import com.example.rod.comment.service.CommentService;
 import com.example.rod.comment.service.CommentServiceImpl;
 import com.example.rod.security.details.UserDetailsImpl;
@@ -32,15 +29,15 @@ public class CommentController {
 
     // 댓글 수정
     @PutMapping("/answers/{answerId}/comments/{commentsId}")
-    public void updateComment
+    public UpdateCommentResponseDto updateComment
               (@PathVariable Long answerId, @PathVariable Long commentsId, @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        commentService.updateComment(answerId, commentsId, commentRequestDto, userDetails);
+        return commentService.updateComment(answerId, commentsId, commentRequestDto, userDetails);
     }
 
     // 댓글 삭제
     @DeleteMapping("/answers/{answerId}/comments/{commentsId}")
-    public void deleteComment(@PathVariable Long answerId, @PathVariable Long commentsId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        commentService.deleteComment(answerId, commentsId, userDetails);
+    public DeleteCommentResponseDto deleteComment(@PathVariable Long answerId, @PathVariable Long commentsId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return commentService.deleteComment(answerId, commentsId, userDetails);
     }
 
     // 특정 짊문에 해당하는 댓글을 만들어진 시간 순으로 가져오는 API

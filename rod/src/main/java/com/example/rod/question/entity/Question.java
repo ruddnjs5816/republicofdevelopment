@@ -49,7 +49,6 @@ public class Question extends TimeStamped {
 
 
     @JsonBackReference
-//    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.REMOVE })
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Answer> answersList;
 

@@ -47,6 +47,8 @@ public class Comment extends TimeStamped {
         return this.user.equals(user);
     }
 
+    public boolean isOwnedBy(Answer answer) { return this.answer.equals(answer);}
+
     public void updateContent(String content) { this.content = content; }
 
 
