@@ -29,7 +29,7 @@ public class AnswerController {
 
     // 답변 수정
     @PutMapping("/answers/{answerId}")
-    public UpdateAnswerResponseDto updateAnswer(@PathVariable Long answerId, AnswerRequestDto answerRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public UpdateAnswerResponseDto updateAnswer(@PathVariable Long answerId, @RequestBody AnswerRequestDto answerRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return answerService.updateAnswer(answerId, answerRequestDto, userDetails);
     }
 

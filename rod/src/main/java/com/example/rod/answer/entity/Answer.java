@@ -77,7 +77,7 @@ public class Answer extends TimeStamped {
 
 
     public void updateContent(String content){
-        this.content= content;
+        this.content = content;
     }
 
     public void increaseLikes(){
