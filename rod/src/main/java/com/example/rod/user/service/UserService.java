@@ -1,21 +1,16 @@
 package com.example.rod.user.service;
 
 import com.example.rod.aws.service.S3Uploader;
-import com.example.rod.file.service.FileService;
 import com.example.rod.security.details.UserDetailsImpl;
-import com.example.rod.user.dto.InfoResponseDto;
 import com.example.rod.profile.dto.ProfileRequestDto;
+import com.example.rod.user.dto.MyInfoResponseDto;
+import com.example.rod.user.dto.OtherInfoResponseDto;
 import com.example.rod.user.entity.User;
 import com.example.rod.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -32,8 +27,8 @@ public class UserService {
 
     // 내 프로필 조회
     @Transactional(readOnly = true)
-    public InfoResponseDto getMyInfo(User user) {
-        InfoResponseDto info = new InfoResponseDto(user);
+    public MyInfoResponseDto getMyInfo(User user) {
+        MyInfoResponseDto info = new MyInfoResponseDto(user);
         return info;
     }
 
@@ -57,7 +52,8 @@ public class UserService {
     public void saveProfileImage(MultipartFile image,
                                  UserDetailsImpl userDetails) throws IOException {
         User user = userDetails.getUser();
-        String filename = image.getOriginalFilename();
+        String uuid = UUID.randomUUID().toString().substring(0,7);
+        String filename = uuid+"-"+image.getOriginalFilename();
         user.setFilename(filename);
 
         if(!image.isEmpty()) {
@@ -65,5 +61,13 @@ public class UserService {
             user.setImageUrl(storedFileName);
         }
         userRepository.save(user);
+    }
+    
+    //타인 프로필 조회
+    @Transactional(readOnly = true)
+    public OtherInfoResponseDto getOtherInfo(Long userId) {
+        User user = userRepository.findByUserId(userId);
+        OtherInfoResponseDto info = new OtherInfoResponseDto(user);
+        return info;
     }
 }
