@@ -27,12 +27,9 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
 
-    private final FileService fileService;
+    private final S3Uploader s3Uploader;
 
-    @Autowired
-    private S3Uploader s3Uploader;
     // 내 프로필 조회
     @Transactional(readOnly = true)
     public InfoResponseDto getMyInfo(User user) {
@@ -47,7 +44,9 @@ public class UserService {
         String nickname = profileRequestDto.getNickname();
         String phoneNumber = profileRequestDto.getPhoneNumber();
         String password = profileRequestDto.getPassword();
-        user.changeProfile(nickname, password, phoneNumber);
+        String githubAddress = profileRequestDto.getGithubAddress();
+        String introduce = profileRequestDto.getIntroduce();
+        user.changeProfile(nickname, password, phoneNumber, githubAddress, introduce);
 //        user.changeProfile(password, phoneNumber, username, filename);
         userRepository.save(user);
     }

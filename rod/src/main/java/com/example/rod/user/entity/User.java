@@ -11,6 +11,7 @@ import com.example.rod.profile.dto.ProfileRequestDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.util.List;
@@ -34,13 +35,13 @@ public class User extends TimeStamped {
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private int point;
+    private Integer point;
 
     private String phoneNumber;
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private int rating;
+    private Integer rating;
 
     @Enumerated(value = EnumType.STRING)
     private UserGrade grade;
@@ -65,10 +66,15 @@ public class User extends TimeStamped {
 
     private String adminToken;
 
+    private String introduce;
+    private String githunAddress;
+
+
     @Builder
     public User(String username, String nickname, String password, Integer point,
                 String phoneNumber, Integer rating, UserGrade grade, UserRole role,
-                String imageUrl, String filename, String adminToken) {
+                String imageUrl, String filename, String adminToken, String introduce,
+                String githunAddress) {
         this.username = username;
         this.nickname = nickname;
         this.password = password;
@@ -80,6 +86,8 @@ public class User extends TimeStamped {
         this.imageUrl = imageUrl;
         this.filename = filename;
         this.adminToken = adminToken;
+        this.introduce = introduce;
+        this.githunAddress = githunAddress;
     }
 
     @Override
@@ -95,10 +103,13 @@ public class User extends TimeStamped {
         this.point += amount;
     }
 
-    public void changeProfile(String nickname, String password, String phoneNumber) {
+    public void changeProfile(String nickname, String password, String phoneNumber,
+                              String githunAddress, String introduce) {
         this.nickname = nickname;
         this.password = password;
         this.phoneNumber = phoneNumber;
+        this.githunAddress = githunAddress;
+        this.introduce = introduce;
     }
 
     // 질문 등록, 답변 등록, 답변 채택 -> 실행
@@ -140,5 +151,17 @@ public class User extends TimeStamped {
             throw new OutOfStockException("유저의 포인트가 부족합니다.(현재 포인트: " + this.point + ")");
         }
         this.point = restPoint;
+    }
+
+    //admin판단 메소드
+    public Boolean isRealAdmin(String secretKey){
+        role = this.getRole();
+        adminToken = this.getAdminToken();
+        if(!role.equals(UserRole.ADMIN)){
+            if(!adminToken.matches(secretKey)){
+                throw new IllegalArgumentException("관리자만 이용할 수 있는 기능입니다.");
+            }
+        }
+        return true;
     }
 }

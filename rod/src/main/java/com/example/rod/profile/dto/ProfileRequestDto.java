@@ -18,4 +18,8 @@ public class ProfileRequestDto {
 
     private String phoneNumber;
 
+    private String githubAddress;
+
+    private String introduce;
+
 }

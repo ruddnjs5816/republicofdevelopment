@@ -9,6 +9,7 @@ import com.example.rod.user.entity.UserRole;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,6 +34,8 @@ public class UserDetailsImpl implements UserDetails {
     private UserRole role;
     private Integer rating;
     private String filename;
+    private String adminToken;
+
 
     GrantedAuthority authority;
 
@@ -42,8 +45,8 @@ public class UserDetailsImpl implements UserDetails {
                            User user, UserRole role,
                            GrantedAuthority authority,
                            String phoneNumber, Integer rating,
-                           String imageUrl, String filename, String name
-                           ) {
+                           String imageUrl, String filename, String name,
+                           String adminToken) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -56,11 +59,13 @@ public class UserDetailsImpl implements UserDetails {
         this.rating = rating;
         this.filename = filename;
         this.name = name;
+        this.adminToken = adminToken;
     }
 
     public void changeUserDetails(User user){
         this.user = user;
     }
+
 
 
     @Override

@@ -28,8 +28,6 @@ public class UserProfileController {
     public void editMyInfo(@RequestBody ProfileRequestDto profileRequestDto,
                            @AuthenticationPrincipal UserDetailsImpl userDetails){
         userService.editMyInfo(profileRequestDto, userDetails);
-
-
     }
 
     // 내 프로필 등록

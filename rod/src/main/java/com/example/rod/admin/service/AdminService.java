@@ -34,4 +34,6 @@ public interface AdminService {
     void deleteComment(Long commentId, UserDetailsImpl userDetails);
     void deleteQuestion(Long questionId, UserDetailsImpl userDetails);
     void deleteAnswer(Long answerId, UserDetailsImpl userDetails);
+
+    Long countUsers(UserDetailsImpl userDetails);
 }

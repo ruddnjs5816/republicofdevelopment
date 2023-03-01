@@ -12,16 +12,27 @@ public class InfoResponseDto {
 
     private String username;
 
-    private int point;
+    private String nickname;
+
+    private Integer point;
 
     private String phoneNumber;
 
     private UserGrade grade;
+
+    private Integer rating;
+
+    private String introduce;
+
+    private String githubAddress;
 
     public InfoResponseDto(User user) {
         this.username = user.getUsername();
         this.point = user.getPoint();
         this.phoneNumber = user.getPhoneNumber();
         this.grade = user.getGrade();
+        this.rating = user.getRating();
+        this.introduce = user.getIntroduce();
+        this.githubAddress = user.getGithunAddress();
     }
 }

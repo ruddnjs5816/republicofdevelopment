@@ -12,6 +12,7 @@ import com.example.rod.question.service.QuestionService;
 import com.example.rod.security.details.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +47,8 @@ public class AdminController {
 
     //admin 상점에 기프티콘 정보 등록
     @PostMapping("/admin/shop")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
     public void createProduct(
             @RequestBody ProductRequestDto productRequestDto,
             List<MultipartFile> productImgFileList, Model model
@@ -60,6 +63,7 @@ public class AdminController {
 
     //상품 수정
     @PutMapping("/admin/shop/{productId}")
+    @ResponseStatus(HttpStatus.OK)
     public void updateProduct(
             @PathVariable Long productId,
             @RequestBody ProductModifyRequestDto productModifyRequestDto, List<MultipartFile> productImgFileList, Model model
@@ -74,12 +78,16 @@ public class AdminController {
 
     //상품 삭제
     @DeleteMapping("/admin/shop/{productId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
     public void deleteProduct(@PathVariable Long productId) {
         productService.deleteProduct(productId);
     }
 
     //질문 삭제
     @DeleteMapping("/admin/questions/{questionId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
     public void deleteQuestion(@PathVariable Long questionId,
                                @AuthenticationPrincipal UserDetailsImpl userDetails){
         adminService.deleteQuestion(questionId, userDetails);
@@ -87,6 +95,8 @@ public class AdminController {
 
     //답변 삭제
     @DeleteMapping("/admin/answers/{answerId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
     public void deleteAnswer(@PathVariable Long answerId,
                              @AuthenticationPrincipal UserDetailsImpl userDetails){
         adminService.deleteAnswer(answerId, userDetails);
@@ -94,8 +104,21 @@ public class AdminController {
 
     //댓글 삭제
     @DeleteMapping("/admin/answers/{answerId}/comments/{commentId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
     public void deleteComment(@PathVariable Long commentId,
                               @AuthenticationPrincipal UserDetailsImpl userDetails){
         adminService.deleteComment(commentId, userDetails);
     }
+
+    //유저 수 조회
+    @GetMapping("/admin/users")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    public Long countUsers(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return adminService.countUsers(userDetails);
+    }
+
+    //유저 포인트 회수
+
 }

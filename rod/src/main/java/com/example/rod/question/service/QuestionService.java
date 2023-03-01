@@ -24,15 +24,8 @@ public interface QuestionService {
 
     ChangeQuestionResponseDto changeQuestion(Long questionId, ChangeQuestionRequest changeQuestionRequest, UserDetailsImpl userDetails);
 
-<<<<<<< HEAD
-    // 질문 삭제
-    void deleteQuestion(Long questionId,UserDetailsImpl userDetails);
-=======
+    //질문 삭제
     DeleteQuestionResponseDto deleteQuestion(Long questionId, UserDetailsImpl userDetails);
-
-    GetQuestionsResponse searchQuestion(Optional<String> title, Optional<String> nickname, Optional<String> hashtagname,
-                                               int page, Pageable pageable);
->>>>>>> dff111368043353c8c10b608358b04dac0b45c27
 
     // 답변 삭제
     void deleteAnswer(Long answerId,UserDetailsImpl userDetails);

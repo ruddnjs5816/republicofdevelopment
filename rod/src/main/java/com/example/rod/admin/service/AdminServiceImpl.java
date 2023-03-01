@@ -114,6 +114,17 @@ public class AdminServiceImpl implements AdminService{
         answerRepository.delete(answer);
     }
 
+    @Override
+    @Transactional
+    public Long countUsers(UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
+        if(!user.isRealAdmin(secretKey)){
+            throw new IllegalArgumentException("관리자만 이용할 수 있는 기능입니다.");
+        }
+        return Long.valueOf(userRepository.countUsersByRole(UserRole.USER));
+
+    }
+
     //admin 질문 삭제
     @Override
     @Transactional
