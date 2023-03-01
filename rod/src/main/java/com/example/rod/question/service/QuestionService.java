@@ -18,7 +18,7 @@ public interface QuestionService {
 
     GetQuestionsResponse getQuestions(Pageable pageable, int page);
 
-    QuestionWithAnswersResponse  getSpecificQuestion(Long questionId);
+    QuestionWithAnswersResponse  getSpecificQuestion(Long questionId, int page, int size);
 
     SelectAnswerForQuestionResponseDto selectAnswerForQuestion(Long questionId, Long answerId, UserDetailsImpl userDetails);
 

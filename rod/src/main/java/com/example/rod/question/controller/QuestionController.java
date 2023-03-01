@@ -59,8 +59,10 @@ public class QuestionController {
     // 특정 질문 조회 API ( Question - Answer - Comment 전부 다 반환 )
     @GetMapping("/questions/specific/{questionId}")
     @ResponseStatus(HttpStatus.OK)
-    public QuestionWithAnswersResponse getSpecificQuestion(@PathVariable Long questionId) {
-        QuestionWithAnswersResponse questionResponse = questionService.getSpecificQuestion(questionId);
+    public QuestionWithAnswersResponse getSpecificQuestion(@PathVariable Long questionId,
+                                                           @RequestParam(defaultValue = "1") int page,
+                                                           @RequestParam(defaultValue ="10") int size) {
+        QuestionWithAnswersResponse questionResponse = questionService.getSpecificQuestion(questionId, page, size);
         return questionResponse;
     }
 

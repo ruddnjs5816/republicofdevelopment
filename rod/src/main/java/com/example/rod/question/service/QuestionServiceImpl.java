@@ -114,16 +114,13 @@ public class QuestionServiceImpl implements QuestionService {
                     .answerCount(question.getAnswersList().size())
                     .createdAt(question.getCreatedAt()).build());
         }
-
-
-
         return new GetQuestionsResponse(page, totalQuestionCount, questionResponseList);
     }
 
 
     @Override
     @Transactional
-    public QuestionWithAnswersResponse getSpecificQuestion(Long questionId) {
+    public QuestionWithAnswersResponse getSpecificQuestion(Long questionId, int page, int size) {
         Question question = questionRepository.findById(questionId).orElseThrow
                 (() -> new IllegalArgumentException("해당 아이디의 질문이 없습니다."));
 
@@ -139,7 +136,7 @@ public class QuestionServiceImpl implements QuestionService {
         }
 
         // 3. 나머지 답변들을 좋아요 수에 따라 정렬해서 가져온다.
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "likes"));
+        PageRequest pageRequest = PageRequest.of(page-1, size, Sort.by(Sort.Direction.DESC, "likes"));
         Page<Answer> otherAnswers = answerRepository.findByQuestionAndIsSelected(question, false, pageRequest);
 
         for (Answer answer : otherAnswers) {
@@ -215,6 +212,9 @@ public class QuestionServiceImpl implements QuestionService {
                 (() -> new IllegalArgumentException("해당 아이디의 질문이 없습니다."));
         User user = userDetails.getUser();
         question.editQuestion(user, changeQuestionRequest.getTitle(), changeQuestionRequest.getContent());
+
+
+
         return new ChangeQuestionResponseDto(questionId);
     }
 
