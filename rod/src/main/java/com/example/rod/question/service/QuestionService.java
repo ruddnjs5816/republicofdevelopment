@@ -35,4 +35,6 @@ public interface QuestionService {
 
     GetQuestionsResponse searchQuestion(Optional<String> title, Optional<String> nickname, Optional<String> hashtagname,
                                         int page, Pageable pageable);
+
+    Object findAllDesc();
 }

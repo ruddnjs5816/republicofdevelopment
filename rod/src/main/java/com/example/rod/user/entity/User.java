@@ -31,6 +31,7 @@ public class User extends TimeStamped {
     private String username;
 
     private String nickname;
+    private String email;
     private String password;
 
     @Column(nullable = false)
@@ -74,7 +75,7 @@ public class User extends TimeStamped {
     public User(String username, String nickname, String password, Integer point,
                 String phoneNumber, Integer rating, UserGrade grade, UserRole role,
                 String imageUrl, String filename, String adminToken, String introduce,
-                String githunAddress) {
+                String githunAddress, String email) {
         this.username = username;
         this.nickname = nickname;
         this.password = password;
@@ -88,6 +89,7 @@ public class User extends TimeStamped {
         this.adminToken = adminToken;
         this.introduce = introduce;
         this.githunAddress = githunAddress;
+        this.email = email;
     }
 
     @Override
@@ -104,14 +106,20 @@ public class User extends TimeStamped {
     }
 
     public void changeProfile(String nickname, String password, String phoneNumber,
-                              String githunAddress, String introduce) {
+                              String githunAddress, String introduce, String email) {
         this.nickname = nickname;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.githunAddress = githunAddress;
         this.introduce = introduce;
+        this.email = email;
     }
-
+    public User update(String username, String imageUrl, String nickname){
+        this.username = username;
+        this.nickname = nickname;
+        this.imageUrl = imageUrl;
+        return this;
+    }
     // 질문 등록, 답변 등록, 답변 채택 -> 실행
 
     public void changeUserGrade(int rating){

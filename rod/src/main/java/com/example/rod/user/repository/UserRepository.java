@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
+import java.util.stream.DoubleStream;
 
 
 @Repository
@@ -19,4 +20,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByUsername(@NotNull String username);
 
     Integer countUsersByRole(UserRole role);
+
+    Optional<User> findByEmail(String email);
 }

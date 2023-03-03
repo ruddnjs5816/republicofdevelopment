@@ -22,4 +22,6 @@ public class ProfileRequestDto {
 
     private String introduce;
 
+    private String email;
+
 }

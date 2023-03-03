@@ -1,6 +1,7 @@
 
 package com.example.rod.security.config;
 
+import com.example.rod.oauth2.service.CustomOAuth2UserService;
 import com.example.rod.security.jwt.JwtAccessDeniedHandler;
 import com.example.rod.security.jwt.JwtAuthFilter;
 import com.example.rod.security.jwt.JwtAuthenticationEntryPoint;
@@ -33,6 +34,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     private final JwtUtil jwtUtil;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -54,9 +56,15 @@ public class SecurityConfig implements WebMvcConfigurer {
 //                .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
+                .logout().logoutSuccessUrl("/")
+                .and()
                 .addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         http.exceptionHandling().accessDeniedPage("/user/forbidden");
+        http.oauth2Login(login -> login
+//                .successHandler(successHandler)
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService));
         return http.build();
     }
     @Bean

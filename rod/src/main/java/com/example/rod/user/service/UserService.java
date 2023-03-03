@@ -41,7 +41,8 @@ public class UserService {
         String password = profileRequestDto.getPassword();
         String githubAddress = profileRequestDto.getGithubAddress();
         String introduce = profileRequestDto.getIntroduce();
-        user.changeProfile(nickname, password, phoneNumber, githubAddress, introduce);
+        String email = profileRequestDto.getEmail();
+        user.changeProfile(nickname, password, phoneNumber, githubAddress, introduce, email);
 //        user.changeProfile(password, phoneNumber, username, filename);
         userRepository.save(user);
     }

@@ -303,6 +303,11 @@ public class QuestionServiceImpl implements QuestionService {
         return response;
     }
 
+    @Override
+    public Object findAllDesc() {
+        return null;
+    }
+
 //    @Override
 
     // public void uploadImage(MultipartFile image) throws GetException {}

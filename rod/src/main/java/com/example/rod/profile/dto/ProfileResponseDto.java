@@ -18,4 +18,5 @@ public class ProfileResponseDto {
     private Long rating;
     private Long point;
     private UserGrade grade;
+    private String email;
 }
