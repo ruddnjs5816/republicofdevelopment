@@ -37,7 +37,7 @@ public class SignupTest {
         // psql --username teasun --dbname messenger
 
         String dburl = "jdbc:postgresql://localhost:5432/messenger";
-        String dbusername = "byeongdoo";
+        String dbusername = "user";
         String dbpassword = "pass";
 
         try(Connection connection = DriverManager.getConnection(dburl, dbusername, dbpassword)){
@@ -50,7 +50,7 @@ public class SignupTest {
             UserGrade userGrade = UserGrade.BRONZE;
             UserRole userRole = UserRole.USER;
 
-            User byeongdoo = User.builder()
+            User user = User.builder()
                     .username(username)
                     .nickname(nickname)
                     .role(userRole)
@@ -61,7 +61,7 @@ public class SignupTest {
                     .password(encodedPassword)
                     .build();
 
-            userRepository.saveAndFlush(byeongdoo);
+            userRepository.saveAndFlush(user);
         } catch (SQLException e){
             if (e.getMessage().equals("ERROR: relation \"user\" already exists")) {
                 System.out.println("유저가 이미 존재합니다.");
@@ -80,7 +80,7 @@ public class SignupTest {
         Optional<User> user = userRepository.findByUsername("bdhan");
 
         String dburl = "jdbc:postgresql://localhost:5432/messenger";
-        String dbusername = "byeongdoo";
+        String dbusername = "user";
         String dbpassword = "pass";
 
         try(Connection connection = DriverManager.getConnection(dburl, dbusername, dbpassword)){
@@ -93,7 +93,7 @@ public class SignupTest {
             UserGrade userGrade = UserGrade.BRONZE;
             UserRole userRole = UserRole.USER;
 
-            User byeongdoo = User.builder()
+            User user = User.builder()
                     .username(username)
                     .nickname(nickname)
                     .role(userRole)
@@ -104,7 +104,7 @@ public class SignupTest {
                     .password(encodedPassword)
                     .build();
 
-            userRepository.saveAndFlush(byeongdoo);
+            userRepository.saveAndFlush(user);
         } catch (SQLException e){
             if (e.getMessage().equals("ERROR: relation \"user\" already exists")) {
                 System.out.println("유저가 이미 존재합니다.");

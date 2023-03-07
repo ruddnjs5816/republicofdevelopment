@@ -16,7 +16,7 @@ public class JDBCUtil {
             // Class.forName("com.mysql.cj.jdbc.Driver"); 원래 driver 를 명시해줘야 하지만 이젠 자동으로 됨
 
             return DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/messenger", "byeongdoo",
+                    "jdbc:postgresql://localhost:5432/messenger", "user",
                     "pass");
         } catch (Exception e) {
             e.printStackTrace();
