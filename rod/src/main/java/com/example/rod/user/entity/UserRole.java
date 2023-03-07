@@ -2,6 +2,7 @@ package com.example.rod.user.entity;
 
 public enum UserRole {
     USER(Authority.USER),  // 사용자 권한
+    GUEST(Authority.GUEST),
     ADMIN(Authority.ADMIN);  // 관리자 권한
 
     private final String authority;
@@ -17,5 +18,6 @@ public enum UserRole {
     public static class Authority {
         public static final String USER = "ROLE_USER";
         public static final String ADMIN = "ROLE_ADMIN";
+        public static final String GUEST = "ROLE_GUEST";
     }
 }

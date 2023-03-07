@@ -12,7 +12,7 @@ public class OtherInfoResponseDto {
         this.grade = user.getGrade();
         this.rating = user.getRating();
         this.introduce = user.getIntroduce();
-        this.githubAddress = user.getGithunAddress();
+        this.githubAddress = user.getGithubAddress();
     }
 
     private String username;

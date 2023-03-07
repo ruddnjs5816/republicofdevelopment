@@ -51,7 +51,7 @@ public class InitData implements ApplicationRunner {
 
             userRepository.save(admin);
         } catch (IllegalArgumentException e){
-            e.getMessage();
+            e.getMessage().substring(0,1);
         }
 
 

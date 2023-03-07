@@ -20,6 +20,7 @@ public class Order extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
+    private Long userId;
 
 
 //    private Long userId; //주문 회원
@@ -34,7 +35,7 @@ public class Order extends TimeStamped {
 
 
     public Order(Long userId, Long productId) {
-//        this.userId = userId;
+        this.userId = userId;
         this.productId = productId;
         this.orderDate = orderDate;
         this.orderStatus = orderStatus;

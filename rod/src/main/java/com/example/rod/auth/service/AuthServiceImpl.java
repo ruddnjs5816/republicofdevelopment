@@ -3,7 +3,7 @@ package com.example.rod.auth.service;
 import com.amazonaws.endpointdiscovery.Constants;
 import com.example.rod.auth.dto.SigninRequestDto;
 import com.example.rod.auth.dto.SignupRequestDto;
-import com.example.rod.oauth2.dto.OAuthAttributes;
+//import com.example.rod.oauth2.dto.OAuthAttributes;
 import com.example.rod.security.details.UserDetailsImpl;
 import com.example.rod.security.exception.CustomException;
 import com.example.rod.security.jwt.JwtUtil;

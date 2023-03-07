@@ -4,14 +4,11 @@ package com.example.rod.user.entity;
 import com.example.rod.answer.entity.Answer;
 import com.example.rod.comment.entity.Comment;
 import com.example.rod.exception.OutOfStockException;
-import com.example.rod.order.entity.Order;
 import com.example.rod.question.entity.Question;
 import com.example.rod.share.TimeStamped;
-import com.example.rod.profile.dto.ProfileRequestDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.util.List;
@@ -26,6 +23,8 @@ public class User extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
+
+    private Long kakaoId;
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -46,7 +45,6 @@ public class User extends TimeStamped {
 
     @Enumerated(value = EnumType.STRING)
     private UserGrade grade;
-
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
 
@@ -63,19 +61,23 @@ public class User extends TimeStamped {
     private List<Comment> commentList;
 
     private String imageUrl;
+    @Setter
     private String filename;
 
     private String adminToken;
 
     private String introduce;
-    private String githunAddress;
+    private String githubAddress;
 
+    private String provider;
+
+    private String providerId;
 
     @Builder
     public User(String username, String nickname, String password, Integer point,
                 String phoneNumber, Integer rating, UserGrade grade, UserRole role,
                 String imageUrl, String filename, String adminToken, String introduce,
-                String githunAddress, String email) {
+                String githubAddress, String email,String provider, String providerId) {
         this.username = username;
         this.nickname = nickname;
         this.password = password;
@@ -88,8 +90,10 @@ public class User extends TimeStamped {
         this.filename = filename;
         this.adminToken = adminToken;
         this.introduce = introduce;
-        this.githunAddress = githunAddress;
+        this.githubAddress = githubAddress;
         this.email = email;
+        this.provider = provider;
+        this.providerId = providerId;
     }
 
     @Override
@@ -106,15 +110,15 @@ public class User extends TimeStamped {
     }
 
     public void changeProfile(String nickname, String password, String phoneNumber,
-                              String githunAddress, String introduce, String email) {
+                              String githubAddress, String introduce, String email) {
         this.nickname = nickname;
         this.password = password;
         this.phoneNumber = phoneNumber;
-        this.githunAddress = githunAddress;
+        this.githubAddress = githubAddress;
         this.introduce = introduce;
         this.email = email;
     }
-    public User update(String username, String imageUrl, String nickname){
+    public User update(String username, String imageUrl){
         this.username = username;
         this.nickname = nickname;
         this.imageUrl = imageUrl;
@@ -172,4 +176,10 @@ public class User extends TimeStamped {
         }
         return true;
     }
+
+    public User kakaoIdUpdate(Long kakaoId) {
+        this.kakaoId = kakaoId;
+        return this;
+    }
+
 }

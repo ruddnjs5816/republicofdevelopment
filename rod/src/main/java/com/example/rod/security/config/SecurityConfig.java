@@ -1,7 +1,8 @@
 
 package com.example.rod.security.config;
 
-import com.example.rod.oauth2.service.CustomOAuth2UserService;
+import com.example.rod.security.handler.FailureHandler;
+import com.example.rod.security.handler.SuccessHandler;
 import com.example.rod.security.jwt.JwtAccessDeniedHandler;
 import com.example.rod.security.jwt.JwtAuthFilter;
 import com.example.rod.security.jwt.JwtAuthenticationEntryPoint;
@@ -9,6 +10,7 @@ import com.example.rod.security.jwt.JwtUtil;
 import com.example.rod.user.entity.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import org.springframework.boot.util.Instantiator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -34,10 +36,11 @@ public class SecurityConfig implements WebMvcConfigurer {
     private final JwtUtil jwtUtil;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final CustomOAuth2UserService customOAuth2UserService;
+    private final SuccessHandler successHandler;
+    private final FailureHandler failureHandler;
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -47,24 +50,28 @@ public class SecurityConfig implements WebMvcConfigurer {
         http.headers().frameOptions().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeHttpRequests()
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers( "/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/logout").permitAll()
                 .antMatchers("/questions/all", "/questions/specific/**").permitAll()
                 .antMatchers("/admin/auth/**").permitAll()
                 .antMatchers("/admin/**").hasRole(UserRole.ADMIN.toString())
 //                .antMatchers("/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
+                .anyRequest().authenticated();
+        http
                 .logout().logoutSuccessUrl("/")
                 .and()
                 .addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
-        http.exceptionHandling().accessDeniedPage("/user/forbidden");
-        http.oauth2Login(login -> login
+
+//        http.oauth2Login(login -> login
 //                .successHandler(successHandler)
-                .userInfoEndpoint()
-                .userService(customOAuth2UserService));
+//                .failureHandler(failureHandler));
+//                .userInfoEndpoint();
+//                .userService(customOAuth2UserService));
+        http.exceptionHandling().accessDeniedPage("/user/forbidden");
         return http.build();
     }
     @Bean
@@ -82,7 +89,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .allowedOrigins("*")
                 .allowedMethods("GET","POST","PUT","DELETE","PATCH","OPTIONS","HEAD")
                 .exposedHeaders("Authorization");
-    } }
+    }
+}
 
 
 

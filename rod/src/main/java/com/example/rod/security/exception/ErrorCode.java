@@ -41,8 +41,8 @@ public enum ErrorCode {
     NOT_FOUND_ANSWER(HttpStatus.NOT_FOUND, "해당 답변을 찾을 수 없습니다."),
 
     // 댓글 관련 ErrorCode
-    NOT_FOUND_COMMENT(HttpStatus.BAD_REQUEST, "댓글을 찾을 수 없습니다.");
-    
+    NOT_FOUND_COMMENT(HttpStatus.BAD_REQUEST, "댓글을 찾을 수 없습니다."),
+    NOT_MATCH_REDIS(HttpStatus.NOT_FOUND, "Redis가 맞지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

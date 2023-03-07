@@ -130,7 +130,7 @@ public class JwtUtil {
             String json = new ObjectMapper().writeValueAsString(new SecurityExceptionResponse(statusCode, msg));
             response.getWriter().write(json);
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage().substring(0,1));
         }
     }
 }
