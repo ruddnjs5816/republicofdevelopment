@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/jquery-ui.js"></script>
+</head>
+<body>
+<div class="cont">
+    <div class="form sign-in">
+        <h2>개발자국에 오신걸 환영합니다.</h2>
+        <label>
+            <span>아이디</span>
+            <input type="text" id="signInId"/>
+        </label>
+        <label>
+            <span>패스워드</span>
+            <input type="password" id="signInPassword"/>
+        </label>
+        <!-- <p class="forgot-pass">Forgot password?</p> -->
+        <button type="button" class="submit" onclick="signIn()">Sign In</button>
+        <button type="button" class="fb-btn" onclick="loginKakao()">Connect with <span>Kakao</span></button>
+    </div>
+    <div class="sub-cont">
+        <div class="img">
+            <div class="img__text m--up">
+                <h2>New here?</h2>
+                <p>Sign up and discover great amount of new opportunities!</p>
+            </div>
+            <div class="img__text m--in">
+                <h2>One of us?</h2>
+                <p>If you already has an account, just sign in. We've missed you!</p>
+            </div>
+            <div class="img__btn">
+                <span class="m--up">Sign Up</span>
+                <span class="m--in">Sign In</span>
+            </div>
+        </div>
+        <div class="form sign-up">
+            <h2>Time to feel like home,</h2>
+
+            <label>
+                <span>아이디</span>
+                <input type="text" id="loginId"/>
+            </label>
+            <label>
+                <span>비밀번호</span>
+                <input type="password" id="loginPassword"/>
+            </label>
+            <label>
+                <span>닉네임</span>
+                <input type="email" id="nickName"/>
+            </label>
+            <label>
+                <span>핸드폰 번호</span>
+                <input type="email" id="phoneNumber"/>
+            </label>
+
+            <button type="button" class="submit" onclick="signUp()">Sign Up</button>
+            <button type="button" class="fb-btn">Join with <span>Kakao</span></button>
+        </div>
+    </div>
+</div>
+
+<!-- <a href="https://dribbble.com/shots/3306190-Login-Registration-form" target="_blank" class="icon-link">
+  <img src="http://icons.iconarchive.com/icons/uiconstock/socialmedia/256/Dribbble-icon.png">
+</a>
+<a href="https://twitter.com/NikolayTalanov" target="_blank" class="icon-link icon-link--twitter">
+  <img src="https://cdn1.iconfinder.com/data/icons/logotypes/32/twitter-128.png">
+</a> -->
+
+</body>
+
+<style>
+    *,
+    *:before,
+    *:after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: "Open Sans", Helvetica, Arial, sans-serif;
+        background: #ededed;
+    }
+
+    input,
+    button {
+        border: none;
+        outline: none;
+        background: none;
+        font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    }
+
+    .tip {
+        font-size: 20px;
+        margin: 40px auto 50px;
+        text-align: center;
+    }
+
+    .cont {
+        overflow: hidden;
+        position: relative;
+        width: 900px;
+        height: 550px;
+        margin: 100px auto 100px auto;
+        background: #fff;
+    }
+
+    .form {
+        position: relative;
+        width: 640px;
+        height: 100%;
+        transition: transform 1.2s ease-in-out;
+        padding: 50px 30px 0;
+    }
+
+    .sub-cont {
+        overflow: hidden;
+        position: absolute;
+        left: 640px;
+        top: 0;
+        width: 900px;
+        height: 100%;
+        padding-left: 260px;
+        background: #fff;
+        transition: transform 1.2s ease-in-out;
+
+    }
+
+    .cont.s--signup .sub-cont {
+        transform: translate3d(-640px, 0, 0);
+    }
+
+    button {
+        display: block;
+        margin: 0 auto;
+        width: 260px;
+        height: 36px;
+        border-radius: 30px;
+        color: #fff;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+    .img {
+        overflow: hidden;
+        z-index: 2;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 260px;
+        height: 100%;
+        padding-top: 360px;
+    }
+
+    .img:before {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 900px;
+        height: 100%;
+        /* background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/sections-3.jpg"); */
+        background-size: cover;
+        transition: transform 1.2s ease-in-out;
+    }
+
+    .img:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: #ddc59e;
+    }
+
+    .cont.s--signup .img:before {
+        transform: translate3d(640px, 0, 0);
+    }
+
+    .img__text {
+        z-index: 2;
+        position: absolute;
+        left: 0;
+        top: 50px;
+        width: 100%;
+        padding: 0 20px;
+        text-align: center;
+        color: #fff;
+        transition: transform 1.2s ease-in-out;
+    }
+
+    .img__text h2 {
+        margin-bottom: 10px;
+        font-weight: normal;
+    }
+
+    .img__text p {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .cont.s--signup .img__text.m--up {
+        transform: translateX(520px);
+    }
+
+    .img__text.m--in {
+        transform: translateX(-520px);
+    }
+
+    .cont.s--signup .img__text.m--in {
+        transform: translateX(0);
+    }
+
+    .img__btn {
+        overflow: hidden;
+        z-index: 2;
+        position: relative;
+        width: 100px;
+        height: 36px;
+        margin: 0 auto;
+        background: transparent;
+        color: #fff;
+        text-transform: uppercase;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+    .img__btn:after {
+        content: "";
+        z-index: 2;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border: 2px solid #fff;
+        border-radius: 30px;
+    }
+
+    .img__btn span {
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        transition: transform 1.2s;
+    }
+
+    .img__btn span.m--in {
+        transform: translateY(-72px);
+    }
+
+    .cont.s--signup .img__btn span.m--in {
+        transform: translateY(0);
+    }
+
+    .cont.s--signup .img__btn span.m--up {
+        transform: translateY(72px);
+    }
+
+    h2 {
+        width: 100%;
+        font-size: 26px;
+        text-align: center;
+    }
+
+    label {
+        display: block;
+        width: 260px;
+        margin: 25px auto 0;
+        text-align: center;
+    }
+
+    label span {
+        font-size: 12px;
+        color: #cfcfcf;
+        text-transform: uppercase;
+    }
+
+    input {
+        display: block;
+        width: 100%;
+        margin-top: 5px;
+        padding-bottom: 5px;
+        font-size: 16px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+        text-align: center;
+    }
+
+    .forgot-pass {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 12px;
+        color: #cfcfcf;
+    }
+
+    .submit {
+        margin-top: 40px;
+        margin-bottom: 20px;
+        background: burlywood;
+        text-transform: uppercase;
+    }
+
+    .fb-btn {
+        border: 2px solid #a67c7c;
+        color: #a67c7c;
+    }
+
+    .fb-btn span {
+        font-weight: bold;
+        color: #fee404;
+    }
+
+    .sign-in {
+        transition-timing-function: ease-out;
+    }
+
+    .cont.s--signup .sign-in {
+        transition-timing-function: ease-in-out;
+        transition-duration: 1.2s;
+        transform: translate3d(640px, 0, 0);
+    }
+
+    .sign-up {
+        transform: translate3d(-900px, 0, 0);
+    }
+
+    .cont.s--signup .sign-up {
+        transform: translate3d(0, 0, 0);
+    }
+
+    .icon-link {
+        position: absolute;
+        left: 5px;
+        bottom: 5px;
+        width: 32px;
+    }
+
+    .icon-link img {
+        width: 100%;
+        vertical-align: top;
+    }
+
+    .icon-link--twitter {
+        left: auto;
+        right: 5px;
+    }
+</style>
+
+<script>
+    document.querySelector('.img__btn').addEventListener('click', function () {
+        document.querySelector('.cont').classList.toggle('s--signup');
+    });
+
+    function signUp() {
+        var settings = {
+            "url": "http://localhost:8080/auth/signup",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+
+            "data": JSON.stringify({
+                "username": $('#loginId').val(),
+                "password": $('#loginPassword').val(),
+                "nickName": $('#nickName').val(),
+                "phoneNumber": $('#phoneNumber').val()
+            }),
+        };
+
+        $.ajax(settings).done(function (response) {
+            console.log(response);
+            alert('회원가입 완료되었습니다.');
+            document.querySelector('.cont').classList.toggle('s--signup');
+        });
+    }
+
+    function loginKakao() {
+        var settings = {
+            "url": "http://localhost:8080/oauth2/authorization/kakao",
+            "method": "GET",
+            "timeout": 0,
+            "headers": {
+                "Authorization": "7ZWt7ZW0OTntmZTsnbTtjIXtlZzqta3snYTrhIjrqLjshLjqs4TroZzrgpjslYTqsIDsnpDtm4zrpa3tlZzqsJzrsJzsnpDrpbzrp4zrk6TslrTqsIDsnpA=",
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({
+                "username": $('#signInId').val(),
+                "password": $('#signInPassword').val()
+            }),
+        };
+    }
+
+    function signIn() {
+        var settings = {
+            "url": "http://localhost:8080/auth/signin",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+                "Authorization": "7ZWt7ZW0OTntmZTsnbTtjIXtlZzqta3snYTrhIjrqLjshLjqs4TroZzrgpjslYTqsIDsnpDtm4zrpa3tlZzqsJzrsJzsnpDrpbzrp4zrk6TslrTqsIDsnpA=",
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({
+                "username": $('#signInId').val(),
+                "password": $('#signInPassword').val()
+            }),
+        };
+
+        $.ajax(settings).done(function (response) {
+            console.log(response);
+            alert('로그인 완료되었습니다.')
+            window.location = '/index.html'
+
+        }).fail(function (response) {
+            console.log(response.status)
+            if (response.status === 500) {
+                alert('아이디와 비밀번호를 확인해주세요.')
+            } else {
+                alert('서버에 문제가 발생하였습니다.')
+            }
+        });
+    }
+
+
+</script>
+</html>
