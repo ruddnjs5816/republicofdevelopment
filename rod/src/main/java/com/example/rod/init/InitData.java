@@ -36,7 +36,7 @@ public class InitData implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         String dburl = "jdbc:postgresql://localhost:5432/messenger";
-        String dbusername = "user";
+        String dbusername = "byeongdoo";
         String dbpassword = "pass";
 
         try(Connection connection = DriverManager.getConnection(dburl, dbusername, dbpassword)){

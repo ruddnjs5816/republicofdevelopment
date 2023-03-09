@@ -21,6 +21,46 @@
 
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- <script>
+      (function ($) {
+        getAllQuestionList();
+      })(jQuery);
+
+
+      function getAllQuestionList() {
+        var settings = {
+          "url": "http://localhost:8080/questions",
+          "method": "GET",
+          "timeout": 0,
+          "headers": {
+            "Authorization":
+              localStorage.getItem('accessToken')
+          },
+        };
+
+      $.ajax(settings).done(function (response) {
+        console.log(response);
+        for (let i = 0; i < response.data.length; i++) {
+          let questionList0 = response.data[0];
+          let questionList1 = response.data[1];
+          let questionList2 = response.data[2];
+          let questionList3 = response.data[3];
+          let questionList4 = response.data[4];
+          let questionList5 = response.data[5];
+          $('#question0').append(questionList0.title)
+          $('#question1').append(questionList1.title)
+          $('#question2').append(questionList2.title)
+          $('#question3').append(questionList3.title)
+          $('#question4').append(questionList4.title)
+          $('#question5').append(questionList5.title)
+        }
+      });
+    }
+
+    </script> -->
+
+
   </head>
   <body>
 
@@ -29,18 +69,23 @@
 				<div class="row">
 					<div class="col-md-6 d-flex align-items-center">
 						<p class="mb-0 phone pl-md-2">
-              <a href="#"><i class="fa fa-user-circle-o" aria-hidden="true"></i> 노오란 병아리님 반갑습니다.</a>
-						</p>
+              <a href="profile/index.html">
+								<i class="fa fa-user-circle-o" aria-hidden="true" ></i> 
+								<span id="loginUser"></a></span>					
+              </p>
 					</div>
 					<div class="col-md-6 d-flex justify-content-md-end">
 						<div class="social-media">
-			    		<p class="mb-0 d-flex">
-			    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-sign-in"><i class="sr-only">SignIn/SignUp</i></span></a>
-			    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-github"><i class="sr-only">Github</i></span></a>
-			    			<!-- <a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a> -->
-			    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-sign-out"><i class="sr-only">SignOut</i></span></a>
-			    		</p>
-		        </div>
+              <p class="mb-0 d-flex">
+                <a href="login.html" class="d-flex align-items-center justify-content-center"><span
+                    class="fa fa-sign-in"><i class="sr-only">SignIn/SignUp</i></span></a>
+                <a href="https://github.com/" class="d-flex align-items-center justify-content-center"><span
+                    class="fa fa-github"><i class="sr-only">Github</i></span></a>
+                <!-- <a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a> -->
+                <a href="#" class="d-flex align-items-center justify-content-center" onclick="signOut()"><span
+									class="fa fa-sign-out"><i class="sr-only">SignOut</i></span></a>
+              </p>
+            </div>
 					</div>
 				</div>
 			</div>
@@ -49,6 +94,19 @@
 	    <div class="container">
 	    	<a class="navbar-brand" href="index.html"><span class="flaticon-pawprint-1 mr-2"></span>개발자국</a>
 			  <a>Republic Of Development</a>
+
+        <div class="wrap11">
+          <div class="wrap1">
+            <div class="search1">
+              <input type="text" class="searchTerm1" placeholder="Search">
+              <button  class="searchButton1" onclick="goSearch()">
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 	        <span class="fa fa-bars"></span> Menu
 	      </button>
@@ -83,24 +141,52 @@
 
     <section class="ftco-section bg-light">
       <div class="container">
-        <button type="button" id="submit"><span class="fa fa-pencil"><a href="questionForm.html"> 질문하기</a></span></button>
-        <div class="row d-flex">
-          <div class="col-md-4 d-flex ftco-animate">
+          <!-- <ul class="col-auto"> -->
+           <button type="button" id="submit"><span class="fa fa-pencil"><a href="questionForm.html"> 질문하기</a></span></button>
+            <!-- <li class="btn btn-outline-secondary" 
+              th:href="@{/community/post/{category_name}(category_name=${category_name}, orderby=viewCount)}">조회수 순</li>
+            <li class="btn btn-outline-secondary" 
+              th:href="@{/community/post/{category_name}(category_name=${category_name}, orderby=likeCount)}">좋아요 순</li>
+            <li class="btn btn-outline-secondary" 
+              th:href="@{/community/post/{category_name}(category_name=${category_name}, orderby=id)}">최신 순</li>
+          </ul> -->
+
+
+          <!-- 카드(질문 목록) -->
+        <div class="row d-flex" id="cards">
+          
+          <!-- <div class="col-md-4 d-flex ftco-animate">
             <div class="blog-entry align-self-stretch">
-              <a href="questionDetail.html" class="block-20 rounded" style="background-image: url('images/question_1.png');">
+              <a href="questionDetail.html" class="block-20 rounded" style="background-image: url('images/question_11.png');">
               </a>
               <div class="text p-4">
               	<div class="meta mb-2">
                   <div><a>April 07, 2020</a></div>
                   <div><a>보아</a></div>
                   <div><a class="meta-chat"><span class="fa fa-comment"></span> 3</a></div>
-                  <div><a class="meta-chat"><span class="fa fa-heart-o"></span> 11</a></div>
                 </div>
-                <h3 class="heading"><a href="#">spring 연관관계에 대한 질문 드립니다.</a></h3>
+                <h3 class="heading"><span id="question0"></span></h3>
               </div>
             </div>
           </div>
-          <div class="col-md-4 d-flex ftco-animate">
+
+                    <div class="col-md-4 d-flex ftco-animate">
+            <div class="blog-entry align-self-stretch">
+              <a href="questionDetail.html" class="block-20 rounded" style="background-image: url('images/question_11.png');">
+              </a>
+              <div class="text p-4">
+              	<div class="meta mb-2">
+                  <div><a>April 07, 2020</a></div>
+                  <div><a>보아</a></div>
+                  <div><a class="meta-chat"><span class="fa fa-comment"></span> 3</a></div>
+                </div>
+                <h3 class="heading"><span id="question1"></span></h3>
+              </div>
+            </div>
+          </div> -->
+
+          
+           <!-- <div class="col-md-4 d-flex ftco-animate">
             <div class="blog-entry align-self-stretch">
               <a href="questionDetail.html" class="block-20 rounded" style="background-image: url('images/error_1.png');">
               </a>
@@ -111,39 +197,12 @@
                   <div><a href="#" class="meta-chat"><span class="fa fa-comment"></span> 100</a></div>
                   <div><a href="#" class="meta-chat"><span class="fa fa-heart-o"></span> 20</a></div>
                 </div>
-                <h3 class="heading"><a href="#">연달아서 runtime error가 뜹니다 어떻게 해야 될까요?</a></h3>
+                <h3 class="heading"><a href="#"><span id="question1"></span></a></h3>
               </div>
             </div>
           </div>
-          <div class="col-md-4 d-flex ftco-animate">
-            <div class="blog-entry align-self-stretch">
-              <a href="questionDetail.html" class="block-20 rounded" style="background-image: url('images/question_1.png');">
-              </a>
-              <div class="text p-4">
-              	<div class="meta mb-2">
-                  <div><a href="#">April 07, 2020</a></div>
-                  <div><a href="#">닉네임</a></div>
-                  <div><a href="#" class="meta-chat"><span class="fa fa-comment"></span> 3</a></div>
-                  <div><a href="#" class="meta-chat"><span class="fa fa-heart-o"></span> 20</a></div>
-                </div>
-                <h3 class="heading"><a href="#">질문 제목</a></h3>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 d-flex ftco-animate">
-            <div class="blog-entry align-self-stretch">
-              <a href="questionDetail.html" class="block-20 rounded" style="background-image: url('images/image_4.jpg');">
-              </a>
-              <div class="text p-4">
-              	<div class="meta mb-2">
-                  <div><a href="#">April 07, 2020</a></div>
-                  <div><a href="#">Admin</a></div>
-                  <div><a href="#" class="meta-chat"><span class="fa fa-comment"></span> 3</a></div>
-                </div>
-                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
-              </div>
-            </div>
-          </div>
+
+          
           <div class="col-md-4 d-flex ftco-animate">
             <div class="blog-entry align-self-stretch">
               <a href="questionDetail.html" class="block-20 rounded" style="background-image: url('images/image_5.jpg');">
@@ -154,40 +213,112 @@
                   <div><a href="#">Admin</a></div>
                   <div><a href="#" class="meta-chat"><span class="fa fa-comment"></span> 3</a></div>
                 </div>
-                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                <h3 class="heading"><a href="#"><span id="question4"></span></a></h3>
               </div>
             </div>
           </div>
-          <div class="col-md-4 d-flex ftco-animate">
-            <div class="blog-entry align-self-stretch">
-              <a href="questionDetail.html" class="block-20 rounded" style="background-image: url('images/image_6.jpg');">
-              </a>
-              <div class="text p-4">
-              	<div class="meta mb-2">
-                  <div><a href="#">April 07, 2020</a></div>
-                  <div><a href="#">Admin</a></div>
-                  <div><a href="#" class="meta-chat"><span class="fa fa-comment"></span> 3</a></div>
-                </div>
-                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
-              </div>
-            </div>
-          </div>
+
+
+          </div> -->
+
+          
         </div>
-        <div class="row mt-5">
+
+
+         <!-- 페이징 넘버 -->
+         <div class="row mt-5">
           <div class="col text-center">
             <div class="block-27">
               <ul>
                 <li><a href="#">&lt;</a></li>
-                <li class="active"><span>1</span></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
+                <button class="page-btn" data-page="1" onclick="getAllQuestionList(1, 6)" style="color: gray;
+                text-align: center;
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                line-height: 35px;
+                border-radius: 50%;
+                border: 2px solid burlywood;">1</button>
+                <button class="page-btn" data-page="2" onclick="getAllQuestionList(2, 6)" style="color: gray;
+                text-align: center;
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                line-height: 35px;
+                border-radius: 50%;
+                border: 2px solid burlywood;">2</button>
+                <button class="page-btn" data-page="3" onclick="getAllQuestionList(3, 6)" style="color: gray;
+                text-align: center;
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                line-height: 35px;
+                border-radius: 50%;
+                border: 2px solid burlywood;">3</button>
+                <button class="page-btn" data-page="4" onclick="getAllQuestionList(4, 6)" style="color: gray;
+                text-align: center;
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                line-height: 35px;
+                border-radius: 50%;
+                border: 2px solid burlywood;">4</button>
+                <button class="page-btn" data-page="5" onclick="getAllQuestionList(5, 6)" style="color: gray;
+                text-align: center;
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                line-height: 35px;
+                border-radius: 50%;
+                border: 2px solid burlywood;">5</button>
+                <button class="page-btn" data-page="5" onclick="getAllQuestionList(6, 6)" style="color: gray;
+                text-align: center;
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                line-height: 35px;
+                border-radius: 50%;
+                border: 2px solid burlywood;">6</button>
+                <button class="page-btn" data-page="5" onclick="getAllQuestionList(7, 6)" style="color: gray;
+                text-align: center;
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                line-height: 35px;
+                border-radius: 50%;
+                border: 2px solid burlywood;">7</button>
+                <button class="page-btn" data-page="5" onclick="getAllQuestionList(8, 6)" style="color: gray;
+                text-align: center;
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                line-height: 35px;
+                border-radius: 50%;
+                border: 2px solid burlywood;">8</button>
+                <button class="page-btn" data-page="5" onclick="getAllQuestionList(9, 6)" style="color: gray;
+                text-align: center;
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                line-height: 35px;
+                border-radius: 50%;
+                border: 2px solid burlywood;">9</button>
+                <button class="page-btn" data-page="5" onclick="getAllQuestionList(10, 6)" style="color: gray;
+                text-align: center;
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                line-height: 35px;
+                border-radius: 50%;
+                border: 2px solid burlywood;">10</button>
                 <li><a href="#">&gt;</a></li>
               </ul>
             </div>
           </div>
         </div>
+
+
+
       </div>
     </section>
 
@@ -265,7 +396,9 @@
   
 
   <!-- loader -->
-  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+    <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
+    <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
 
   <script src="js/jquery.min.js"></script>
@@ -281,9 +414,10 @@
   <script src="js/owl.carousel.min.js"></script>
   <script src="js/jquery.magnific-popup.min.js"></script>
   <script src="js/scrollax.min.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-  <script src="js/google-map.js"></script>
+  <script src="js/questionMain.js"></script>
+  <script src="js/questionSearch.js"></script>
   <script src="js/main.js"></script>
+
 
   <script>
   //   function inputQuestion 
@@ -315,6 +449,9 @@
   position: relative;
   
 }
+  button:hover {
+    background-color: burlywood;
+  }
     #submit {
   margin-top: 0px;
   margin-bottom: 20px;
