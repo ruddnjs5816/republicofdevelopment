@@ -198,7 +198,7 @@
 function getUserMe() {
 	var settings = {
 
-		"url": "http://localhost:8080/users/mypage",
+		"url": "http://dewdew.shop:8080/users/mypage",
 		"method": "GET",
 		"timeout": 0,
 		"headers": {
@@ -230,7 +230,7 @@ function signOut() {
 //질문 개별 조회 시 답변 개수 확인 (ex. N개의 답변이 있습니다.)
 // function getAnswerCount() {
 // 	var settings = {
-// 		"url": "http://localhost:8080/questions/all",
+// 		"url": "http://dewdew.shop:8080/questions/all",
 // 		"method": "GET",
 // 		"timeout": 0,
 // 		"headers": {
@@ -283,7 +283,7 @@ function getQuestionDetail(page, size) {
 
 	var settings = {
 		"url": 
-		"http://localhost:8080/questions/specific/"+localStorage.getItem('currentQuestion') + "?page=" + page + "&size=" + size,
+		"http://dewdew.shop:8080/questions/specific/"+localStorage.getItem('currentQuestion') + "?page=" + page + "&size=" + size,
 		"method": "GET",
 		"timeout": 0,
 		"headers": {
@@ -402,7 +402,7 @@ function makeTagHtml(tag) {
 //답변 등록
 function answerSummit() {
 	var settings = {
-		"url": "http://localhost:8080/api/questions/"+localStorage.getItem('currentQuestion')+"/answers",
+		"url": "http://dewdew.shop:8080/api/questions/"+localStorage.getItem('currentQuestion')+"/answers",
 		"method": "POST",
 		"timeout": 0,
 		"headers": {
@@ -435,7 +435,7 @@ function answerSummit() {
 //댓글 등록
 function commentSummit(answerId) {
 	var settings = {
-		"url": "http://localhost:8080/api/questions/answers/"+answerId+"/comments",
+		"url": "http://dewdew.shop:8080/api/questions/answers/"+answerId+"/comments",
 		"method": "POST",
 		"timeout": 0,
 		"headers": {
@@ -537,7 +537,7 @@ function makeComment(answerId, commentId, nickName, content, createdAt) {
 //질문 삭제
 function deleteQuestion() {
 	var settings = {
-		"url": "http://localhost:8080/questions/"+localStorage.getItem('currentQuestion'),
+		"url": "http://dewdew.shop:8080/questions/"+localStorage.getItem('currentQuestion'),
 		"method": "DELETE",
 		"timeout": 0,
 		"headers": {
@@ -564,7 +564,7 @@ function deleteQuestion() {
 //답변 삭제
 function deleteAnswer(answerId) {
 	var settings = {
-		"url": "http://localhost:8080/api/answers/"+answerId,
+		"url": "http://dewdew.shop:8080/api/answers/"+answerId,
 		"method": "DELETE",
 		"timeout": 0,
 		"headers": {
@@ -589,7 +589,7 @@ function deleteAnswer(answerId) {
 //댓글 삭제
 function deleteComment(answerId, commentId) {
 	var settings = {
-		"url": "http://localhost:8080/api/questions/answers/"+answerId+"/comments/"+commentId,
+		"url": "http://dewdew.shop:8080/api/questions/answers/"+answerId+"/comments/"+commentId,
 		"method": "DELETE",
 		"timeout": 0,
 		"headers": {
@@ -616,7 +616,7 @@ function deleteComment(answerId, commentId) {
 function likeAnswer(answerId) {
 	// var likeButton = $(`#`+answerId+'-like-button');
 	var settings = {
-		"url": "http://localhost:8080/api/likes/answer/"+answerId,
+		"url": "http://dewdew.shop:8080/api/likes/answer/"+answerId,
 		"method": "POST",
 		"timeout": 0,
 		"headers": {
@@ -650,7 +650,7 @@ function likeAnswer(answerId) {
 // function getLikeStatus(answerId) {
 // 	var likeButton = $(`#`+answerId+'-like-button');
 // 	var settings = {
-// 	  "url": "http://localhost:8080/api/likes/answer/"+answerId,
+// 	  "url": "http://dewdew.shop:8080/api/likes/answer/"+answerId,
 // 	  "method": "GET",
 // 	  "timeout": 0,
 // 	  "headers": {
@@ -683,7 +683,7 @@ function likeAnswer(answerId) {
 //답변 채택
 function answerIsSelected(answerId) {
 	var settings = {
-		"url": "http://localhost:8080/questions/"+localStorage.getItem('currentQuestion')+"/"+answerId,
+		"url": "http://dewdew.shop:8080/questions/"+localStorage.getItem('currentQuestion')+"/"+answerId,
 		"method": "PATCH",
 		"timeout": 0,
 		"headers": {
@@ -759,7 +759,7 @@ function showAnswerEdits(answerId) {
 //답변 내용 수정
 function submitEditAnswer(answerId) {
 	var settings = {
-		"url": "http://localhost:8080/api/answers/"+answerId,
+		"url": "http://dewdew.shop:8080/api/answers/"+answerId,
 		"method": "PUT",
 		"timeout": 0,
 		"headers": {
@@ -809,7 +809,7 @@ function showCommentEdits(answerId, commentId) {
 //댓글 내용 수정
 function submitEditComment(answerId, commentId) {
 	var settings = {
-		"url": "http://localhost:8080/api/questions/answers/"+answerId+"/comments/"+commentId,
+		"url": "http://dewdew.shop:8080/api/questions/answers/"+answerId+"/comments/"+commentId,
 		"method": "PUT",
 		"timeout": 0,
 		"headers": {

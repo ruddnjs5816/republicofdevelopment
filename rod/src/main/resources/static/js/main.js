@@ -192,7 +192,7 @@
 function getUserMe() {
 	var settings = {
 
-		"url": "http://localhost:8080/users/mypage",
+		"url": "http://dewdew.shop:8080/users/mypage",
 		"method": "GET",
 		"timeout": 0,
 		"headers": {
@@ -253,7 +253,7 @@ function signOut() {
 // 	console.log(searchTerm);
 	
 // 	var settings = {
-// 	  "url": "http://localhost:8080/questions/search?title="+searchTerm,
+// 	  "url": "http://dewdew.shop:8080/questions/search?title="+searchTerm,
 // 	  "method": "GET",
 // 	  "timeout": 0,
 // 	  "headers": {

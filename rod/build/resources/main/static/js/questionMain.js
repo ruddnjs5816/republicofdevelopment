@@ -193,7 +193,7 @@
 function getUserMe() {
 	var settings = {
 
-		"url": "http://localhost:8080/users/mypage",
+		"url": "http://dewdew.shop:8080/users/mypage",
 		"method": "GET",
 		"timeout": 0,
 		"headers": {
@@ -246,7 +246,7 @@ function resetPageButtons() {
 // 모든 질문 목록 불러오기 함수
 function getAllQuestionList(page, size) {
   let settings = {
-    "url": "http://localhost:8080/questions/all?page=" + page + "&size=" + size,
+    "url": "http://dewdew.shop:8080/questions/all?page=" + page + "&size=" + size,
     "method": "GET",
     "timeout": 0,
     "headers": {

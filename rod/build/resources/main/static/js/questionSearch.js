@@ -232,7 +232,7 @@ function search(searchTerm, page, size) {
 
 
 	var settings = {
-		"url": "http://localhost:8080/questions/search?title="+searchTerm+ "&page=" + page + "&size=" + size,
+		"url": "http://dewdew.shop:8080/questions/search?title="+searchTerm+ "&page=" + page + "&size=" + size,
 		"method": "GET",
 		"timeout": 0,
 		"headers": {

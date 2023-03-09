@@ -189,7 +189,7 @@
 function getUserMe() {
     var settings = {
 
-        "url": "http://localhost:8080/users/mypage",
+        "url": "http://dewdew.shop:8080/users/mypage",
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -213,7 +213,7 @@ function getUserMe() {
 //질문 수정 완료
 function questionEditSummit() {
     var settings = {
-        "url": "http://localhost:8080/questions/"+localStorage.getItem('currentQuestion'),
+        "url": "http://dewdew.shop:8080/questions/"+localStorage.getItem('currentQuestion'),
         "method": "PUT",
         "timeout": 0,
         "headers": {

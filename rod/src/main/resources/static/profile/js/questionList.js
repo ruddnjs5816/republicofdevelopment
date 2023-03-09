@@ -224,7 +224,7 @@ $('.page-btn').on('click', function() {
 // 내 질문 목록 
 function getMyQeustionList(page, size){
 	var settings = {
-		"url": "http://localhost:8080/my-questions?page=" + page + "&size=" + size,
+		"url": "http://dewdew.shop:8080/my-questions?page=" + page + "&size=" + size,
 		"method": "GET",
 		"timeout": 0,
 		"headers": {
@@ -276,7 +276,7 @@ function makeQuestion(questionDto){
 // 내 프로필 
 function getMyInfo(){
     var settings = {
-        "url": "http://localhost:8080/users/mypage",
+        "url": "http://dewdew.shop:8080/users/mypage",
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -303,7 +303,7 @@ function getMyInfo(){
 function getUserMe(){
 	var settings = {
 
-		"url": "http://localhost:8080/users/mypage",
+		"url": "http://dewdew.shop:8080/users/mypage",
 		"method": "GET",
 		"timeout": 0,
 		"headers": {

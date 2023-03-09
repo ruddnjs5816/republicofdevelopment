@@ -212,7 +212,7 @@
 function getUserMe(){
 	var settings = {
 
-		"url": "http://localhost:8080/users/mypage",
+		"url": "http://dewdew.shop:8080/users/mypage",
 		"method": "GET",
 		"timeout": 0,
 		"headers": {
@@ -233,7 +233,7 @@ function getUserMe(){
 //주문 취소
 function cancelOrder(orderId) {
     var settings = {
-        "url": "http://localhost:8080/shop/orders/cancel/"+orderId,
+        "url": "http://dewdew.shop:8080/shop/orders/cancel/"+orderId,
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -259,7 +259,7 @@ function cancelOrder(orderId) {
 //-------------------------------------------------------------------------
 function getMyOrderList(){
     var settings = {
-        "url": "http://localhost:8080/shop/orderList",
+        "url": "http://dewdew.shop:8080/shop/orderList",
         "method": "GET",
         "timeout": 0,
         "headers": {
