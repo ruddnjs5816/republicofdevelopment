@@ -212,7 +212,7 @@
 function getUserMe(){
 	var settings = {
 
-		"url": "http://dewdew.shop:8080/users/mypage",
+		"url": "http://dewdew.shop:80/users/mypage",
 		"method": "GET",
 		"timeout": 0,
 		"headers": {
@@ -235,7 +235,7 @@ function getUserMe(){
 //-------------------------------------------------------------------------
 function getMyInfo(){
     var settings = {
-        "url": "http://dewdew.shop:8080/users/mypage",
+        "url": "http://dewdew.shop:80/users/mypage",
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -341,7 +341,7 @@ function getMyInfo(){
 // 수정 눌렀을때 실행 
 function editProfile(){
     var settings = {
-        "url": "http://dewdew.shop:8080/users/mypage",
+        "url": "http://dewdew.shop:80/users/mypage",
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -457,7 +457,7 @@ function editSuccess(){
     
     
     var settings = {
-        "url": "http://dewdew.shop:8080/users/mypage",
+        "url": "http://dewdew.shop:80/users/mypage",
         "method": "PATCH",
         "timeout": 0,
         "headers": {

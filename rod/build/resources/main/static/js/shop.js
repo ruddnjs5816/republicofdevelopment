@@ -192,7 +192,7 @@
 //상품 등록
 function uploadProduct() {
     var settings = {
-        "url": "http://dewdew.shop:8080/api/shop",
+        "url": "http://dewdew.shop:80/api/shop",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -216,7 +216,7 @@ function uploadProduct() {
 //상품 주문
 function orderProduct(productId) {
     var settings = {
-        "url": "http://dewdew.shop:8080/shop/orders/"+productId,
+        "url": "http://dewdew.shop:80/shop/orders/"+productId,
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -236,7 +236,7 @@ function orderProduct(productId) {
 
 function getAllProducts(page, size) {
     var settings = {
-        "url": "http://dewdew.shop:8080/api/shop?page=" + page + "&size=" + size,
+        "url": "http://dewdew.shop:80/api/shop?page=" + page + "&size=" + size,
         "method": "GET",
         "timeout": 0,
         "headers": {

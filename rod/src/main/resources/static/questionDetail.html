@@ -35,7 +35,7 @@
     <!-- <script>
       function answerSummit() {
         var settings = {
-          "url": "http://dewdew.shop:8080/api/questions/"+localStorage.getItem('currentQuestion')+"/answers",
+          "url": "http://dewdew.shop:80/api/questions/"+localStorage.getItem('currentQuestion')+"/answers",
           "method": "POST",
           "timeout": 0,
           "headers": {
@@ -61,7 +61,7 @@
       //댓글 등록
       function commentSummit() {
         var settings = {
-          "url": "http://dewdew.shop:8080/api/questions/answers/"+localStorage.getItem('answerId')+"/comments",
+          "url": "http://dewdew.shop:80/api/questions/answers/"+localStorage.getItem('answerId')+"/comments",
           "method": "POST",
           "timeout": 0,
           "headers": {
@@ -558,7 +558,7 @@
   <script>
   //   function inputQuestion 
   //     var settings = {
-  // "url": "http://dewdew.shop:8080/auth/",
+  // "url": "http://dewdew.shop:80/auth/",
   // "method": "POST",
   // "timeout": 0,
   // "headers": {

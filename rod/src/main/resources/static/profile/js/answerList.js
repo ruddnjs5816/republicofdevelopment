@@ -223,7 +223,7 @@ $('.page-btn').on('click', function() {
 // 내 답변 목록 
 function getMyAnswerList(page, size){
     var settings = {
-        "url": "http://dewdew.shop:8080/api/answers?page=" + page + "&size=" + size,
+        "url": "http://dewdew.shop:80/api/answers?page=" + page + "&size=" + size,
         "timeout": 0,
         "headers": {
             "Authorization": localStorage.getItem('accessToken')
@@ -280,7 +280,7 @@ function makeAnswer(answerDto){
 
 function getMyInfo(){
     var settings = {
-        "url": "http://dewdew.shop:8080/users/mypage",
+        "url": "http://dewdew.shop:80/users/mypage",
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -311,7 +311,7 @@ function getMyInfo(){
     function getUserMe(){
         var settings = {
     
-            "url": "http://dewdew.shop:8080/users/mypage",
+            "url": "http://dewdew.shop:80/users/mypage",
             "method": "GET",
             "timeout": 0,
             "headers": {
