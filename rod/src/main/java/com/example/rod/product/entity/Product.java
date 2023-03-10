@@ -1,17 +1,14 @@
 package com.example.rod.product.entity;
 
 
-import com.example.rod.product.dto.ProductRequestDto;
 import com.example.rod.product.dto.ProductModifyRequestDto;
+import com.example.rod.product.dto.ProductRequestDto;
 import com.example.rod.share.TimeStamped;
 import lombok.Builder;
 import lombok.Getter;
-
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -41,7 +38,7 @@ public class Product extends TimeStamped {
         this.productName = productRequestDto.getProductName();
         this.price = productRequestDto.getPrice();
         this.productDescription = productRequestDto.getProductDescription();
-        this.productSellStatus = productRequestDto.getProductSellStatus();
+//        this.productSellStatus = productRequestDto.getProductSellStatus();
 
     }
 

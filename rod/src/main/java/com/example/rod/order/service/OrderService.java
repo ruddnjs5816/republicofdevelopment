@@ -1,27 +1,22 @@
 package com.example.rod.order.service;
 
 
-import com.example.rod.order.dto.OrderDto;
 import com.example.rod.order.dto.OrderResponseDto;
 import com.example.rod.order.entity.Order;
+import com.example.rod.order.entity.OrderStatus;
 import com.example.rod.order.repository.OrderRepository;
-import com.example.rod.product.dto.ProductResponseDto;
 import com.example.rod.product.entity.Product;
 import com.example.rod.product.repository.ProductRepository;
-import com.example.rod.security.exception.CustomException;
+import com.example.rod.security.details.UserDetailsImpl;
 import com.example.rod.user.entity.User;
 import com.example.rod.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityNotFoundException;
-
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,15 +28,23 @@ public class OrderService {
 
     //주문하기
     @Transactional
-    public void order(OrderDto orderDto, Long userId) {
+    public void order(Long productId, UserDetailsImpl userDetails) {
 
         //주문할 상품 조회
-        Product product = productRepository.findById(orderDto.getProductId()).orElseThrow(EntityNotFoundException::new);
-        User user = userRepository.findByUserId(userId);
+        Product product = productRepository.findById(productId).orElseThrow(EntityNotFoundException::new);
+
+        User user = userRepository.findByUserId(userDetails.getUserId());
+
+//        Integer caculatePoint = (user.getPoint()) - (product.getPrice());
+//        user.setPoint(caculatePoint);
+
+
 
         //결제
         user.payPoint(product.getPrice());
-        Order order = new Order(userId, product.getProductId());
+        Order order = new Order
+                (userDetails.getUser(), product.getProductId(), product.getPrice(), product.getProductDescription(),
+                        product.getProductName(), OrderStatus.ORDER);
         orderRepository.save(order);
 
     }
@@ -50,31 +53,46 @@ public class OrderService {
 
     //주문 취소
     @Transactional
-    public void cancelOrder(Long orderId, Long userId) {
+    public void cancelOrder(Long orderId, User user) {
 
-        Order order = orderRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException("주문이 없습니다"));
-//        User user = userRepository.findById(order.getUserId()).orElseThrow(() -> new IllegalArgumentException("유저가 없습니다"));
-        Product product = productRepository.findById(order.getProductId()).orElseThrow(() -> new IllegalArgumentException("상품이 없습니다"));
+        Order order = orderRepository.findById(orderId).orElseThrow(() ->
+                new IllegalArgumentException("주문이 없습니다"));
 
         order.cancelOrder();
-//        user.refundPoint(product.getPrice());
-        orderRepository.save(order);
-//        userRepository.save(user);
+
+        Product product = productRepository.findById(order.getProductId()).orElseThrow(() ->
+                new IllegalArgumentException("상품이 없습니다"));
+
+
+        if(order.getOrderStatus() == OrderStatus.CANCEL){
+            user.cancelPoint(product.getPrice());
+
+            userRepository.save(user);
+
+            System.out.println("product :"+ product.getPrice());
+
+        }else {
+            new IllegalArgumentException("이미 취소된 상품입니다.");
+        }
 
     }
 
-    public List<OrderResponseDto> getMyOrders(Long userId) {
-//        List<Order> orderList = orderRepository.findAllByUser(userId);
-        List<OrderResponseDto> result = new ArrayList<>();
+    public List<OrderResponseDto> getMyOrders(User user) {
 
+        List<Order> byUser = orderRepository.findByUser(user);
+//        OrderResponseDto orderResponseDto =
+//                new OrderResponseDto(byUser.getProductName(), byUser.getPrice(), byUser.getProductDescription());
 
-     /*   for (Order order: orderList) {
-            OrderResponseDto dto = new OrderResponseDto(order.getId(), order.getProductId(), order.getOrderDate(), order.getOrderStatus());
-            result.add(dto);
-        }*/
+        List<OrderResponseDto> resultData = new ArrayList<>();
 
-        return result;
+        for(Order order : byUser){
+            resultData.add(new OrderResponseDto(order));
+        }
 
+        return resultData;
     }
+
+
+
 
 }

@@ -1,4 +1,4 @@
-/*
+package com.example.rod.order.entity;/*
 //package com.example.rod.order.entity;
 //
 //import com.example.rod.product.entity.Product;

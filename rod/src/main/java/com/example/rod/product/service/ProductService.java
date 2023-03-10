@@ -1,13 +1,12 @@
 
 package com.example.rod.product.service;
 
-import com.example.rod.product.dto.ProductRequestDto;
 import com.example.rod.product.dto.ProductModifyRequestDto;
+import com.example.rod.product.dto.ProductRequestDto;
 import com.example.rod.product.dto.ProductResponseDto;
 import com.example.rod.product.entity.Product;
 import com.example.rod.product.entity.ProductImg;
 import com.example.rod.product.repository.ProductRepository;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,22 +30,22 @@ public class ProductService {
 
     //상품 등록
     @Transactional
-    public void createProduct(ProductRequestDto productRequestDto, List<MultipartFile> productImgFileList) throws Exception {
+    public void createProduct(ProductRequestDto productRequestDto) throws Exception {
         Product product = productRepository.saveAndFlush(new Product(productRequestDto));
         productRepository.save(product);
 
         //이미지 등록
-        for (int i = 0, max = productImgFileList.size(); i < max; i++) {
-            //파일이 있을 때만 저장
-            if (productImgFileList.get(i).getSize() != 0) {
-                ProductImg productImg = ProductImg.builder()
-                        .product(product)
-                        .repImgYn(i == 0 ? "Y" : "N") //첫 번째 이미지일 경우 대표 상품 이미지 여부 값 “Y”
-                        .build();
-
-                productImgService.saveProductImg(productImg, productImgFileList.get(i));
-            }
-        }
+//        for (int i = 0, max = productImgFileList.size(); i < max; i++) {
+//            //파일이 있을 때만 저장
+//            if (productImgFileList.get(i).getSize() != 0) {
+//                ProductImg productImg = ProductImg.builder()
+//                        .product(product)
+//                        .repImgYn(i == 0 ? "Y" : "N") //첫 번째 이미지일 경우 대표 상품 이미지 여부 값 “Y”
+//                        .build();
+//
+//                productImgService.saveProductImg(productImg, productImgFileList.get(i));
+//            }
+//        }
     }
 
 
@@ -73,11 +72,11 @@ public class ProductService {
 
     //전체 상품 조회
     @Transactional(readOnly = true)
-    public List<ProductResponseDto> getAllProducts(int page, int size, String sortBy, boolean isAsc) {
+    public List<ProductResponseDto> getAllProducts(int page, int size) {
         // 페이징 처리
-        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-        Sort sort = Sort.by(direction, sortBy);
-        Pageable pageable = PageRequest.of(page, size, sort);
+//        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+//        Sort sort = Sort.by(direction, sortBy);
+        Pageable pageable = PageRequest.of(page, size);
 
         Page<Product> products = productRepository.findAll(pageable);
         List<ProductResponseDto> productResponseDtoList = new ArrayList<>();

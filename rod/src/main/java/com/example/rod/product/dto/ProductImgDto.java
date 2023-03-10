@@ -1,6 +1,5 @@
 package com.example.rod.product.dto;
 
-import com.example.rod.product.entity.Product;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
