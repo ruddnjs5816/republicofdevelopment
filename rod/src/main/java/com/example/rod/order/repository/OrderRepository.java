@@ -1,6 +1,7 @@
 package com.example.rod.order.repository;
 
 import com.example.rod.order.entity.Order;
+import com.example.rod.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
@@ -17,5 +18,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Optional<Order> findById(Long orderId);
 
-    List<Order> findOrdersByUserId(Long userId);
+//    Page<Order> findByUser(User user, Pageable pageable);
+
+//    List<Order> getOrdersById (User user);
+
+    List<Order> findByUser(User user);
+
+//    List<Order> findAllByUser(Long userId);
 }

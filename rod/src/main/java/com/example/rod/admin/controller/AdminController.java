@@ -45,21 +45,6 @@ public class AdminController {
         adminService.signIn(adminSigninDto, response);
     }
 
-    //admin 상점에 기프티콘 정보 등록
-    @PostMapping("/admin/shop")
-    @PreAuthorize("hasRole('ADMIN')")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createProduct(
-            @RequestBody ProductRequestDto productRequestDto,
-            List<MultipartFile> productImgFileList, Model model
-//            @AuthenticationPrincipal UserDetailsImpl userDetails
-    ) {
-        try {
-            productService.createProduct(productRequestDto, productImgFileList);
-        } catch (Exception e) {
-            model.addAttribute("errorMessage", "상품 등록 중 에러가 발생하였습니다.");
-        }
-    }
 
     //상품 수정
     @PutMapping("/admin/shop/{productId}")

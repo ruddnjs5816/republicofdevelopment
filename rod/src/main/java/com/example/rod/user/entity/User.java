@@ -182,4 +182,9 @@ public class User extends TimeStamped {
         return this;
     }
 
+    public void cancelPoint(int price){
+        int restPoint = this.point +price;
+        this.point = restPoint;
+    }
+
 }
